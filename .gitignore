@@ -1,0 +1,49 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+
+# Editor and workspace state
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs and temporary files
+*.log
+logs/
+tmp/
+temp/
+.tmp/
+*.tmp
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.local
+
+# Dependency and build artifacts for helper scripts/tools
+node_modules/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+dist/
+build/
+coverage/
+
+# Generated archives/packages
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# Keep authored skill assets trackable by default.
+# If a generated artifact inside a skill should be ignored, add a narrow rule
+# next to that workflow rather than ignoring broad asset types globally.
