@@ -24,6 +24,8 @@ Always write or update `PROJECT.md` using `PROJECT.template.md` as a starting sh
 - Do not repeat `AGENTS.md` or facts an agent can discover from the repo.
 - If a hard-to-reverse decision is truly durable, capture the reason here instead of creating an ADR by default.
 
+Treat italic explanatory text in the templates as authoring scaffolding; leave it out of final project docs unless the wording itself is genuinely useful content.
+
 Write or update `DESIGN.md` using `DESIGN.template.md` only when the project has a meaningful user-facing interface. Keep it compatible with Google's design.md section shape, but omit irrelevant sections and avoid fake precision. Use exact tokens only when they are already settled.
 
 Write or update `ENGINEERING.md` using `ENGINEERING.template.md` only when there are non-obvious technical facts a good agent could still miss, repeatedly rediscover, or get wrong from code alone. Capture decisions, external systems, operations, commands, and project-standard primitives; avoid dependency inventories, file trees, and obvious stack facts.
