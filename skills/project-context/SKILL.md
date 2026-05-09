@@ -11,7 +11,7 @@ description: >
 
 Help the user capture or refresh the durable context future agents need but cannot reliably infer from code alone.
 
-Explore first. Read existing docs and enough code to understand the project before asking questions the repo can answer. Treat tool-specific docs as context, not as owners of this skill's output.
+Explore first. List the repo's Markdown docs, then read the ones that look like durable product, design, engineering, domain-language, planning, or architecture context before asking questions the repo can answer. Treat tool-specific and older docs as source material for this skill's outputs, not as structures to preserve or files to clean up. Do not edit `AGENTS.md` or other existing docs unless the user asks; if docs look stale, overlapping, or superseded after the refresh, mention that in the final response.
 
 Have a focused conversation, but do not run a canned questionnaire. Ask grouped questions only where intent, design direction, technical constraints, or terminology are unclear. Include your recommended default when a choice is open. For many personal projects, assume the primary user is the user unless they say otherwise.
 
@@ -33,5 +33,7 @@ Write or update `ENGINEERING.md` using `ENGINEERING.template.md` only when there
 Write or update `LANGUAGE.md` only when project-specific terminology has clearly emerged. If the terminology work becomes substantial, use the `ubiquitous-language` skill rather than folding a glossary interview into this skill.
 
 When refreshing an existing project, compare current docs against the repo and the user's stated changes. Update only the docs whose durable context changed; do not re-interview from scratch unless the existing docs are missing, thin, or clearly stale.
+
+Before handoff, reread the produced docs as a future agent. Remove facts that are merely implementation inventory, quickly inferable from code, duplicated across docs without a distinct purpose, or included only because they appeared in an older document. Keep external contracts, product decisions, project conventions, sharp edges, and reasons the code alone would not explain.
 
 End with a short summary of what was captured or refreshed, which docs were changed, what remains unclear, and whether a separate implementation-planning session should follow.
