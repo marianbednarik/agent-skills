@@ -2,7 +2,7 @@
 name: ubiquitous-language
 description: >
   Extract and refine project-specific domain language from the current conversation
-  into a lean UBIQUITOUS_LANGUAGE.md glossary. Use when terminology, domain model,
+  into a lean LANGUAGE.md glossary. Use when terminology, domain model,
   naming, overloaded words, or repeated project concepts need to be made explicit.
 ---
 
@@ -19,7 +19,7 @@ Be opinionated, but conversational:
 - Recommend better names when the current wording hides an important distinction.
 - Ask targeted questions only when the ambiguity would change future implementation.
 
-Write or update `UBIQUITOUS_LANGUAGE.md` in the working directory. Keep it lean:
+Write or update `LANGUAGE.md` in the working directory. Keep it lean:
 
 - Terms with one-sentence definitions.
 - Aliases or words to avoid when useful.

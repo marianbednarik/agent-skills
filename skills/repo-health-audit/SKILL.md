@@ -11,7 +11,7 @@ description: >
 
 Audit the repo as something a future human or agent will need to understand, modify, and trust.
 
-Explore before judging. Read relevant project docs (`AGENTS.md`, `PROJECT_DIRECTION.md`, `UBIQUITOUS_LANGUAGE.md`, README), package manifests, tests, and main code paths.
+Explore before judging. Read relevant project docs (`AGENTS.md`, `PROJECT.md`, `DESIGN.md`, `ENGINEERING.md`, `LANGUAGE.md`, README), package manifests, tests, and main code paths.
 
 Look for friction, not enterprise checkboxes. Preserve intentional simplicity. Small repos do not need heavyweight structure just to look mature.
 

@@ -1,6 +1,6 @@
 Build code that a human maintainer would be happy to inherit. Prefer the right boundary over the smallest local diff.
 
-Use this file as universal coding taste. Use `PROJECT.md` or `PROJECT_DIRECTION.md` for project intent, whichever is available. Use `DESIGN.md` for design and frontend guidance, and `UBIQUITOUS_LANGUAGE.md` for project-specific terms, when those files are available.
+Use this file as universal coding taste. Use `PROJECT.md` for project intent, `DESIGN.md` for design and frontend guidance, `ENGINEERING.md` for non-obvious technical context, and `LANGUAGE.md` for project-specific terms, when those files are available.
 
 ## Code Shape
 
