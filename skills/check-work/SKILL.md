@@ -24,7 +24,12 @@ Check for AI-code failure modes:
 - global CSS drift or hand-rolled UI primitives where project-standard primitives exist
 - weakened, mock-heavy, selector-heavy, or implementation-detail tests
 - obsolete code left behind
+- correct but unnecessarily complex code that can be simplified without changing behavior
 - behavior that no longer matches the agreed plan or user-visible goal
+
+For non-trivial changes, when the active harness permits delegation, ask a fresh reviewer sub-agent for a read-only review before final handoff. Do not ask it to invoke this skill recursively. Give it the user-visible goal, changed files, relevant constraints, and any risky areas. Ask it to inspect for correctness issues, missing validation, architecture/style drift, and behavior-preserving simplification opportunities.
+
+The reviewer sub-agent is review-only: it must not edit files, apply patches, format code, stage changes, commit, or run mutating commands. It should report findings and suggested fixes only. Treat its report as review input; you still own any fixes, validation, and final readiness verdict.
 
 Run the strongest relevant validation commands you can discover: formatter checks, lint, typecheck, tests, build, focused smoke checks, or app-specific verification.
 
