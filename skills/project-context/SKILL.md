@@ -26,7 +26,7 @@ Always write or update `PROJECT.md` using `PROJECT.template.md` as a starting sh
 
 Treat italic explanatory text in the templates as authoring scaffolding; leave it out of final project docs unless the wording itself is genuinely useful content.
 
-Write or update `DESIGN.md` using `DESIGN.template.md` only when the project has a meaningful user-facing interface. Keep it compatible with Google's design.md section shape, but omit irrelevant sections and avoid fake precision. Use exact tokens only when they are already settled.
+Write or update `DESIGN.md` using `DESIGN.template.md` only when the project has a meaningful user-facing interface. Follow Google's DESIGN.md alpha format: optional YAML frontmatter for real machine-readable tokens, then `##` sections in canonical order. Omit irrelevant sections, but keep the exact heading names and order for sections included. Avoid fake precision; use exact token values only when they are already settled or directly observed.
 
 Write or update `ENGINEERING.md` using `ENGINEERING.template.md` only when there are non-obvious technical facts a good agent could still miss, repeatedly rediscover, or get wrong from code alone. Capture decisions, external systems, operations, commands, and project-standard primitives; avoid dependency inventories, file trees, and obvious stack facts.
 
