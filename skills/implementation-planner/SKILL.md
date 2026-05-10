@@ -9,7 +9,7 @@ description: >
 
 # Implementation Planner
 
-Use this skill for the conversation before a non-trivial implementation.
+Shape the conversation before a non-trivial implementation.
 
 Explore first. Read relevant code, docs, tests, and existing patterns before asking questions the repo can answer.
 

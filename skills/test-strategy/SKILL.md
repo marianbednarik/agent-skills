@@ -9,7 +9,7 @@ description: >
 
 # Test Strategy
 
-Use this skill to decide how tests should support a change. Do not treat "write tests" as the automatic answer.
+Decide how tests should support a change. Do not treat "write tests" as the automatic answer.
 
 The behavior contract is the source of truth. Tests are executable witnesses for parts of that contract. If a test conflicts with the agreed behavior, classify the mismatch before changing code.
 

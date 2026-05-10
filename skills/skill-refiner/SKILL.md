@@ -8,7 +8,7 @@ description: >
 
 # Skill Refiner
 
-Use this skill to shape skills for Marian's personal agent workflow.
+Shape skills for Marian's personal agent workflow.
 
 Start by identifying the behavior that should change when a future agent loads the skill. If that behavior is unclear, discuss it before writing.
 
