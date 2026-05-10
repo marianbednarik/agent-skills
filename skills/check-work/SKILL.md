@@ -27,7 +27,7 @@ Check for AI-code failure modes:
 - correct but unnecessarily complex code that can be simplified without changing behavior
 - behavior that no longer matches the agreed plan or user-visible goal
 
-For non-trivial changes, when the active harness permits delegation, ask a fresh reviewer sub-agent for a read-only review before final handoff. Do not ask it to invoke this skill recursively. Give it the user-visible goal, changed files, relevant constraints, and any risky areas. Ask it to inspect for correctness issues, missing validation, architecture/style drift, and behavior-preserving simplification opportunities.
+Marian has explicitly authorized reviewer sub-agents for this skill when the active harness supports them. For non-trivial changes, use your discretion: skip delegation for small or obvious diffs, but ask a fresh reviewer sub-agent for a read-only review before final handoff when another set of eyes would materially reduce risk. Do not ask it to invoke this skill recursively. Give it the user-visible goal, changed files, relevant constraints, and any risky areas. Ask it to inspect for correctness issues, missing validation, architecture/style drift, and behavior-preserving simplification opportunities.
 
 The reviewer sub-agent is review-only: it must not edit files, apply patches, format code, stage changes, commit, or run mutating commands. It should report findings and suggested fixes only. Treat its report as review input; you still own any fixes, validation, and final readiness verdict.
 
