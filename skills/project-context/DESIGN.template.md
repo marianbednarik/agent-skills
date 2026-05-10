@@ -1,6 +1,6 @@
 # Design
 
-_This follows Google's DESIGN.md alpha shape: optional YAML frontmatter for machine-readable design tokens, then canonical `##` sections in order. Remove all italic scaffolding from the final doc._
+_This follows Google's DESIGN.md alpha shape: optional YAML frontmatter for machine-readable design tokens, then canonical `##` sections in order._
 
 _When real tokens are settled or directly observed, add YAML frontmatter above this heading with `version: alpha`, `name`, optional `description`, and relevant token groups: `colors`, `typography`, `rounded`, `spacing`, and `components`. Use valid hex colors, px/em/rem dimensions, unitless line heights where appropriate, and `{path.to.token}` references for component tokens. Omit token groups or the entire frontmatter rather than inventing values._
 

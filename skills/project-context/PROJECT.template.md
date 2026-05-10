@@ -1,6 +1,6 @@
 # Project
 
-_Evergreen project intent future agents cannot infer from code. Keep this lean: no current implementation plans, roadmaps, stack facts, file structure, or duplicated `AGENTS.md` guidance. Remove all italic scaffolding from the final doc._
+_Evergreen project intent future agents cannot infer from code. Keep this lean: no current implementation plans, roadmaps, stack facts, file structure, or duplicated `AGENTS.md` guidance._
 
 ## Purpose
 

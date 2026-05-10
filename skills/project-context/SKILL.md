@@ -1,10 +1,11 @@
 ---
 name: project-context
 description: >
-  Establish or refresh durable project context by reading the repo, interviewing
-  the user where intent cannot be inferred, and writing lean PROJECT.md plus
-  DESIGN.md, ENGINEERING.md, or LANGUAGE.md only when those docs would materially
-  help future agents.
+  Establish or refresh durable project context after project start, substantial
+  implementation, refactors, product pivots, or design changes by reading the
+  repo, interviewing the user where intent cannot be inferred, and writing lean
+  PROJECT.md, DESIGN.md, ENGINEERING.md, or LANGUAGE.md only when those docs
+  would materially help future agents.
 ---
 
 # Project Context
@@ -30,7 +31,7 @@ Write or update `DESIGN.md` using `DESIGN.template.md` only when the project has
 
 Write or update `ENGINEERING.md` using `ENGINEERING.template.md` only when there are non-obvious technical facts a good agent could still miss, repeatedly rediscover, or get wrong from code alone. Capture decisions, external systems, operations, commands, and project-standard primitives; avoid dependency inventories, file trees, and obvious stack facts.
 
-Write or update `LANGUAGE.md` only when project-specific terminology has clearly emerged. If the terminology work becomes substantial, use the `ubiquitous-language` skill rather than folding a glossary interview into this skill.
+Write or update `LANGUAGE.md` using `LANGUAGE.template.md` only when project-specific terminology has clearly emerged. Capture canonical terms, aliases to avoid, and important relationships; clarify terminology ambiguity with the user before writing assumptions into the doc. Skip generic programming terms unless the project gives them domain-specific meaning.
 
 When refreshing an existing project, compare current docs against the repo and the user's stated changes. Update only the docs whose durable context changed; do not re-interview from scratch unless the existing docs are missing, thin, or clearly stale.
 

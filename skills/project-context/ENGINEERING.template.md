@@ -1,6 +1,6 @@
 # Engineering
 
-_Non-obvious technical context future agents cannot reliably infer from code alone. Keep this lean: no dependency inventories, file trees, or obvious stack facts. Remove all italic scaffolding from the final doc._
+_Non-obvious technical context future agents cannot reliably infer from code alone. Keep this lean: no dependency inventories, file trees, or obvious stack facts._
 
 ## Commands
 
