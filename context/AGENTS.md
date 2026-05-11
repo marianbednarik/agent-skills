@@ -6,6 +6,7 @@ Use this file as universal coding taste. Use `PROJECT.md` for project intent, `D
 
 - Work with the repo's existing architecture and idioms when they are coherent. Do not create a parallel pattern for the same concept.
 - Find the owner of a concept before editing. Model real concepts directly instead of spreading meaning across optional-field soup, boolean flag piles, generic modes, or repeated local logic.
+- Read the boundary before changing it: exports, callers, related tests, and established primitives.
 - Prefer deep modules: small public interfaces that hide meaningful implementation. Avoid shallow helper spray, wrapper layers, and vague `utils`.
 - First use can stay local. Second real use is evidence of a concept; extract it into a shared primitive, pattern, or domain module.
 - YAGNI means no speculative abstractions, not permission to duplicate a real pattern that already exists.
@@ -14,6 +15,7 @@ Use this file as universal coding taste. Use `PROJECT.md` for project intent, `D
 ## State And Data
 
 - Keep one canonical internal shape. Normalize untrusted data only at boundaries: network, storage, browser/runtime APIs, and user input.
+- Keep deterministic work in code: routing, retries, status handling, parsing, validation, and transforms should not depend on model judgment.
 - Do not add compatibility shims, migration branches, silent fallbacks, dual codepaths, or legacy adapters unless explicitly approved.
 - When invalid internal state appears, fail loudly with a clear diagnostic and recovery guidance instead of silently adapting.
 - Delete or replace obsolete code as part of the change. Do not preserve old paths "just in case."
@@ -24,6 +26,7 @@ Use this file as universal coding taste. Use `PROJECT.md` for project intent, `D
 - Reuse existing libraries and proven primitives already available in the project. Do not hand-roll another modal, dropdown, parser, state machine, or fetch/cache pattern when a good project-standard option exists.
 - Keep global styles limited to tokens, reset, typography, and tiny utilities. Feature styles belong with the owning feature or component.
 - Prefer small vertical changes that leave the repo cleaner than before. Avoid broad rewrites unless the current structure is the problem.
+- When existing patterns conflict, choose the owner, newer path, or better-tested path. Do not average them into a hybrid.
 - Escalate when a change has multiple plausible owners, introduces a new architectural layer or dependency, removes behavior the user may value, relies on inferred product intent, or conflicts with active work. Recommend a direction when escalating.
 
 ## Testing
