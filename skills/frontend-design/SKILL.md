@@ -67,10 +67,20 @@ Build from the project inward:
 
 - reuse established components, tokens, icon sets, data-loading patterns, and
   form primitives
-- keep feature styles with the owning feature or component
+- keep feature styles with the owning feature or component, and avoid adding new
+  screen-specific styling to global dumps or unrelated parent files
 - add new visual primitives only when they solve a real repeated problem
 - remove obsolete UI paths, placeholders, and one-off styling introduced during
   the change
+
+When implementing UI, give meaningful interface pieces clear owners. Prefer
+named components for coherent parts of a screen, with styling colocated according
+to the project's convention: component file, feature stylesheet, CSS module,
+styled primitive, or design-system variant. Redesign work should not just
+restyle the old file shape; when a screen has accumulated mixed layout, state,
+copy, and styling, pull out the stable UI pieces as part of the pass. Keep
+extraction practical: avoid tiny wrapper components, but create components where
+a human maintainer would expect to find ownership.
 
 Design the whole state model, not just the happy path: default, hover, focus,
 active, disabled, loading, empty, error, success, long content, short content,
