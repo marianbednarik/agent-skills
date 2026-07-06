@@ -10,9 +10,9 @@ Custom skills live under `skills/` in this repo.
 
 The runtime folder `~/.agents/skills` contains symlinks back to those repo skill folders. Edit the repo copies; changes are visible through the symlinks.
 
-Claude's skill folder, `~/.claude/skills`, may contain symlinks that point through `~/.agents/skills`. Treat it as compatibility wiring, not the canonical source.
-
 Codex global instructions live at `~/.codex/AGENTS.md`. Project-specific `AGENTS.md` files should add local context rather than duplicate those global preferences.
+
+Canonical reusable context files live under `context/`. When updating global or reusable agent instructions, edit the repo copy first, then sync any live runtime copy such as `~/.codex/AGENTS.md` only when the user explicitly asks for the live file to change. Do not treat runtime files as the source of truth.
 
 ## Working Style
 
