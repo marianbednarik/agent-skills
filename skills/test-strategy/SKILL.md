@@ -1,37 +1,73 @@
 ---
 name: test-strategy
 description: >
-  Decide what should be tested for a change and how much authority those tests
-  should have. Use when planning or reviewing non-trivial behavior, choosing
-  between automated tests and manual checks, handling failing tests, or avoiding
-  useless implementation-detail coverage.
+  Decide what evidence should protect behavior when the appropriate test level,
+  coverage, or authority is not obvious. Use when the user asks what or how to
+  test, automated and manual checks have meaningful tradeoffs, existing tests
+  conflict with intended behavior, failures have ambiguous causes, or risky
+  behavior lacks trustworthy evidence. Do not trigger merely because a change is
+  nontrivial or tests need to be run.
 ---
 
 # Test Strategy
 
-Decide how tests should support a change. Do not treat "write tests" as the automatic answer.
+Choose evidence that meaningfully supports the behavior being changed. Do not
+treat “write tests” or test-driven development as automatic answers.
 
-The behavior contract is the source of truth. Tests are executable witnesses for parts of that contract. If a test conflicts with the agreed behavior, classify the mismatch before changing code.
+Establish the intended behavior contract from explicit user decisions,
+authoritative project guidance, public or external contracts, acceptance
+criteria, real user scenarios, and deliberate existing behavior that should be
+preserved. Tests are executable evidence for parts of that contract; their
+existence does not make every assertion permanently correct.
 
-Before or during implementation, propose:
+Choose evidence by risk:
 
-- the behavior contract worth protecting
-- existing tests that should be trusted
-- existing tests that may need updates because behavior intentionally changes
-- new tests worth adding, if any
-- what level to test at: integration, public API, UI flow, boundary/parser, state machine, or manual check
-- what not to test because it would couple to implementation details
+- identify the behavior and plausible failure modes worth protecting
+- inspect the relevant evidence that already exists
+- select the lowest durable boundary that can prove the behavior
+- add automation only where it buys repeatable confidence
+- use manual, rendered, or environment-specific checks when they measure the
+  result more meaningfully
+- identify what must pass before the change is ready
 
-Prefer a tracer-bullet test when behavior is clear and important: one meaningful behavior through a public interface, then grow coverage only where it buys confidence.
+Prefer a small number of high-value tests through public interfaces or meaningful
+boundaries. One vertical tracer test can be enough to establish confidence before
+adding cases for distinct risks. Do not add coverage merely to exercise lines or
+freeze the current implementation shape.
 
-Avoid tests that mostly verify mocks, selectors, private helpers, current file structure, or implementation shape.
+Remain workflow-neutral:
 
-When tests fail, classify before fixing:
+- write a test first when it clarifies a stable contract or reproduces a regression
+- add tests during or after implementation when the behavior is still being
+  discovered
+- use manual checks when automation would be brittle, misleading, or
+  disproportionately expensive
+- combine automated and manual evidence when they prove different aspects of the
+  result
 
-- real regression: fix code
-- intended behavior changed: update or remove the test with explanation
-- implementation-detail coupling: rewrite the test around public behavior
-- test setup drift: fix fixture/setup
-- unclear contract: ask the user before changing code or test
+Avoid tests dominated by mocks, selectors, private helpers, file structure, or
+other implementation details.
 
-End with a short recommendation: what to test, what to skip, what to run manually, and which failures should block the change.
+When a test fails, classify it before changing code or the test:
+
+- **real regression:** fix the implementation
+- **intentional behavior change:** update or remove the expectation with an
+  explanation
+- **implementation-detail coupling:** rewrite the test around public behavior
+- **fixture or environment drift:** repair the setup rather than product code
+- **flaky or nondeterministic behavior:** reproduce and isolate it; do not dismiss
+  it because a retry passes
+- **pre-existing unrelated failure:** establish that it is outside the change and
+  report it
+- **unclear contract:** obtain clarification before changing either side when the
+  decision is consequential
+
+A failure should block readiness when it shows requested behavior is broken,
+preserved behavior regressed, a relevant contract no longer holds, or a risky
+change lacks trustworthy evidence. An unrelated pre-existing failure need not
+block the change, but it must be separated and reported. Passing tests are
+evidence, not proof that the implementation is complete.
+
+End with a concise recommendation covering what to automate, what to verify
+manually, what not to test, and which evidence or failures should block the
+change.

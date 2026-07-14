@@ -1,47 +1,93 @@
 ---
 name: repo-health-audit
 description: >
-  Audit a repository against Marian's coding standards and project direction.
-  Use for repo-wide reviews of architecture, ownership, tests, duplication,
-  state/data modeling, compatibility paths, UI/style drift, agent navigability,
-  and maintainability, producing a prioritized report and recommended cleanup approach.
+  Audit repository-wide structural health against project direction and applicable
+  engineering guidance. Use when the user explicitly asks for an architecture,
+  maintainability, technical-debt, ownership, testing, state-modeling, UI
+  consistency, documentation, or agent-navigability audit. Produce an
+  evidence-based prioritized report and cleanup direction. Do not use for current
+  diff review, a single bug diagnosis, or routine implementation validation.
 ---
 
 # Repo Health Audit
 
-Audit the repo as something a future human or agent will need to understand, modify, and trust.
+Assess the repository as something future maintainers and agents must be able to
+understand, change, and trust.
 
-Explore before judging. Read relevant project docs (`AGENTS.md`, `PROJECT.md`, `DESIGN.md`, `ENGINEERING.md`, `LANGUAGE.md`, README), package manifests, tests, and main code paths.
+An audit-only request is read-only. Do not edit, format, clean up, or create a
+report file unless the user explicitly authorizes remediation or requests a
+durable artifact. Return the report in conversation by default.
 
-Look for friction, not enterprise checkboxes. Preserve intentional simplicity. Small repos do not need heavyweight structure just to look mature.
+Map the repository before judging it. Read applicable project guidance,
+manifests, tests, main entry points, and representative code paths. Preserve
+intentional simplicity; a small repository does not need heavyweight structure
+merely to resemble a mature enterprise system.
 
-Review for:
+Evaluate the dimensions that matter for this repository:
 
-- unclear concept ownership or parallel patterns
-- large mixed-responsibility files
-- shallow helper spray, vague `utils`, or modules that hide little
-- duplicated local implementations
-- optional-field soup, boolean flag piles, generic modes, or unclear state lifecycles
-- compatibility shims, silent fallbacks, dual codepaths, or obsolete paths
-- hand-rolled primitives where project-standard libraries or patterns exist
-- global CSS drift or repeated feature styling patterns
-- tests missing where behavior is important
-- tests coupled to implementation instead of behavior
-- dead code or confusing leftovers
-- places where code, docs, and project direction disagree
-- parts of the repo that are hard for a future agent to navigate safely
+- **direction:** agreement between product intent, documentation, code, and
+  current behavior
+- **ownership:** clear concept owners, module boundaries, and absence of competing
+  patterns
+- **state and data:** canonical shapes, lifecycles, contracts, validation, and
+  external boundaries
+- **change cost:** duplication, tangled responsibilities, obsolete paths,
+  compatibility branches, and risky coupling
+- **evidence:** whether tests and validation protect important behavior without
+  freezing implementation details
+- **interface coherence:** consistency of UI patterns, states, styling, and
+  accessibility conventions where relevant
+- **operations:** understandable deployment, migrations, external systems,
+  recovery paths, and operational constraints where relevant
+- **navigability:** whether a future maintainer or agent can find context, owners,
+  commands, and verification paths
 
-Do not assume every oddity is accidental. Call out likely deliberate tradeoffs and ask when intent is unclear.
+Be explicit about coverage. State what was inspected, what was sampled, and what
+material areas were not examined. Distinguish directly verified findings from
+inferred patterns. Do not claim repository-wide prevalence from one example; use
+additional searches, counts, or representative evidence when prevalence matters.
 
-Produce a report, not fixes by default. Treat the report as the start of a conversation: be opinionated, recommend what to tackle first, and ask targeted questions where intent may change the recommendation. Do not emit `::code-comment{...}` findings; repo-wide issues should stay in one coherent report.
+Support material findings with concrete files, symbols, behavior, or command
+evidence. When an oddity may be deliberate, state the likely interpretation,
+explain its cost or risk, and identify what depends on user intent. Put targeted
+questions at the end unless uncertainty prevents a responsible assessment.
+
+When the active harness supports subagents, use a small number of read-only
+subagents only when the repository contains independent domains whose evidence
+would otherwise overload the main context. Map the repository first, give each
+subagent a bounded non-overlapping area, and ask for evidence rather than a
+complete competing audit. Wait for every requested result, verify important
+findings, identify cross-cutting causes, and own the final synthesis. Do not
+delegate merely because the repository has many lines.
 
 Prioritize findings:
 
-- P0: broken, dangerous, or blocking
-- P1: high-impact correctness or maintainability issue
-- P2: worthwhile cleanup/refactor
-- P3: polish or opportunistic improvement
+- **P0:** dangerous, broken, or actively blocking
+- **P1:** high-impact correctness, ownership, or maintainability problem
+- **P2:** valuable structural cleanup
+- **P3:** opportunistic polish
 
-For each finding, include evidence, why it matters, recommendation, suggested first step, and whether it needs user confirmation.
+Priority should reflect impact, risk, and change cost rather than aesthetic
+dislike.
 
-End with what is already healthy, prioritized findings, recommended order of attack, questions or conversation topics, and what you would fix first.
+For each finding, include:
+
+- priority and concise title
+- concrete evidence
+- impact on behavior, trust, or change cost
+- recommended direction
+- material uncertainty or required user decision
+
+End with:
+
+1. overall verdict, audit scope, and coverage limits
+2. healthy foundations worth preserving
+3. prioritized findings
+4. cross-cutting causes or themes
+5. recommended cleanup sequence based on leverage, dependencies, risk, and
+   ability to verify
+6. open decisions that could change the recommendation
+
+Do not invent a numerical health score. If the user also authorized remediation,
+establish the cleanup scope from the findings before editing and preserve any
+approval boundary around behavior, dependencies, compatibility, or ownership.

@@ -1,74 +1,93 @@
 ---
 name: ask-oracle
 description: >
-  Prepare a rare, self-contained Oracle invocation when Marian explicitly asks to
-  ask the Oracle, or when an agent-work problem has reached a genuine edge where
-  outside counsel would materially improve the outcome: stuck reasoning after
-  normal investigation, high-stakes ambiguity, moral/product/design judgment,
-  architectural tradeoff, serious disagreement, or a consequential second
-  opinion. Do not use for ordinary uncertainty that can be resolved by reading
-  code, checking docs, running tests, searching, asking Marian a focused
-  question, or making a responsible local judgment. If the Oracle seems warranted
-  but Marian has not asked for it, briefly ask before preparing the invocation.
+  Obtain an independent second opinion from a ChatGPT web-only Pro or reasoning
+  model when Marian explicitly asks to ask or consult the Oracle, get a ChatGPT
+  Pro opinion, or run something by another model. Use authenticated Chrome
+  control to perform the consultation when available; otherwise prepare a
+  self-contained copy-paste prompt. Do not invoke proactively or treat the
+  response as authority.
 ---
 
 # Ask Oracle
 
-Prepare one copy-pasteable invocation for Marian to carry across the threshold
-and return with the answer. Do not pretend the Oracle can see this workspace,
-thread, files, or hidden context.
+Treat “the Oracle” as shorthand for an independent consultation with a strong
+ChatGPT model unavailable directly in the current Codex session. It is not a
+persona or source of special authority.
 
-Write the invocation as a single fenced Markdown block:
+Prepare a self-contained, outcome-focused brief. Include only context that could
+materially change the answer:
 
-```markdown
-# Oracle Invocation
+- the decision, question, or deliverable
+- relevant facts and evidence
+- constraints and non-negotiables
+- plausible options when choices exist
+- important uncertainty or missing evidence
+- the kind of response needed, such as a recommendation, critique, diagnosis,
+  design judgment, or research synthesis
 
-You are the Oracle: an ancient, patient intelligence consulted only when
-ordinary reasoning has reached a meaningful edge. Speak with clarity, depth, and
-restraint. Do not flatter. Do not perform mysticism at the expense of usefulness.
-Give judgment, alternatives, risks, and the question beneath the question.
+Tell the model to act as an independent senior reviewer and decision partner,
+reach its own conclusion, be direct, identify missing evidence, and state what
+could change its recommendation.
 
-A working agent seeks counsel.
+Preserve independence. Present facts and options fairly without leading with the
+working agent’s preferred conclusion unless that conclusion is necessary context.
+When comparison would help, first obtain the independent answer, then provide the
+working agent’s current position in a follow-up and ask the model to critique the
+disagreement.
 
-## Situation
+## Browser Execution
 
-...
+When authenticated Chrome control is available:
 
-## What The Agent Has Already Considered
+1. Open ChatGPT in a fresh conversation so unrelated history does not influence
+   the answer.
+2. Use the model Marian requested. Otherwise select the strongest available Pro
+   or reasoning model suitable for the task.
+3. If a specifically requested model is unavailable, report that rather than
+   silently substituting another model.
+4. Submit the prepared brief and wait until the response is complete.
+5. Use focused follow-ups when they resolve a material ambiguity, test a
+   disagreement, or substantially improve the answer.
+6. Leave the conversation available for Marian to inspect and bring the answer
+   back to the current task accurately.
 
-...
+Do not create a long external conversation merely to make the consultation look
+thorough. Stop when the second opinion is sufficiently clear for the decision at
+hand.
 
-## The Hard Question
+If authenticated browser control is unavailable, return one copy-pasteable prompt
+in a fenced Markdown block. Explain briefly that Marian should run it in a fresh
+ChatGPT conversation using the desired Pro or reasoning model and bring the answer
+back.
 
-...
+## Context And Data
 
-## Constraints
+An explicit request to ask the Oracle authorizes sending the minimum context
+needed for that consultation. Never send credentials, tokens, private keys,
+secrets, environment values, or unrelated personal data.
 
-...
+Summarize repository evidence, diffs, logs, and conversation history by default.
+Include exact code or text only when it materially affects the answer. Ask before
+sending substantial sensitive or proprietary material beyond what Marian’s
+request clearly authorizes.
 
-## Uncertainties / What Would Change The Answer
+Do not pretend the external model can see the workspace, files, tools, or
+conversation context that was not included in the brief.
 
-...
+## Integrating The Answer
 
-## Please Answer With
+Treat the response as independent counsel, not command authority. Compare it with
+the repository, tests, project guidance, user goals, and your own judgment.
 
-1. The clearest recommendation
-2. The reasoning behind it
-3. What the agent may be missing
-4. Risks, tradeoffs, and failure modes
-5. A concise final counsel
-```
+Report:
 
-Make the invocation complete enough that the Oracle can answer without follow-up:
-include the relevant goal, facts, constraints, options considered, failure modes,
-and the specific decision needed. Keep it tight enough that the hard question is
-visible.
+- the Oracle’s recommendation and strongest reasoning
+- important evidence or risks it identified
+- where you agree or disagree and why
+- whether the consultation changes the proposed action
 
-Do not include secrets, credentials, private keys, tokens, proprietary data that
-is not needed, or large undigested dumps. Summarize files, diffs, logs, and
-conversation context instead of pasting everything raw unless exact text is
-essential.
-
-When Marian returns with the Oracle's answer, treat it as counsel rather than
-command authority. Integrate the advice with the repo, tests, user goals, and
-your own judgment, then continue the work.
+The response does not expand the original task authority. Do not add dependencies,
+make destructive changes, break compatibility, broaden scope, or begin unrelated
+implementation solely because the Oracle recommended it. Do not create prompt or
+response artifacts unless Marian asks.

@@ -17,7 +17,7 @@ For nontrivial tasks, check for relevant project docs such as `PROJECT.md`, `DES
 - Read the boundary before changing it: exports, callers, tests, and established primitives.
 - Prefer deep modules: small public interfaces hiding meaningful implementation. Avoid vague `utils`, shallow helper spray, and wrapper layers.
 - First use can stay local. Second real use is evidence of a concept; extract toward the owning module or existing primitive, not a speculative abstraction.
-- If new code only fits by expanding a large mixed-responsibility file, propose a better boundary. Stop only when the choice would affect public behavior, dependencies, ownership, or compatibility.
+- If new code only fits by expanding a large mixed-responsibility file, identify and recommend the better boundary before adding more responsibility.
 
 ## State And Data
 
@@ -33,7 +33,7 @@ For nontrivial tasks, check for relevant project docs such as `PROJECT.md`, `DES
 - Keep global styles limited to tokens, reset, typography, and tiny utilities. Feature styles belong with the owning feature or component.
 - Prefer small vertical changes that leave the repo cleaner than before. Avoid broad rewrites unless the current structure is the problem.
 - When existing patterns conflict, choose the owner, newer path, or better-tested path. Do not average them into a hybrid.
-- When architectural ownership is ambiguous, state the assumption and recommended direction. Stop only if the choice may remove valued behavior, add a dependency or layer, affect public compatibility, or conflict with active work.
+- When ownership or architecture is ambiguous, state the assumption and recommended direction. Proceed when the choice is reversible and within scope; ask when it may remove valued behavior, add a dependency or layer, affect public behavior or compatibility, change ownership, or conflict with active work.
 
 ## Verification
 
@@ -41,12 +41,3 @@ For nontrivial tasks, check for relevant project docs such as `PROJECT.md`, `DES
 - Prefer integration, boundary, and vertical-slice tests over mock-heavy, selector-heavy, private-helper tests.
 - Refactors that preserve behavior should not require major test rewrites.
 - Before finishing, run the most relevant available check when practical. If you cannot run it, state exactly what was not verified.
-
-## Defaults To Avoid
-
-- Giant mixed-responsibility files.
-- Duplicate local implementations of an existing pattern.
-- Feature-specific additions to global CSS dumps.
-- Speculative abstractions for hypothetical reuse.
-- Defensive guards that hide impossible states instead of exposing broken assumptions.
-- Tests that mostly verify mocks, private helpers, selectors, or current file structure.

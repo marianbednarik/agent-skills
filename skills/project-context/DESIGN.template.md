@@ -1,37 +1,41 @@
 # Design
 
-_This follows Google's DESIGN.md alpha shape: optional YAML frontmatter for machine-readable design tokens, then canonical `##` sections in order._
+_Durable visual and interaction direction future agents cannot reliably infer
+from the implementation. This is a flexible scaffold, not a required schema.
+Omit, merge, or rename sections when that produces a clearer document. Keep exact
+values only when they are intentional constraints rather than facts better read
+from the design system or code._
 
-_When real tokens are settled or directly observed, add YAML frontmatter above this heading with `version: alpha`, `name`, optional `description`, and relevant token groups: `colors`, `typography`, `rounded`, `spacing`, and `components`. Use valid hex colors, px/em/rem dimensions, unitless line heights where appropriate, and `{path.to.token}` references for component tokens. Omit token groups or the entire frontmatter rather than inventing values._
+## Direction
 
-## Overview
+_The audience, product or brand posture, desired character, density, emotional
+quality, and overall experience the interface should create._
 
-_A holistic product or brand style description: audience, personality, density, mood, emotional response, and design principles that guide choices when no token or component rule exists._
+## Principles
 
-## Colors
+_A small set of design principles that resolve real tradeoffs. Explain what each
+principle optimizes for rather than relying on generic labels such as “clean,”
+“simple,” or “modern.”_
 
-_Semantic palettes and exact color roles. Include `primary` when colors are known. Name colors by role and optional descriptive name, include hex values when settled, and say where each color should and should not appear._
+## Foundations
 
-## Typography
+_Settled conventions for typography, color, layout, imagery, iconography, shape,
+depth, and motion when they materially guide future work. Point to the
+implementation as the source of truth for exact tokens when appropriate._
 
-_Type families, levels, hierarchy, readability expectations, weights, line heights, letter spacing, and where each level appears. Use exact fonts and token values only when chosen or observed._
+## Interaction And States
 
-## Layout
+_Non-obvious expectations for navigation, feedback, loading, empty and error
+states, responsive behavior, keyboard or touch use, accessibility, and motion._
 
-_Also known as "Layout & Spacing" in the spec. Grid strategy, max widths, breakpoint posture, spacing scale, density, page rhythm, navigation shape, and responsive behavior._
+## Signature Patterns
 
-## Elevation & Depth
+_Project-specific components, compositions, or interaction patterns that express
+the product and should remain coherent across features. Do not catalogue the
+entire component library._
 
-_How hierarchy is conveyed: shadows, borders, tonal layers, glass or blur, overlays, focus rings, and layering rules. If the design is flat, say how separation works without shadows._
+## Guardrails
 
-## Shapes
-
-_Radius scale, geometry, icon style, stroke weight, container shapes, control shapes, and when to break the default shape language._
-
-## Components
-
-_Reusable visual primitives and domain-signature components: buttons, inputs, navigation, cards or lists, chips or tags, tooltips, checkboxes or radios, modals, tables, charts, or other project-standard pieces. Include variants, states, sizing, padding, token references, and accessibility-relevant styling._
-
-## Do's and Don'ts
-
-_Short, forceful guardrails agents can apply directly. Include anti-references and recurring mistakes that would make the UI drift._
+_Specific visual or interaction choices to prefer or avoid. Include useful
+references or anti-references and explain why they fit or conflict with this
+project._
