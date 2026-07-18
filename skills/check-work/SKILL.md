@@ -1,7 +1,7 @@
 ---
 name: check-work
 description: >
-  Post-implementation readiness review. Automatically use after completing a
+  Post-implementation quality review. Automatically use after completing a
   feature, bug fix, refactor, or other nontrivial code change, before final
   handoff. Also use when asked to assess whether an implementation is ready.
   Do not trigger for planning, diagnosis, repo-wide audits, or tiny mechanical
@@ -18,14 +18,35 @@ Inspect the working tree, staged and untracked files, and the branch diff agains
 the relevant base when needed. Read applicable project guidance and exclude
 unrelated pre-existing changes.
 
-Judge the implementation against the user-visible goal, project conventions,
-existing architecture, and behavior worth preserving. Look for correctness
-problems, missing behavior, scope drift, architecture or style drift, obsolete
-paths, unnecessary complexity, and important validation gaps.
+First judge the implementation against the user-visible goal, project
+conventions, existing architecture, and behavior worth preserving. Look for
+correctness problems, missing behavior, scope drift, architecture or style
+drift, obsolete paths, and important validation gaps.
+
+Then perform a deliberate simplicity pass. Seek the smallest coherent final
+implementation, not the smallest diff or lowest raw line count. A slightly wider
+edit at the concept owner is better when it reuses an established path,
+collapses parallel logic, or removes code made obsolete by the change.
+
+Challenge every added abstraction, helper, wrapper, branch, state field, file,
+dependency, fallback, or compatibility path. It should serve a current
+requirement or an established project boundary. Look especially for speculative
+generality, defensive handling of impossible internal states, one-use
+indirection, duplicated paths, and comments compensating for unclear code.
+
+Treat line count and file growth as review signals, never targets. Explicit
+cases, tables, tests, generated code, and inherently detailed behavior may
+justify many lines. Terse code that hides concepts, ownership, or state is not
+simpler.
+
+Treat a behavior-preserving simplification as material when it removes a concept,
+path, dependency, or meaningful future change cost. Do not block completion for
+code golf, personal syntax preferences, or broad cleanup unrelated to the
+change.
 
 Run the strongest relevant validation that is practical. Treat passing checks as
-evidence, not a substitute for inspecting the changed behavior. State exactly
-what could not be run or verified.
+evidence, not a substitute for inspecting the changed behavior or implementation
+shape. State exactly what could not be run or verified.
 
 When the active harness supports subagents, use one fresh read-only reviewer if
 any of these apply:
@@ -34,6 +55,8 @@ any of these apply:
 - it affects persistence, migrations, public contracts, authentication,
   permissions, security, concurrency, destructive behavior, or compatibility
 - it substantially restructures or removes an existing implementation path
+- it introduces substantial new structure or indirection relative to the
+  behavior gained
 - it changes a multi-step user flow or several interacting states
 - validation is weak or incomplete for the risky behavior
 - it touches unfamiliar critical code where independent scrutiny would
@@ -44,27 +67,38 @@ coherent, localized changes with strong validation.
 
 Give the reviewer the user-visible goal, review scope, relevant constraints, and
 suspected risk areas. Ask it to report evidence-based findings about correctness,
-missing behavior, architecture drift, test gaps, and avoidable complexity. The
-reviewer must not edit files, alter working state, or invoke this skill
-recursively.
+missing behavior, architecture drift, validation gaps, and whether a smaller
+coherent final implementation is available. The reviewer must not edit files,
+alter working state, or invoke this skill recursively.
 
-Wait for the reviewer before declaring readiness. While it works, you may gather
+Wait for the reviewer before final handoff. While it works, you may gather
 objective validation evidence, but do not duplicate the delegated review or hand
 off early.
 
 Treat the reviewer report as input, not authority. Verify its findings yourself.
-When this review follows an implementation request, fix safe in-scope issues and
-rerun affected checks. When the user requested review only, report findings
-without editing. The main agent owns the final verdict.
+The main agent owns the final synthesis, any authorized fixes, and the handoff.
 
-End with:
+Use the review as an internal completion gate, not a ceremonial verdict. When
+implementation is authorized, fix safe in-scope issues and rerun affected checks.
+A simplification may touch more lines than the original patch when it removes
+concepts or parallel paths while preserving the agreed behavior. Do not expand
+into unrelated cleanup or cross consequential boundaries in behavior,
+dependencies, compatibility, or ownership without authorization. If completion
+depends on missing authority, a user decision, external state, or unavailable
+critical evidence, state the concrete blocker or limitation.
 
-- readiness verdict: `ready`, `ready with caveats`, or `not ready`
-- material findings and how they were resolved
-- validation performed and its result
-- important behavior that was not verified
-- remaining risks or required next action
+After implementation, lead with the delivered outcome. Include only information
+that materially helps the user understand or trust the result:
 
-Use `ready` only when the implementation matches the requested behavior, the
-change is coherent and in scope, relevant validation has passed, and no known
-material finding remains unresolved.
+- review-driven improvements, especially meaningful simplifications
+- validation performed, its result, and the behavior it supports
+- important behavior that remains unverified
+- remaining risk, blocker, or required user action
+
+Omit empty sections, routine review narration, and a readiness label. Do not
+repeat the diff as a file-by-file changelog.
+
+For a review-only request, report findings without editing. If the user
+explicitly asks for a readiness decision, answer with `ready`, `ready with
+caveats`, or `not ready`, followed by the concrete evidence, caveats, or blockers
+that make the distinction useful.
