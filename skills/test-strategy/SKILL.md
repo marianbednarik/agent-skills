@@ -1,73 +1,49 @@
 ---
 name: test-strategy
 description: >
-  Decide what evidence should protect behavior when the appropriate test level,
-  coverage, or authority is not obvious. Use when the user asks what or how to
-  test, automated and manual checks have meaningful tradeoffs, existing tests
-  conflict with intended behavior, failures have ambiguous causes, or risky
-  behavior lacks trustworthy evidence. Do not trigger merely because a change is
-  nontrivial or tests need to be run.
+  Decide what evidence should protect behavior when the appropriate test level
+  or authority is genuinely unclear. Use when Marian asks what or how to test,
+  automated and manual checks have meaningful tradeoffs, existing tests conflict
+  with intended behavior, or risky behavior lacks trustworthy evidence. Do not
+  trigger merely because implementation is nontrivial or tests need to be run.
 ---
 
 # Test Strategy
 
-Choose evidence that meaningfully supports the behavior being changed. Do not
-treat “write tests” or test-driven development as automatic answers.
+Choose the smallest body of evidence that meaningfully supports the behavior
+being changed. Tests are evidence for a contract, not automatic authority over
+that contract.
 
-Establish the intended behavior contract from explicit user decisions,
-authoritative project guidance, public or external contracts, acceptance
-criteria, real user scenarios, and deliberate existing behavior that should be
-preserved. Tests are executable evidence for parts of that contract; their
-existence does not make every assertion permanently correct.
+Establish the intended behavior from explicit decisions, project guidance,
+public contracts, acceptance criteria, real user scenarios, and deliberate
+existing behavior worth preserving.
 
 Choose evidence by risk:
 
-- identify the behavior and plausible failure modes worth protecting
-- inspect the relevant evidence that already exists
-- select the lowest durable boundary that can prove the behavior
-- add automation only where it buys repeatable confidence
+- identify the behavior and plausible failures worth protecting
+- inspect relevant evidence that already exists
+- use the lowest stable boundary that can prove the behavior
+- automate where repeatability buys confidence
 - use manual, rendered, or environment-specific checks when they measure the
-  result more meaningfully
-- identify what must pass before the change is ready
+  result more honestly
+- identify which evidence should block completion
 
-Prefer a small number of high-value tests through public interfaces or meaningful
-boundaries. One vertical tracer test can be enough to establish confidence before
-adding cases for distinct risks. Do not add coverage merely to exercise lines or
-freeze the current implementation shape.
+Prefer a small number of high-value tests over broad coverage or duplicated
+cases. Do not freeze implementation details through private helpers, selectors,
+file structure, or excessive mocking.
 
-Remain workflow-neutral:
+Remain neutral about when tests are written. Write one first when it clarifies a
+stable contract or reproduces a regression; add evidence later when the behavior
+is still being discovered.
 
-- write a test first when it clarifies a stable contract or reproduces a regression
-- add tests during or after implementation when the behavior is still being
-  discovered
-- use manual checks when automation would be brittle, misleading, or
-  disproportionately expensive
-- combine automated and manual evidence when they prove different aspects of the
-  result
+When a test fails, determine whether it represents a real regression, an
+intentional behavior change, implementation-detail coupling, fixture or
+environment drift, nondeterminism, an unrelated pre-existing failure, or an
+unclear contract before changing either the code or the test.
 
-Avoid tests dominated by mocks, selectors, private helpers, file structure, or
-other implementation details.
+Passing tests do not prove the implementation is complete. Unrelated failures do
+not automatically block it, but they must be separated and reported.
 
-When a test fails, classify it before changing code or the test:
-
-- **real regression:** fix the implementation
-- **intentional behavior change:** update or remove the expectation with an
-  explanation
-- **implementation-detail coupling:** rewrite the test around public behavior
-- **fixture or environment drift:** repair the setup rather than product code
-- **flaky or nondeterministic behavior:** reproduce and isolate it; do not dismiss
-  it because a retry passes
-- **pre-existing unrelated failure:** establish that it is outside the change and
-  report it
-- **unclear contract:** obtain clarification before changing either side when the
-  decision is consequential
-
-A failure should block readiness when it shows requested behavior is broken,
-preserved behavior regressed, a relevant contract no longer holds, or a risky
-change lacks trustworthy evidence. An unrelated pre-existing failure need not
-block the change, but it must be separated and reported. Passing tests are
-evidence, not proof that the implementation is complete.
-
-End with a concise recommendation covering what to automate, what to verify
-manually, what not to test, and which evidence or failures should block the
-change.
+Recommend what to automate, what to verify manually, what not to test, and which
+evidence should block the change. Keep the recommendation in conversation unless
+Marian asks for an artifact.

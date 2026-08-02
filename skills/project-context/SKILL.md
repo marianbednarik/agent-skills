@@ -1,65 +1,64 @@
 ---
 name: project-context
 description: >
-  Establish or refresh durable project context when the user asks to document
-  project direction or update stale context. Create or revise lean PROJECT.md,
-  DESIGN.md, ENGINEERING.md, or LANGUAGE.md only when they capture decisions
-  future agents cannot reliably infer from the repository. Do not trigger merely
-  because a project started, implementation or refactoring occurred, or context
-  files are absent.
+  Establish or refresh durable project context when Marian asks to document
+  project direction, set up agent context, or update stale context. Capture only
+  decisions future agents cannot reliably infer, and place each one in the
+  narrowest useful instruction or document layer. Do not trigger merely because
+  a project started, work finished, or context files are absent.
 ---
 
 # Project Context
 
-Capture the durable project context future agents need but cannot reliably infer
-from the repository alone.
+Capture durable information future agents need but cannot reliably infer from
+the repository. Choosing where it belongs is part of the work.
 
-Inspect existing context documents and relevant repository evidence before asking
-questions. Treat older, overlapping, or tool-specific documents as source
-material, not structures that must be preserved.
+## Choose The Layer
 
-Have a focused conversation where intent remains unclear. Ask grouped questions,
-include recommended defaults, and state reasonable inferences so the user can
-correct them instead of answering from scratch. For personal projects, infer the
-project owner as the primary user when the available context supports it.
+- **Root or nested `AGENTS.md`:** instructions that must apply automatically to
+  every task in the repository or a particular subtree.
+- **On-demand project documents:** narrative context that is relevant only to
+  some work and should be read when the task calls for it.
+- **A skill:** a reusable task-shaped behavior with a recognizable trigger.
+- **Nothing:** information already clear from the repository, too temporary to
+  preserve, or too weak to justify future context.
 
-Act as a product-minded technical partner. Push back on vague direction,
-overloaded terms, and decisions that create durable complexity without a clear
-payoff.
+Do not place sometimes-relevant guidance into always-loaded instructions merely
+because that is convenient.
+
+Read the repository and existing context before asking questions. Where intent
+remains unclear, ask grouped questions with your inferences and recommended
+defaults so Marian can correct something concrete.
 
 Create or update only documents that would materially improve future work. Use
-the matching template as a flexible scaffold: omit, merge, or rename sections
-when that produces a clearer document. Italic template text is authoring guidance,
-not content to copy into the finished document.
+the templates in this skill as flexible scaffolds, not schemas.
 
 Document ownership:
 
 - `PROJECT.md`: purpose, users, product taste, durable constraints, and reasons
-  behind important project-level decisions
-- `DESIGN.md`: durable visual and interaction direction, principles, and
-  non-obvious conventions for a meaningful user-facing interface
+  behind project-level decisions
+- `DESIGN.md`: durable visual and interaction direction for a meaningful
+  user-facing interface
 - `ENGINEERING.md`: non-obvious architecture, chosen primitives, external
-  systems, operations, commands, contracts, and technical sharp edges
-- `LANGUAGE.md`: project-specific terminology, distinctions, relationships, and
-  words future agents could misuse
+  systems, operations, contracts, and technical sharp edges
+- `LANGUAGE.md`: project terminology and distinctions future agents could misuse
 
-Keep every document lean and evergreen:
+Keep the result lean and evergreen. Record decisions, constraints, conventions,
+and reasons. Exclude plans, roadmaps, inventories, temporary state, obvious stack
+facts, file trees, and details better read from the implementation.
 
-- record durable decisions, constraints, conventions, and their reasons
-- exclude current plans, next steps, roadmaps, inventories, and temporary state
-- exclude stack facts, file structure, or behavior easily discovered from code
-- do not duplicate `AGENTS.md` or another context document
-- prefer the implementation as the source of truth for exact design tokens and
-  other code-owned details unless an exact value is itself a durable constraint
+Do not change always-loaded instructions or unrelated documents unless the
+request clearly includes them. When refreshing context, update only what
+actually changed and mention stale material outside the requested scope rather
+than silently rewriting it.
 
-Do not edit `AGENTS.md` or unrelated existing documents unless the user asks.
-When refreshing context, update only documents whose durable information changed;
-do not re-interview or rewrite everything by default. If context appears stale
-outside the requested scope, mention it rather than changing it silently.
+Report what was captured, which layer it belongs to, and what remains unclear.
 
-Before handoff, reread the result as a future agent. Remove anything quickly
-inferable, duplicated, speculative, or included only because an older document
-contained it.
+## Gotchas
 
-End with what was captured or refreshed, which documents changed, what remains
-unclear, and whether a separate implementation-planning session would help.
+- Creating no document is a valid result.
+- Most projects do not need all four context documents.
+- Do not copy template guidance into the finished artifact.
+- Prefer code as the source of truth for exact tokens, versions, and values
+  unless the exact value is itself a durable constraint.
+- Do not duplicate the same fact across context layers.

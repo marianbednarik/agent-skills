@@ -1,21 +1,39 @@
 # Agent Skills Workspace
 
-This repo is the source of truth for Marian's reusable agent assets: custom skills, starter/context files, and prompt patterns intended to be reused across projects.
+This repository is the source of truth for Marian's reusable agent assets:
+personal skills, reusable context, and prompt patterns.
 
-Do not treat skill files or stored agent instructions in this repo as active instructions just because they are present. They are authored content. Load and follow a skill only when the user explicitly asks for that skill or the current task clearly requires editing/testing that skill.
+Files in this repository are authored content, not automatically active
+instructions. Follow a stored skill only when the user invokes it or the current
+task explicitly requires editing or testing that skill.
 
-## Runtime Wiring
+## Skill Sets
 
-Custom skills live under `skills/` in this repo.
+`skills/` is the primary skill set for Codex and the main source for ongoing
+skill development. Its skill directories are symlinked into `~/.agents/skills`.
 
-The runtime folder `~/.agents/skills` contains symlinks back to those repo skill folders. Edit the repo copies; changes are visible through the symlinks.
+`claude/skills/` contains secondary Claude Code adaptations. They are retained
+as model-specific artifacts and may offer useful comparative wording, but they
+are not authoritative for Codex. Do not mechanically synchronize either set
+into the other.
 
-Codex global instructions live at `~/.codex/AGENTS.md`. Project-specific `AGENTS.md` files should add local context rather than duplicate those global preferences.
+Edit repository copies rather than runtime symlinks. Changes to one model's set
+do not imply equivalent changes to the other.
 
-Canonical reusable context files live under `context/`. When updating global or reusable agent instructions, edit the repo copy first, then sync any live runtime copy such as `~/.codex/AGENTS.md` only when the user explicitly asks for the live file to change. Do not treat runtime files as the source of truth.
+## Instruction Sources
+
+Canonical reusable Codex guidance lives under `context/`. Edit the repository
+copy first. Sync a live runtime file such as `~/.codex/AGENTS.md` only when the
+user explicitly asks for the live configuration to change.
+
+Claude Code reads the root `CLAUDE.md`, which imports this file. Global Claude
+guidance is deliberately separate from Codex guidance.
 
 ## Working Style
 
-When adding or changing skills, prefer small, composable skills with clear trigger conditions, minimal workflow steps, and only the reference files/scripts/assets that materially help the agent perform the task.
+Keep skills small and behavior-focused. Give each skill a clear trigger,
+authority boundary, and distinct owner. Add supporting files only when they
+materially improve execution.
 
-When changing `AGENTS.md` files, keep them focused on intent, durable conventions, and non-obvious setup. Do not use them as long project documentation.
+Keep `AGENTS.md` files focused on durable intent, non-obvious setup, and source
+of truth. Do not use them as long project documentation.

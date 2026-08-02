@@ -1,20 +1,19 @@
 ---
 name: skill-refiner
 description: >
-  Create, review, or revise Marian's personal agent skills when he explicitly asks.
-  Turn examples, rough ideas, repeated workflow pain, or existing bloated skills
-  into behavior-first skills with clear ownership, trigger and authority
-  boundaries, and only the guidance needed for reliable execution. For review-only
-  requests, recommend changes without editing.
+  Create, review, or revise Marian's personal Codex skills when he explicitly
+  asks. Turn repeated prompts, rough ideas, observed workflow failures, or
+  bloated skills into focused behavior with clear triggers, ownership, authority,
+  and completion conditions. For review-only requests, recommend without editing.
 ---
 
 # Skill Refiner
 
-Shape durable skills that make a future agent behave differently in a useful,
-intentional way.
+A skill earns its place by changing what Codex does in a useful, repeatable way.
+If it only restates normal model competence, it is noise.
 
-Start by identifying the behavior that should change. If the intended behavior,
-trigger, or authority is unclear, discuss it before writing.
+Start from the behavior Marian wants to change or the prompt he is tired of
+repeating.
 
 Before drafting, inspect applicable project instructions and neighboring skills.
 Decide whether the behavior belongs in:
@@ -23,72 +22,38 @@ Decide whether the behavior belongs in:
 - another existing skill
 - global or project-specific agent guidance
 - durable project context
-- the model’s normal judgment without additional instruction
+- normal model judgment with no additional instruction
 
-Avoid overlapping ownership or creating a second workflow for the same concept.
+Avoid overlapping ownership and competing workflows.
 
-Choose the invocation model deliberately:
+Choose invocation deliberately: explicit for user-requested or external actions,
+implicit for a clear specialist task, automatic only for a justified lifecycle
+step, and situational when the decision itself is non-obvious.
 
-- explicit-only for user-requested capabilities or external actions
-- implicit when the request clearly matches a specialist behavior
-- automatic only for a justified lifecycle step
-- situational when a decision itself is non-obvious
+Make the description carry the routing decision: what the skill does, when it
+should trigger, and the closest situations where it should not.
 
-Front-load the YAML `description` with what the skill does, when it should trigger,
-and important adjacent situations where it should not. Preserve Marian’s intent
-and taste more than the source material’s structure.
+Keep the body as short as reliability allows. Include only instructions that
+change behavior, prevent an observed failure, preserve an authority boundary, or
+make completion meaningfully verifiable. Prefer goals, constraints, and real
+gotchas over scripted reasoning and speculative cautions.
 
-Keep the body as short as reliability allows. Every instruction should change
-behavior, prevent a demonstrated failure, define necessary authority, or make
-completion verifiable. Prefer:
+Do not repeat general agent abilities, applicable guidance from another layer,
+facts discoverable from the repository, or model- and harness-specific capability
+inventories. Add templates, references, scripts, or schemas only when they save
+real reconstruction or support required interoperability.
 
-- outcomes and decision principles over scripted reasoning
-- a few meaningful boundaries over repeated cautions
-- explicit authority for review, implementation, or external action
-- evidence and completion conditions over ceremonial workflow
-- durable capability language over model-version-specific prompt hacks
-- flexible scaffolds over rigid templates unless interoperability requires a
-  schema
+When refining an existing skill, consider tightening, merging, demoting, or
+deleting it rather than assuming it must survive.
 
-Extract the best idea from examples without inheriting their full workflow.
-Avoid canned questionnaires, speculative abstractions, and artifacts that do not
-materially improve future execution. Do not repeat general agent abilities,
-applicable global guidance, or facts discoverable from the repository.
+Before editing:
 
-When a skill uses subagents, browser control, external services, or other special
-capabilities, define only what normal agent judgment cannot safely infer:
-
-- when the capability is warranted
-- whether it may mutate state
-- how work should be divided
-- whether the parent must wait
-- who owns synthesis and final judgment
-- what fallback applies when the capability is unavailable
-
-When refining an existing skill, decide whether to tighten it, split it, merge it,
-demote behavior to another instruction layer, or delete it because the behavior
-is not worth preserving.
-
-Use standard skill hygiene:
-
-- include a `SKILL.md` with valid `name` and `description` frontmatter
-- add references, scripts, assets, or optional metadata only when they materially
-  improve reliability or distribution
-- keep referenced resources one hop from `SKILL.md` when practical
-- do not add README, changelog, quick-reference, or process files inside a skill
-  folder
-
-Before finalizing:
-
-1. Test the description against representative requests that should and should
-   not trigger the skill.
-2. Check planning-only, implementation-authorized, and review-only cases where
+1. Test the description against requests that should and should not trigger it.
+2. Check review-only, planning-only, and implementation-authorized cases where
    relevant.
-3. Reread the body as a future agent and remove anything that would not change
-   its behavior.
-4. Validate frontmatter, references, the resulting diff, and the repository’s
-   canonical-source and runtime-wiring rules.
+3. Remove every line that would not change future behavior.
+4. Show Marian the exact proposed text and wait for approval.
 
-If the user requested review only, stop with recommendations. Once creation or
-revision is authorized and material choices are resolved, implement and verify
-the skill.
+After approval, implement the agreed change and verify frontmatter, references,
+the diff, and runtime wiring. For review-only requests, stop with
+recommendations.
