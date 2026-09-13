@@ -1,52 +1,58 @@
 ---
 name: repo-health-audit
-description: >
-  Assess a repository's structural health and return a prioritized report. Use
-  when Marian explicitly asks what to improve across architecture, ownership,
-  maintainability, technical debt, state modeling, testing, documentation, UI
-  consistency, operations, or agent navigability. Do not use for reviewing the
-  current diff, diagnosing one bug, or routine implementation validation.
+description: Assess accumulated code quality and structural health, and recommend worthwhile maintenance. Use when asked to audit a repository or area for improvement, rather than review a completed change or diagnose a specific bug.
 ---
 
-# Repo Health Audit
+Help Marián decide what deserves maintenance attention, why it matters,
+and how confidently it can be improved.
 
-Judge the repository as something future maintainers and agents must be able to
-understand, change, and trust.
+An audit authorizes investigation and reporting. Implement changes only
+when remediation is also requested.
 
-An audit request is read-only unless remediation is explicitly authorized.
-Return the report in conversation unless Marian asks for a durable artifact.
+Ground the assessment in the project's intent, maturity, and existing
+decisions. Follow the requested scope. For a broad audit, use development
+hotspots and representative code paths to find where complexity is
+accumulating; expand exploration as the evidence warrants.
 
-Map the repository before judging it. Read applicable project context,
-manifests, entry points, tests, and representative code paths. Preserve
-intentional simplicity; a small repository does not need heavyweight structure
-merely to look mature.
+Look for practical friction: scattered responsibilities, competing
+patterns, repeated domain logic, unnecessary abstractions, obsolete paths,
+inconsistent use of shared UI foundations, and tests whose value does
+not justify their complexity or runtime. Treat these as leads, not a
+checklist every project must satisfy.
 
-Evaluate the dimensions that matter here: alignment between stated direction and
-implementation, concept ownership, state and data boundaries, competing
-patterns, change cost, obsolete paths, evidence quality, interface coherence,
-operations, and navigability.
+Explain how a finding affects understanding, change cost, consistency,
+or confidence in the system. Assess existing patterns on their merits.
+Preserve deliberate simplicity and useful foundations; fewer lines or
+more uniform code are not sufficient reasons for a refactor.
 
-Be explicit about coverage. Distinguish what was verified from what was inferred.
-Do not generalize from one example when prevalence matters; search, count, or
-sample enough evidence to support the claim.
+Support findings with concrete examples and file references. Check
+prevalence before describing something as a repository-wide pattern.
+Make coverage and important gaps visible. Distinguish observed problems
+from hypotheses about their causes or solutions.
 
-Prioritize by impact and change cost:
+For each worthwhile finding, explain the practical cost, recommended
+direction, expected benefit, and relevant effort, risk, or uncertainty.
+Distinguish confidence in the finding from confidence in the proposed fix.
 
-- **P0:** dangerous, broken, or blocking
-- **P1:** substantial correctness, ownership, or maintainability problem
-- **P2:** worthwhile structural cleanup
-- **P3:** opportunistic polish
+Organize recommendations around the maintenance decision:
 
-For each material finding, explain the evidence, its cost, the recommended
-direction, and any decision that depends on Marian's intent.
+- Address soon: consequential problems, especially patterns ongoing
+  development is spreading.
+- Improve now: well-supported improvements with modest effort and
+  limited disruption.
+- Explore first: promising directions that need further investigation
+  or a design decision.
 
-End with the healthy foundations worth preserving, the cross-cutting causes
-behind the findings, and a cleanup sequence ordered by leverage, dependency,
-risk, and ability to verify.
+Recommend a starting point and explain dependencies that affect the
+order of work. Group symptoms with a shared cause when that produces
+a more coherent improvement. A useful audit may find little to change.
 
-## Gotchas
+For a substantive audit, create an HTML report outside the repository
+unless another destination or format is requested. Use before-and-after
+diagrams where they clarify responsibilities, relationships, or flow.
+Keep observations and proposed structures visibly distinct, and pair
+visuals with concise explanations and source references.
 
-- Do not invent a numerical health score.
-- Do not present an aesthetic preference as a structural defect.
-- An oddity may be deliberate; explain its cost and the intent it depends on.
-- Do not quietly start fixing findings from an audit-only request.
+A small, focused audit can stay in conversation. In either format,
+make the recommendation easy to find and the reasoning understandable
+without requiring Marián to inspect every referenced file.

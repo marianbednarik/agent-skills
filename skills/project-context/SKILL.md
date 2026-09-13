@@ -1,64 +1,57 @@
 ---
 name: project-context
-description: >
-  Establish or refresh durable project context when Marian asks to document
-  project direction, set up agent context, or update stale context. Capture only
-  decisions future agents cannot reliably infer, and place each one in the
-  narrowest useful instruction or document layer. Do not trigger merely because
-  a project started, work finished, or context files are absent.
+description: Establish or refresh durable project intent, technical rationale, domain language, and design direction. Use when asked to set up, capture, or update project context.
 ---
 
-# Project Context
+Preserve agreed understanding that helps future agents make good decisions
+and cannot be reliably recovered from the code alone.
 
-Capture durable information future agents need but cannot reliably infer from
-the repository. Choosing where it belongs is part of the work.
+Read relevant existing documents, conversation, and implementation. Distinguish
+settled decisions from assumptions and open questions. Ask where missing intent
+matters; do not invent reasons for choices merely because they exist in code.
 
-## Choose The Layer
+Use these document roles by default:
 
-- **Root or nested `AGENTS.md`:** instructions that must apply automatically to
-  every task in the repository or a particular subtree.
-- **On-demand project documents:** narrative context that is relevant only to
-  some work and should be read when the task calls for it.
-- **A skill:** a reusable task-shaped behavior with a recognizable trigger.
-- **Nothing:** information already clear from the repository, too temporary to
-  preserve, or too weak to justify future context.
+- PROJECT.md: project identity, purpose, users, product priorities, and
+  deliberate scope boundaries.
+- ENGINEERING.md: technical intent, ownership boundaries, available
+  infrastructure, consequential choices and their reasons, and constraints
+  that affect future proposals.
+- LANGUAGE.md: agreed domain terms, distinctions, relationships, and rules.
+- DESIGN.md: visual and interaction intent, including character, hierarchy,
+  density, motion, feedback, and principles for extending the interface.
 
-Do not place sometimes-relevant guidance into always-loaded instructions merely
-because that is convenient.
+Respect an established documentation layout. If CONTEXT.md owns the glossary,
+maintain it instead of introducing LANGUAGE.md. Follow CONTEXT-MAP.md when
+present and consult relevant existing ADRs. Keep each decision authoritative
+in one place.
 
-Read the repository and existing context before asking questions. Where intent
-remains unclear, ask grouped questions with your inferences and recommended
-defaults so Marian can correct something concrete.
+Record decisions and enough rationale to guide future choices. Include
+technical specifics when they express durable constraints or ownership;
+leave current schemas, file layouts, commands, inventories, and exact design
+tokens to their existing sources of truth.
 
-Create or update only documents that would materially improve future work. Use
-the templates in this skill as flexible scaffolds, not schemas.
+Keep decisions in the appropriate evergreen document by default. Use a
+separate decision record when its history or substantial rationale warrants
+one, or when the project follows that convention. Link rather than duplicate.
 
-Document ownership:
+When refreshing context, distinguish:
 
-- `PROJECT.md`: purpose, users, product taste, durable constraints, and reasons
-  behind project-level decisions
-- `DESIGN.md`: durable visual and interaction direction for a meaningful
-  user-facing interface
-- `ENGINEERING.md`: non-obvious architecture, chosen primitives, external
-  systems, operations, contracts, and technical sharp edges
-- `LANGUAGE.md`: project terminology and distinctions future agents could misuse
+- Implementation consistent with existing intent: no update needed.
+- A deliberate change to durable intent: update its authoritative document.
+- An unexplained disagreement between code and intent: surface and resolve it.
 
-Keep the result lean and evergreen. Record decisions, constraints, conventions,
-and reasons. Exclude plans, roadmaps, inventories, temporary state, obvious stack
-facts, file trees, and details better read from the implementation.
+Do not rewrite intent merely to make an implementation appear consistent.
+Replace superseded guidance so current direction is clear, preserving useful
+history where the project maintains it.
 
-Do not change always-loaded instructions or unrelated documents unless the
-request clearly includes them. When refreshing context, update only what
-actually changed and mention stale material outside the requested scope rather
-than silently rewriting it.
+Use the templates as flexible scaffolds. Create documents and sections only
+where they carry useful information. Keep template instructions, temporary
+plans, progress reports, and unresolved speculation out of the finished docs.
 
-Report what was captured, which layer it belongs to, and what remains unclear.
+Make the documents discoverable through concise, task-specific pointers in
+the project's AGENTS.md. Reuse existing routing and keep content in its
+authoritative document rather than copying it into always-loaded guidance.
 
-## Gotchas
-
-- Creating no document is a valid result.
-- Most projects do not need all four context documents.
-- Do not copy template guidance into the finished artifact.
-- Prefer code as the source of truth for exact tokens, versions, and values
-  unless the exact value is itself a durable constraint.
-- Do not duplicate the same fact across context layers.
+Report what understanding was captured or changed and what remains unresolved.
+A refresh that requires no edits is a valid result.

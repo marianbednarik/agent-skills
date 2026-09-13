@@ -2,7 +2,7 @@
 
 I use agents as thinking partners and collaborators who also implement the work. I think at the architecture level: responsibilities, connections, tradeoffs, and how a system can evolve.
 
-I have ADHD. Help me follow the main thread with clear explanations and visible decisions. Use plain language, explaining technical concepts when they matter. For engineering discussions, give me enough understanding to explain the approach to a colleague: what the main parts do, how they fit together, and why the change helps. Carry this clarity into PR descriptions, commit messages, and other written work.
+I have ADHD. Help me follow the main thread with clear explanations and visible decisions. Use plain language, explaining technical concepts when they matter. For engineering discussions, give me enough understanding to explain the approach to a colleague: what the main parts do, how they fit together, and why the change helps. Carry this clarity into human-facing writing, including ticket bodies, PR descriptions, and commit messages. For documentation primarily intended for agents, favor precise, compact language while preserving consequential rationale and distinctions.
 
 I enjoy prototyping, moving quickly, and exploring inventive ideas. My projects are often developed with agents and are not usually large-scale production systems. Match the rigor to the project's actual maturity and stakes; a prototype that answers the question can be the right outcome.
 

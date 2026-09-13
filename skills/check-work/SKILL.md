@@ -1,78 +1,67 @@
 ---
 name: check-work
-description: >
-  Review completed implementation work before handoff. Automatically use after
-  finishing a feature, bug fix, refactor, or other nontrivial code change, and
-  when asked whether an implementation is ready. Do not trigger for planning,
-  diagnosis, repo-wide audits, or tiny mechanical edits.
+description: Review implementation quality before handoff or on request. Use automatically when substantive implementation is ready to hand back, or when asked to review a PR, branch, or working changes.
 ---
 
-# Check Work
+Ensure the delivered implementation is coherent, maintainable, and supported
+by useful evidence.
 
-Before handing implementation back, stop building and read the work that
-actually exists. Marian should not have to ask whether it can be simplified;
-assume he would, and answer that first.
+Establish the requested changes and comparison boundary, including the relevant
+revision or working state, and whether assessment or remediation is requested.
+Reuse evidence where it applies to that scope and state.
 
-Establish the scope from the requested outcome and the relevant diff or working
-tree. Exclude unrelated pre-existing changes.
+Start from the review and validation already performed and focus further work
+on unresolved concerns. Do not repeat equivalent
+self-review, spawn another reviewer for an already-reviewed change, or rerun
+unchanged checks without a concrete reason. Relevant edits, changed
+conditions, unreliable results, an unanswered question, or an explicitly
+requested independent assessment can justify further review or targeted checks.
 
-Ask, and act on the answers:
+Review against the current agreed outcome, including decisions made during
+implementation. Exclude unrelated pre-existing changes.
 
-- Does the implementation satisfy the requested behavior, including easy-to-miss
-  states and preserved behavior?
-- Is there a smaller coherent result: parallel paths that should be one path,
-  one-use indirection, unnecessary wrappers, speculative branches, or defensive
-  handling of impossible internal states?
-- Does the change live at the right owner and follow the project's coherent
-  patterns, or did it invent a second pattern for the same concept?
-- Did it make another path, abstraction, dependency, or comment obsolete?
-- Do the tests protect meaningful behavior, or merely add volume and freeze the
-  implementation?
-- What relevant validation has actually proved the result?
+Include relevant documented project intent and decisions when assessing
+alignment; surface unexplained discrepancies rather than changing the
+documentation to fit the implementation.
 
-## Independent Review
+Apply judgment to the concerns that matter:
 
-When subagents are available, use one fresh read-only reviewer when independent
-scrutiny would materially improve confidence, especially when the change:
+- Smallest coherent implementation: unnecessary layers, speculative
+  flexibility, redundant state, excessive indirection, and obsolete paths.
+  Prefer removing complexity over compressing code.
+- Fit with the project: inspect surrounding code for existing components,
+  primitives, tokens, helpers, and conventions before accepting new ones.
+  Evaluate deliberate departures on their merits.
+- Ownership and duplication: repeated domain logic, competing representations,
+  misplaced responsibilities, and changes scattered across owners.
+  Share what represents the same concept without coupling unrelated behavior.
+- Test value: plausible failures caught, independently meaningful expectations,
+  resilience to implementation changes, and useful coverage beyond existing
+  evidence. Remove or improve tests that merely mirror the implementation.
+- Cost: avoidable runtime work, unnecessary test setup or waits, oversized
+  fixtures, and expensive machinery whose cost exceeds its value.
+- Behavior and scope: missing requirements, unintended behavior changes,
+  unjustified additions, and important gaps in verification.
 
-- affects a high-consequence boundary such as persistence, migrations, public
-  contracts, authentication, security, concurrency, destructive behavior, or
-  compatibility
-- crosses meaningful owners or layers, restructures or removes an existing path,
-  introduces substantial structure or indirection, or changes interacting states
-- touches unfamiliar critical code or lacks strong validation for its risky
-  behavior
+Use a fresh frontier reviewer when meaningful design decisions or interacting
+behavior warrant independent scrutiny, applying the reuse criteria above.
+Passing tests alone does not settle implementation quality. Scale review to
+the change; routine documentation and mechanical edits need focused checks
+appropriate to their content.
 
-Skip delegation for coherent, localized work with strong validation. Diff size
-alone is not a reason to delegate.
+Follow global delegation guidance. Give the reviewer the agreed outcome,
+relevant constraints, scope, completed validation, and applicable review
+criteria. Keep it read-only. The parent owns targeted investigation of
+findings, fixes, and integration; avoid duplicating the delegated review.
 
-Give the reviewer the user-visible goal, review scope, relevant constraints, and
-suspected risks. Ask for evidence-based findings about correctness, missing
-behavior, architecture drift, validation gaps, and whether a smaller coherent
-implementation is available. The reviewer must not edit files, alter working
-state, or invoke this skill recursively.
+A finding should explain the evidence, practical cost, and a better direction.
+Treat judgment calls as such. Do not manufacture findings or turn stylistic
+preferences into blockers.
 
-Wait for the reviewer before handoff. While it works, gather objective validation
-if useful, but do not duplicate the delegated review. Treat its report as input,
-not authority: verify material findings yourself. The main agent owns any
-authorized fixes, final synthesis, and handoff.
+Address worthwhile in-scope findings before handoff, rechecking what the fixes
+affect. Surface consequential choices that require Marián. Finish when the
+requested outcome and material review concerns are resolved; avoid open-ended
+polishing.
 
-Fix safe in-scope issues and rerun the checks affected by those fixes. Do not
-cross a consequential boundary in behavior, dependencies, compatibility, or
-ownership without authorization.
-
-Report the delivered outcome, material improvements made during review,
-validation and what it supports, important unverified behavior, and any
-remaining risk or required user action. Omit routine review narration and
-file-by-file changelogs.
-
-For review-only requests, report findings without editing.
-
-## Gotchas
-
-- Seek the smallest coherent implementation, not the smallest diff or lowest
-  line count.
-- Do not turn personal syntax preference or unrelated cleanup into a blocker.
-- Passing checks are evidence, not a substitute for reading the implementation.
-- Use a readiness label only when Marian explicitly asks for a readiness
-  decision.
+Report the outcome, material improvements, validation, and important remaining
+uncertainty. For review-only requests, report findings without editing.
