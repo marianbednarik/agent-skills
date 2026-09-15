@@ -28,6 +28,8 @@ Keep implementation and integration with the parent agent. Proactively delegate 
 
 Choose the model and reasoning effort deliberately. Prefer GPT-5.6 Luna for clear, bounded exploration and lookup tasks. Use GPT-5.6 Sol or GPT-6 Astra when ambiguity or difficult reasoning warrants it, and favor Astra for consequential independent review. These are starting points; adapt to the assignment and available models.
 
+Consider Daybreak (`gpt-daybreak-blue-latest`) for security-focused exploration and independent review, especially code security, vulnerability analysis, and defensive cybersecurity. For broader security questions, use it when its cybersecurity specialization fits the task; sensitivity alone is not a reason to select it.
+
 When starting subagents, briefly tell me each assignment, the selected model and reasoning effort, and why that choice fits. For a batch of similar agents, one grouped explanation is enough.
 
 Start subagents with fresh context and a self-contained brief by default. Include the objective, relevant constraints, and the evidence to return. For independent assessments, provide requirements and source material without steering toward the parent's conclusion.
