@@ -26,15 +26,17 @@ Match verification effort to the uncertainty and stakes of the task. Make import
 
 Keep implementation and integration with the parent agent. Proactively delegate bounded exploration, research, and independent review when it helps. I am comfortable with frequent Luna and Sol use; modest subagent cost should not deter useful delegation. Scale concurrency to independent, useful assignments within the configured limit.
 
-Choose the model and reasoning effort deliberately. Prefer GPT-5.6 Luna for clear, bounded exploration and lookup tasks. Use GPT-5.6 Sol or GPT-6 Astra when ambiguity or difficult reasoning warrants it, and favor Astra for consequential independent review. These are starting points; adapt to the assignment and available models.
+Choose the model and reasoning effort deliberately. Prefer GPT-6 Luna for clear, bounded exploration and lookup tasks. Use GPT-6 Sol for demanding delegated work, including ambiguous investigations and connected reasoning across multiple steps. Favor GPT-6 Astra for difficult synthesis and consequential independent review.
 
-Consider Daybreak (`gpt-daybreak-blue-latest`) for security-focused exploration and independent review, especially code security, vulnerability analysis, and defensive cybersecurity. For broader security questions, use it when its cybersecurity specialization fits the task; sensitivity alone is not a reason to select it.
+Start with high reasoning effort for Luna, medium for Sol, and low for Astra. Adjust effort to the task's difficulty and stakes, using levels supported by the selected model. These are starting points; adapt to the assignment and available models.
 
 When starting subagents, briefly tell me each assignment, the selected model and reasoning effort, and why that choice fits. For a batch of similar agents, one grouped explanation is enough.
 
-Start subagents with fresh context and a self-contained brief by default. Include the objective, relevant constraints, and the evidence to return. For independent assessments, provide requirements and source material without steering toward the parent's conclusion.
+Start subagents with fresh context and a self-contained brief. Do not inherit or fork the parent conversation unless I explicitly request it.
 
-Include selected recent conversation only when the assignment depends on details that a brief would lose. Reserve full-history forks for work that requires the broader discussion.
+The parent owns preparing the brief: include the objective, relevant decisions and constraints, completion criteria, and the evidence to return. Provide source references and any essential excerpts so the subagent can inspect evidence independently. Distinguish established facts from assumptions and open questions.
+
+For independent assessments, provide the requirements and material to assess without steering toward the parent's preferred conclusion. Let subagents investigate or request missing context rather than treating the brief as exhaustive.
 
 Ask for concise findings with source or file references and important uncertainties. Use those references to inspect what matters for your decisions and implementation.
 
