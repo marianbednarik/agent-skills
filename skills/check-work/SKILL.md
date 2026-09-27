@@ -1,67 +1,20 @@
 ---
 name: check-work
-description: Review implementation quality before handoff or on request. Use automatically when substantive implementation is ready to hand back, or when asked to review a PR, branch, or working changes.
+description: Review completed work automatically, including useful checkpoints during development, or review a specified PR, branch, commit, or working diff on request.
 ---
 
-Ensure the delivered implementation is coherent, maintainable, and supported
-by useful evidence.
+Check that the work meets the agreed outcome, is coherent and maintainable, and has useful verification evidence.
 
-Establish the requested changes and comparison boundary, including the relevant
-revision or working state, and whether assessment or remediation is requested.
-Reuse evidence where it applies to that scope and state.
+Establish the requested scope, comparison base and reviewed state, and whether review or remediation is authorized. Resolve the target from available context; ask when consequential ambiguity remains. Review-only requests authorize findings, not edits.
 
-Start from the review and validation already performed and focus further work
-on unresolved concerns. Do not repeat equivalent
-self-review, spawn another reviewer for an already-reviewed change, or rerun
-unchanged checks without a concrete reason. Relevant edits, changed
-conditions, unreliable results, an unanswered question, or an explicitly
-requested independent assessment can justify further review or targeted checks.
+Review against current agreed requirements, project guidance, and decisions, including changes agreed during implementation. Investigate unexplained discrepancies rather than rewriting intent to fit the work. Follow affected behavior into relevant callers, consumers, and state transitions; exclude unrelated pre-existing problems.
 
-Review against the current agreed outcome, including decisions made during
-implementation. Exclude unrelated pre-existing changes.
+Reuse review and validation that still apply to the state, scope, and concern. Use targeted checks or further reviewer rounds for changed behavior, unresolved questions, unreliable evidence, or an explicitly requested independent assessment. Neither an earlier review nor a fresh reviewer is a blanket assurance.
 
-Include relevant documented project intent and decisions when assessing
-alignment; surface unexplained discrepancies rather than changing the
-documentation to fit the implementation.
+Choose the depth and dimensions that matter: correctness, completeness, security, project standards, ownership, simplicity, runtime and verification cost, and test value. Inspect existing patterns before accepting new ones; assess deliberate departures on their merits. Seek the smallest coherent implementation, removing unnecessary indirection, duplicated concepts, redundant state, and obsolete paths without coupling unrelated behavior. Judge tests by the guarantees and plausible failures they protect; improve brittle tests without losing meaningful coverage. Passing checks alone does not establish quality.
 
-Apply judgment to the concerns that matter:
+Review directly when sufficient. Delegate when independent scrutiny would help, using one or more fresh-context, read-only reviewers with complementary scopes as useful. Follow global delegation guidance. Give them the agreed outcome, constraints, comparison boundary, source references, and existing evidence, without your conclusions or a preferred verdict. Let them inspect the work independently; do not duplicate their review. The parent evaluates findings and owns fixes and integration.
 
-- Smallest coherent implementation: unnecessary layers, speculative
-  flexibility, redundant state, excessive indirection, and obsolete paths.
-  Prefer removing complexity over compressing code.
-- Fit with the project: inspect surrounding code for existing components,
-  primitives, tokens, helpers, and conventions before accepting new ones.
-  Evaluate deliberate departures on their merits.
-- Ownership and duplication: repeated domain logic, competing representations,
-  misplaced responsibilities, and changes scattered across owners.
-  Share what represents the same concept without coupling unrelated behavior.
-- Test value: plausible failures caught, independently meaningful expectations,
-  resilience to implementation changes, and useful coverage beyond existing
-  evidence. Remove or improve tests that merely mirror the implementation.
-- Cost: avoidable runtime work, unnecessary test setup or waits, oversized
-  fixtures, and expensive machinery whose cost exceeds its value.
-- Behavior and scope: missing requirements, unintended behavior changes,
-  unjustified additions, and important gaps in verification.
+Ground findings in evidence and practical consequence: a reachable failure path, unmet requirement, or concrete maintenance cost. Check what could invalidate a concern or make its proposed remedy worse before acting. Distinguish defects, design judgments, and verification gaps; do not manufacture findings or promote stylistic preferences into blockers.
 
-Use a fresh frontier reviewer when meaningful design decisions or interacting
-behavior warrant independent scrutiny, applying the reuse criteria above.
-Passing tests alone does not settle implementation quality. Scale review to
-the change; routine documentation and mechanical edits need focused checks
-appropriate to their content.
-
-Follow global delegation guidance. Give the reviewer the agreed outcome,
-relevant constraints, scope, completed validation, and applicable review
-criteria. Keep it read-only. The parent owns targeted investigation of
-findings, fixes, and integration; avoid duplicating the delegated review.
-
-A finding should explain the evidence, practical cost, and a better direction.
-Treat judgment calls as such. Do not manufacture findings or turn stylistic
-preferences into blockers.
-
-Address worthwhile in-scope findings before handoff, rechecking what the fixes
-affect. Surface consequential choices that require Marián. Finish when the
-requested outcome and material review concerns are resolved; avoid open-ended
-polishing.
-
-Report the outcome, material improvements, validation, and important remaining
-uncertainty. For review-only requests, report findings without editing.
+When remediation is authorized, address worthwhile in-scope findings and recheck what fixes affect. Surface consequential choices requiring Marián. Finish when the requested scope is covered and worthwhile authorized fixes are complete; explain any material concern that cannot be resolved. Avoid open-ended polishing. Report findings or improvements, relevant validation, and important remaining uncertainty.
