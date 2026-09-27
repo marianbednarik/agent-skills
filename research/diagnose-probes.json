@@ -1,0 +1,214 @@
+{
+  "date": "2026-09-27",
+  "purpose": "Research fixtures and evidence, not runtime instructions or an automated benchmark suite.",
+  "model": "gpt-6-sol",
+  "reasoning_effort": "medium",
+  "python": "3.14.6",
+  "setup": "Fresh context per scenario and condition; assigned guidance read by instruction; identical fixture source and task within scenario. Other skills and delegation disabled. Common platform context retained.",
+  "baseline": {
+    "baseline_commit": "87b6c214e01e189f61d5d69a0e8f8c231e73c517",
+    "baseline_blob": "c868c582af3a90cdca5a481bcc1153167b72c628"
+  },
+  "guidance": {
+    "baseline": "---\nname: diagnose\ndescription: Investigate unexplained bugs, failures, or performance problems. Use when the cause is unclear and needs evidence before choosing a fix.\n---\n\nBuild an evidence-backed explanation of the failure. Treat the reported\nsymptom as a starting point, not a diagnosis.\n\nEstablish what was expected, what happened, and the conditions that expose\nthe difference. Inspect enough of the implementation and surrounding system\nto develop plausible explanations, including causes outside the place where\nthe error appears.\n\nConsider credible alternative hypotheses before committing to a cause.\nExplain the leading possibilities and what supports them. Scale exploration\nto the uncertainty; avoid inventing alternatives when the evidence is clear.\n\nChoose checks that distinguish between hypotheses. Use reproduction,\ncode tracing, logs, runtime inspection, targeted tests, or reversible\nexperiments as appropriate. Prefer the cheapest useful probe and be clear\nabout what its result would establish.\n\nLet results change the investigation. Revise or discard hypotheses when\nevidence contradicts them. An inconclusive check leaves uncertainty;\nit does not confirm the preferred explanation.\n\nKeep experimental changes controlled and distinguish them from accepted\nfixes. Clean up temporary instrumentation and unsuccessful experiments.\nWhen a fix is authorized, address the supported cause and verify the\noriginal failure path.\n\nA passing test or disappearing symptom is evidence, but does not by itself\nestablish the cause or completeness of a fix.\n\nExplain what triggered the failure, how it propagated, and why the evidence\nsupports the conclusion. Distinguish confirmed causes from remaining\nhypotheses. If unresolved, state what was learned and the next useful check.\n",
+    "candidate": "---\nname: diagnose\ndescription: Investigate software failures whose cause is uncertain, including during an authorized fix or when an attempted fix fails.\n---\n\nEstablish an evidence-backed explanation of the reported failure. Treat suggested causes, including your own, as hypotheses.\n\nFind evidence that distinguishes the leading explanation from credible alternatives. Use the cheapest useful check of the actual failure path: inspect code and state, reproduce, test, or observe runtime/browser behavior as appropriate. Let contradictory or inconclusive results change the investigation; do not manufacture alternatives when the evidence is decisive.\n\nKeep experiments reversible and separate from accepted fixes; remove temporary changes. A passing test or disappearing symptom alone does not establish why the failure happened. When fixing is authorized, address the supported cause and verify the original failure path.\n\nExplain the causal path and the evidence that supports it. Stop when the explanation is sufficiently supported for the requested action; if access or evidence is insufficient, distinguish what is known from hypotheses and identify the next useful check.\n",
+    "none": "No additional debugging guidance for this task.\n"
+  },
+  "brief_template": "Work only in {workspace}, an isolated project copy. Additional task guidance is {guidance_path}; read and apply it. Do not load other skills, inspect sibling directories, or delegate. Use normal tools; fixes and tests inside this directory are authorized. Request: {request} Return your usual concise handoff with evidence and remaining limitations.",
+  "scenarios": {
+    "meter": {
+      "request": "The night dashboard sometimes repeats old totals. I think the cache TTL is too long. Can you fix it?",
+      "files": {
+        "README.md": "# Hourly meter dashboard\nPython standard library prototype. `python3 -m unittest -v` runs the current checks; `python3 replay.py` replays a captured session. `python3 replay.py --ttl 0` disables caching, and `--ttl 7200` is the deployed setting. Replay prints requests/results and appends `.runs.jsonl` records with source hashes.\n\nSensor readings arrive for completed hours, identified by their UTC start instant. Display labels use each site's timezone. The dashboard must show each completed hour's independent total, including when two hours have the same wall-clock label. Caching avoids repeated reads of a completed hour; those totals are immutable. This replay is serial, using one dashboard instance for one site. Monotonic seconds govern expiry and are captured separately from sensor timestamps.\n",
+        "dashboard.py": "from datetime import datetime\nfrom zoneinfo import ZoneInfo\n\nclass Dashboard:\n    def __init__(self, reader, timezone_name, ttl=7200):\n        self.reader = reader\n        self.timezone = ZoneInfo(timezone_name)\n        self.ttl = ttl\n        self.cache = {}\n\n    def total(self, hour_utc, now):\n        local_hour = datetime.fromisoformat(hour_utc).astimezone(self.timezone)\n        key = local_hour.replace(minute=0, second=0, microsecond=0)\n        cached = self.cache.get(key)\n        if cached is not None and now - cached[0] < self.ttl:\n            return cached[1]\n        value = self.reader(hour_utc)\n        self.cache[key] = (now, value)\n        return value\n",
+        "replay.py": "import argparse\nimport hashlib\nimport json\nfrom pathlib import Path\nfrom dashboard import Dashboard\n\nparser=argparse.ArgumentParser()\nparser.add_argument('--ttl',type=float,default=7200)\nargs=parser.parse_args()\nsession=json.loads(Path('session.json').read_text())\nreads=[]\ndef read(hour):\n    reads.append(hour)\n    return session['readings'][hour]\ndash=Dashboard(read,session['timezone'],args.ttl)\nresults=[{'hour':r['hour'],'value':dash.total(r['hour'],r['monotonic'])} for r in session['requests']]\nrecord={'source_sha256':hashlib.sha256(Path('dashboard.py').read_bytes()).hexdigest(),'ttl':args.ttl,'results':results,'reads':reads}\nwith Path('.runs.jsonl').open('a') as log: log.write(json.dumps(record)+'\\n')\nprint(json.dumps(record,indent=2))\n",
+        "session.json": "{\n  \"timezone\": \"Europe/Bratislava\",\n  \"readings\": {\n    \"2025-10-26T00:00:00+00:00\": 14,\n    \"2025-10-26T01:00:00+00:00\": 93\n  },\n  \"requests\": [\n    {\n      \"hour\": \"2025-10-26T00:00:00+00:00\",\n      \"monotonic\": 4100\n    },\n    {\n      \"hour\": \"2025-10-26T01:00:00+00:00\",\n      \"monotonic\": 7700\n    },\n    {\n      \"hour\": \"2025-10-26T00:00:00+00:00\",\n      \"monotonic\": 7701\n    }\n  ]\n}\n",
+        "test_dashboard.py": "import unittest\nfrom dashboard import Dashboard\n\nclass DashboardTests(unittest.TestCase):\n    def test_cache_and_expiry(self):\n        reads=[]\n        def read(hour):\n            reads.append(hour)\n            return 14\n        dash=Dashboard(read,'Europe/Bratislava',7200)\n        for now in (0,1,7200):\n            self.assertEqual(dash.total('2025-10-20T00:00:00+00:00',now),14)\n        self.assertEqual(len(reads),2)\n    def test_distinct_hours(self):\n        data={'2025-10-20T00:00:00+00:00':14,'2025-10-20T01:00:00+00:00':93}\n        dash=Dashboard(data.__getitem__,'Europe/Bratislava')\n        self.assertEqual([dash.total(h,i) for i,h in enumerate(data)],[14,93])\n"
+      },
+      "runs": {
+        "baseline": {
+          "final_diff": "diff --git a/dashboard.py b/dashboard.py\nindex f2f5b4f..c096496 100644\n--- a/dashboard.py\n+++ b/dashboard.py\n@@ -1,4 +1,4 @@\n-from datetime import datetime\n+from datetime import datetime, timezone\n from zoneinfo import ZoneInfo\n \n class Dashboard:\n@@ -9,8 +9,9 @@ class Dashboard:\n         self.cache = {}\n \n     def total(self, hour_utc, now):\n-        local_hour = datetime.fromisoformat(hour_utc).astimezone(self.timezone)\n-        key = local_hour.replace(minute=0, second=0, microsecond=0)\n+        key = datetime.fromisoformat(hour_utc).astimezone(timezone.utc).replace(\n+            minute=0, second=0, microsecond=0\n+        )\n         cached = self.cache.get(key)\n         if cached is not None and now - cached[0] < self.ttl:\n             return cached[1]\ndiff --git a/test_dashboard.py b/test_dashboard.py\nindex 8136d86..02547bb 100644\n--- a/test_dashboard.py\n+++ b/test_dashboard.py\n@@ -15,3 +15,20 @@ class DashboardTests(unittest.TestCase):\n         data={'2025-10-20T00:00:00+00:00':14,'2025-10-20T01:00:00+00:00':93}\n         dash=Dashboard(data.__getitem__,'Europe/Bratislava')\n         self.assertEqual([dash.total(h,i) for i,h in enumerate(data)],[14,93])\n+\n+    def test_repeated_local_hour_keeps_utc_totals_distinct(self):\n+        first = '2025-10-26T00:00:00+00:00'\n+        second = '2025-10-26T01:00:00+00:00'\n+        data = {first: 14, second: 93}\n+        reads = []\n+\n+        def read(hour):\n+            reads.append(hour)\n+            return data[hour]\n+\n+        dash = Dashboard(read, 'Europe/Bratislava', 7200)\n+        self.assertEqual(\n+            [dash.total(first, 4100), dash.total(second, 7700), dash.total(first, 7701)],\n+            [14, 93, 14],\n+        )\n+        self.assertEqual(reads, [first, second])\n",
+          "parent_verified_test_exit_code": 0,
+          "parent_verified_diff_check_exit_code": 0,
+          "parent_replay_record": {
+            "source_sha256": "7cc664fcabf8cb4df6a7c94c574eb5004ca06c4bd525c63682be75b1a70d94da",
+            "ttl": 7200,
+            "results": [
+              {
+                "hour": "2025-10-26T00:00:00+00:00",
+                "value": 14
+              },
+              {
+                "hour": "2025-10-26T01:00:00+00:00",
+                "value": 93
+              },
+              {
+                "hour": "2025-10-26T00:00:00+00:00",
+                "value": 14
+              }
+            ],
+            "reads": [
+              "2025-10-26T00:00:00+00:00",
+              "2025-10-26T01:00:00+00:00"
+            ]
+          }
+        },
+        "candidate": {
+          "final_diff": "diff --git a/dashboard.py b/dashboard.py\nindex f2f5b4f..8fce219 100644\n--- a/dashboard.py\n+++ b/dashboard.py\n@@ -1,4 +1,4 @@\n-from datetime import datetime\n+from datetime import datetime, timezone\n from zoneinfo import ZoneInfo\n \n class Dashboard:\n@@ -9,8 +9,7 @@ class Dashboard:\n         self.cache = {}\n \n     def total(self, hour_utc, now):\n-        local_hour = datetime.fromisoformat(hour_utc).astimezone(self.timezone)\n-        key = local_hour.replace(minute=0, second=0, microsecond=0)\n+        key = datetime.fromisoformat(hour_utc).astimezone(timezone.utc)\n         cached = self.cache.get(key)\n         if cached is not None and now - cached[0] < self.ttl:\n             return cached[1]\ndiff --git a/test_dashboard.py b/test_dashboard.py\nindex 8136d86..5a692c4 100644\n--- a/test_dashboard.py\n+++ b/test_dashboard.py\n@@ -15,3 +15,15 @@ class DashboardTests(unittest.TestCase):\n         data={'2025-10-20T00:00:00+00:00':14,'2025-10-20T01:00:00+00:00':93}\n         dash=Dashboard(data.__getitem__,'Europe/Bratislava')\n         self.assertEqual([dash.total(h,i) for i,h in enumerate(data)],[14,93])\n+\n+    def test_repeated_local_hour_keeps_utc_totals_distinct_and_cached(self):\n+        first='2025-10-26T00:00:00+00:00'\n+        second='2025-10-26T01:00:00+00:00'\n+        data={first:14,second:93}\n+        reads=[]\n+        def read(hour):\n+            reads.append(hour)\n+            return data[hour]\n+        dash=Dashboard(read,'Europe/Bratislava',7200)\n+        self.assertEqual([dash.total(first,4100),dash.total(second,7700),dash.total(first,7701)],[14,93,14])\n+        self.assertEqual(reads,[first,second])\n",
+          "parent_verified_test_exit_code": 0,
+          "parent_verified_diff_check_exit_code": 0,
+          "parent_replay_record": {
+            "source_sha256": "e455c1def9883296a5def09e974be6cba753744a06cebedb52550aeaa6e9c207",
+            "ttl": 7200,
+            "results": [
+              {
+                "hour": "2025-10-26T00:00:00+00:00",
+                "value": 14
+              },
+              {
+                "hour": "2025-10-26T01:00:00+00:00",
+                "value": 93
+              },
+              {
+                "hour": "2025-10-26T00:00:00+00:00",
+                "value": 14
+              }
+            ],
+            "reads": [
+              "2025-10-26T00:00:00+00:00",
+              "2025-10-26T01:00:00+00:00"
+            ]
+          }
+        },
+        "none": {
+          "final_diff": "diff --git a/dashboard.py b/dashboard.py\nindex f2f5b4f..c096496 100644\n--- a/dashboard.py\n+++ b/dashboard.py\n@@ -1,4 +1,4 @@\n-from datetime import datetime\n+from datetime import datetime, timezone\n from zoneinfo import ZoneInfo\n \n class Dashboard:\n@@ -9,8 +9,9 @@ class Dashboard:\n         self.cache = {}\n \n     def total(self, hour_utc, now):\n-        local_hour = datetime.fromisoformat(hour_utc).astimezone(self.timezone)\n-        key = local_hour.replace(minute=0, second=0, microsecond=0)\n+        key = datetime.fromisoformat(hour_utc).astimezone(timezone.utc).replace(\n+            minute=0, second=0, microsecond=0\n+        )\n         cached = self.cache.get(key)\n         if cached is not None and now - cached[0] < self.ttl:\n             return cached[1]\ndiff --git a/test_dashboard.py b/test_dashboard.py\nindex 8136d86..f0cbc6a 100644\n--- a/test_dashboard.py\n+++ b/test_dashboard.py\n@@ -15,3 +15,16 @@ class DashboardTests(unittest.TestCase):\n         data={'2025-10-20T00:00:00+00:00':14,'2025-10-20T01:00:00+00:00':93}\n         dash=Dashboard(data.__getitem__,'Europe/Bratislava')\n         self.assertEqual([dash.total(h,i) for i,h in enumerate(data)],[14,93])\n+\n+    def test_repeated_local_hour_has_distinct_cached_totals(self):\n+        first='2025-10-26T00:00:00+00:00'\n+        second='2025-10-26T01:00:00+00:00'\n+        data={first:14,second:93}\n+        reads=[]\n+        def read(hour):\n+            reads.append(hour)\n+            return data[hour]\n+        dash=Dashboard(read,'Europe/Bratislava',7200)\n+        self.assertEqual([dash.total(first,4100),dash.total(second,7700),dash.total(first,7701)],\n+                         [14,93,14])\n+        self.assertEqual(reads,[first,second])\n",
+          "parent_verified_test_exit_code": 0,
+          "parent_verified_diff_check_exit_code": 0,
+          "parent_replay_record": {
+            "source_sha256": "7cc664fcabf8cb4df6a7c94c574eb5004ca06c4bd525c63682be75b1a70d94da",
+            "ttl": 7200,
+            "results": [
+              {
+                "hour": "2025-10-26T00:00:00+00:00",
+                "value": 14
+              },
+              {
+                "hour": "2025-10-26T01:00:00+00:00",
+                "value": 93
+              },
+              {
+                "hour": "2025-10-26T00:00:00+00:00",
+                "value": 14
+              }
+            ],
+            "reads": [
+              "2025-10-26T00:00:00+00:00",
+              "2025-10-26T01:00:00+00:00"
+            ]
+          }
+        }
+      },
+      "followup": "Support now says another customer saw the same repeated totals at noon in July, with caching disabled. There is no captured session or deployment information for that report yet. Is your fix enough to close the incident?",
+      "followup_observation": "All three answered no, kept the confirmed fallback fix valid, and requested evidence for the distinct unresolved report. Actual returned answers observed by the parent; detailed accounts appear in the reference sheet."
+    },
+    "import": {
+      "request": "A failed catalog import still changes some entries. Maybe our exception handler isn't rolling back? Can you fix it?",
+      "files": {
+        "README.md": "# Tag catalog importer\nPython + SQLite, standard library only. Run `python3 -m unittest -v` for current tests. `python3 replay.py` replays the support attachment against a temporary database and logs `.runs.jsonl` with source hashes. SQL snapshots are internal trusted exports. No live service is connected.\n\nAn import replaces a tag catalog atomically: successful imports replace all tags; failed imports leave the previous catalog unchanged. The caller owns its connection; on return from a successful import, the new catalog should be committed. The support attachment is `incoming.sql`. The application uses Python's default SQLite connection settings. Do not change the snapshot file format.\n",
+        "catalog.py": "def replace_catalog(conn, sql):\n    try:\n        with conn:\n            conn.execute('DELETE FROM tags')\n            conn.executescript(sql)\n    except Exception:\n        conn.rollback()\n        raise\n",
+        "incoming.sql": "INSERT INTO tags(id,label) VALUES (3,'new-a');\nINSERT INTO tags(id,label) VALUES (3,'new-b');\n",
+        "replay.py": "import hashlib\nimport json\nimport sqlite3\nimport tempfile\nfrom pathlib import Path\nfrom catalog import replace_catalog\n\nwith tempfile.TemporaryDirectory() as folder:\n    path=Path(folder)/'catalog.sqlite'\n    conn=sqlite3.connect(path)\n    conn.execute('CREATE TABLE tags(id INTEGER PRIMARY KEY,label TEXT NOT NULL)')\n    conn.executemany('INSERT INTO tags VALUES (?,?)',[(1,'old-a'),(2,'old-b')])\n    conn.commit()\n    before=conn.execute('SELECT * FROM tags ORDER BY id').fetchall()\n    try:\n        replace_catalog(conn,Path('incoming.sql').read_text())\n        error=None\n    except Exception as exc:\n        error=type(exc).__name__+': '+str(exc)\n    conn.close()\n    with sqlite3.connect(path) as check:\n        after=check.execute('SELECT * FROM tags ORDER BY id').fetchall()\nrecord={'source_sha256':hashlib.sha256(Path('catalog.py').read_bytes()).hexdigest(),'before':before,'error':error,'after_reopen':after}\nwith Path('.runs.jsonl').open('a') as log: log.write(json.dumps(record)+'\\n')\nprint(json.dumps(record,indent=2))\n",
+        "test_catalog.py": "import sqlite3\nimport unittest\nfrom catalog import replace_catalog\n\nclass CatalogTests(unittest.TestCase):\n    def test_success(self):\n        with sqlite3.connect(':memory:') as conn:\n            conn.execute('CREATE TABLE tags(id INTEGER PRIMARY KEY,label TEXT NOT NULL)')\n            conn.execute(\"INSERT INTO tags VALUES (1,'old')\")\n            conn.commit()\n            replace_catalog(conn,\"INSERT INTO tags VALUES (2,'new');\")\n            self.assertEqual(conn.execute('SELECT * FROM tags').fetchall(),[(2,'new')])\n"
+      },
+      "runs": {
+        "baseline": {
+          "final_diff": "diff --git a/catalog.py b/catalog.py\nindex 38a281c..794dba5 100644\n--- a/catalog.py\n+++ b/catalog.py\n@@ -1,8 +1,9 @@\n def replace_catalog(conn, sql):\n     try:\n-        with conn:\n-            conn.execute('DELETE FROM tags')\n-            conn.executescript(sql)\n+        # executescript() commits any transaction already open on the connection.\n+        # Start the import transaction inside the script so every statement,\n+        # including the delete, can be rolled back together.\n+        conn.executescript('BEGIN;\\nDELETE FROM tags;\\n' + sql + '\\nCOMMIT;')\n     except Exception:\n         conn.rollback()\n         raise\ndiff --git a/test_catalog.py b/test_catalog.py\nindex d323b1a..21c0214 100644\n--- a/test_catalog.py\n+++ b/test_catalog.py\n@@ -1,5 +1,7 @@\n import sqlite3\n+import tempfile\n import unittest\n+from pathlib import Path\n from catalog import replace_catalog\n \n class CatalogTests(unittest.TestCase):\n@@ -10,3 +12,17 @@ class CatalogTests(unittest.TestCase):\n             conn.commit()\n             replace_catalog(conn,\"INSERT INTO tags VALUES (2,'new');\")\n             self.assertEqual(conn.execute('SELECT * FROM tags').fetchall(),[(2,'new')])\n+\n+    def test_failed_import_preserves_committed_catalog(self):\n+        with tempfile.TemporaryDirectory() as folder:\n+            path = Path(folder) / 'catalog.sqlite'\n+            with sqlite3.connect(path) as conn:\n+                conn.execute('CREATE TABLE tags(id INTEGER PRIMARY KEY,label TEXT NOT NULL)')\n+                conn.execute(\"INSERT INTO tags VALUES (1,'old')\")\n+                conn.commit()\n+                with self.assertRaises(sqlite3.IntegrityError):\n+                    replace_catalog(conn, \"INSERT INTO tags VALUES (2,'new');\\n\"\n+                                          \"INSERT INTO tags VALUES (2,'duplicate');\")\n+                self.assertFalse(conn.in_transaction)\n+            with sqlite3.connect(path) as conn:\n+                self.assertEqual(conn.execute('SELECT * FROM tags').fetchall(), [(1, 'old')])\n",
+          "parent_verified_test_exit_code": 0,
+          "parent_verified_diff_check_exit_code": 0,
+          "parent_replay_record": {
+            "source_sha256": "2b7a30ba0e53630f2a18380804a6d71aadd8c05684190e43067af47bf98d6aa9",
+            "before": [
+              [
+                1,
+                "old-a"
+              ],
+              [
+                2,
+                "old-b"
+              ]
+            ],
+            "error": "IntegrityError: UNIQUE constraint failed: tags.id",
+            "after_reopen": [
+              [
+                1,
+                "old-a"
+              ],
+              [
+                2,
+                "old-b"
+              ]
+            ]
+          }
+        },
+        "candidate": {
+          "final_diff": "diff --git a/catalog.py b/catalog.py\nindex 38a281c..dab0c64 100644\n--- a/catalog.py\n+++ b/catalog.py\n@@ -1,8 +1,6 @@\n def replace_catalog(conn, sql):\n     try:\n-        with conn:\n-            conn.execute('DELETE FROM tags')\n-            conn.executescript(sql)\n+        conn.executescript('BEGIN;\\nDELETE FROM tags;\\n' + sql + '\\nCOMMIT;')\n     except Exception:\n         conn.rollback()\n         raise\ndiff --git a/test_catalog.py b/test_catalog.py\nindex d323b1a..edda45d 100644\n--- a/test_catalog.py\n+++ b/test_catalog.py\n@@ -1,5 +1,7 @@\n import sqlite3\n+import tempfile\n import unittest\n+from pathlib import Path\n from catalog import replace_catalog\n \n class CatalogTests(unittest.TestCase):\n@@ -10,3 +12,29 @@ class CatalogTests(unittest.TestCase):\n             conn.commit()\n             replace_catalog(conn,\"INSERT INTO tags VALUES (2,'new');\")\n             self.assertEqual(conn.execute('SELECT * FROM tags').fetchall(),[(2,'new')])\n+\n+    def test_failed_import_preserves_catalog_after_reopen(self):\n+        with tempfile.TemporaryDirectory() as folder:\n+            path = Path(folder) / 'catalog.sqlite'\n+            with sqlite3.connect(path) as conn:\n+                conn.execute('CREATE TABLE tags(id INTEGER PRIMARY KEY,label TEXT NOT NULL)')\n+                conn.executemany('INSERT INTO tags VALUES (?,?)', [(1, 'old-a'), (2, 'old-b')])\n+                conn.commit()\n+                with self.assertRaises(sqlite3.IntegrityError):\n+                    replace_catalog(conn, \"INSERT INTO tags VALUES (3,'new-a');\"\n+                                          \"INSERT INTO tags VALUES (3,'new-b');\")\n+            with sqlite3.connect(path) as conn:\n+                self.assertEqual(conn.execute('SELECT * FROM tags ORDER BY id').fetchall(),\n+                                 [(1, 'old-a'), (2, 'old-b')])\n+\n+    def test_success_is_committed_before_return(self):\n+        with tempfile.TemporaryDirectory() as folder:\n+            path = Path(folder) / 'catalog.sqlite'\n+            conn = sqlite3.connect(path)\n+            conn.execute('CREATE TABLE tags(id INTEGER PRIMARY KEY,label TEXT NOT NULL)')\n+            conn.execute(\"INSERT INTO tags VALUES (1,'old')\")\n+            conn.commit()\n+            replace_catalog(conn, \"INSERT INTO tags VALUES (2,'new');\")\n+            conn.close()\n+            with sqlite3.connect(path) as check:\n+                self.assertEqual(check.execute('SELECT * FROM tags').fetchall(), [(2, 'new')])\n",
+          "parent_verified_test_exit_code": 0,
+          "parent_verified_diff_check_exit_code": 0,
+          "parent_replay_record": {
+            "source_sha256": "dbb8d8269220561a9fa7b33234e51042a1e4bd0a40faee34c7d0134a8d616c05",
+            "before": [
+              [
+                1,
+                "old-a"
+              ],
+              [
+                2,
+                "old-b"
+              ]
+            ],
+            "error": "IntegrityError: UNIQUE constraint failed: tags.id",
+            "after_reopen": [
+              [
+                1,
+                "old-a"
+              ],
+              [
+                2,
+                "old-b"
+              ]
+            ]
+          }
+        },
+        "none": {
+          "final_diff": "diff --git a/catalog.py b/catalog.py\nindex 38a281c..3ed506d 100644\n--- a/catalog.py\n+++ b/catalog.py\n@@ -1,8 +1,8 @@\n def replace_catalog(conn, sql):\n     try:\n-        with conn:\n-            conn.execute('DELETE FROM tags')\n-            conn.executescript(sql)\n+        # executescript commits a pending transaction before running the script.\n+        # Put the delete and snapshot statements in the same SQL transaction.\n+        conn.executescript('BEGIN;\\nDELETE FROM tags;\\n' + sql + '\\nCOMMIT;')\n     except Exception:\n         conn.rollback()\n         raise\ndiff --git a/test_catalog.py b/test_catalog.py\nindex d323b1a..cfbdd29 100644\n--- a/test_catalog.py\n+++ b/test_catalog.py\n@@ -1,5 +1,7 @@\n import sqlite3\n+import tempfile\n import unittest\n+from pathlib import Path\n from catalog import replace_catalog\n \n class CatalogTests(unittest.TestCase):\n@@ -10,3 +12,19 @@ class CatalogTests(unittest.TestCase):\n             conn.commit()\n             replace_catalog(conn,\"INSERT INTO tags VALUES (2,'new');\")\n             self.assertEqual(conn.execute('SELECT * FROM tags').fetchall(),[(2,'new')])\n+            self.assertFalse(conn.in_transaction)\n+\n+    def test_failed_import_preserves_committed_catalog(self):\n+        with tempfile.TemporaryDirectory() as folder:\n+            path = Path(folder) / 'catalog.sqlite'\n+            with sqlite3.connect(path) as conn:\n+                conn.execute('CREATE TABLE tags(id INTEGER PRIMARY KEY,label TEXT NOT NULL)')\n+                conn.executemany('INSERT INTO tags VALUES (?,?)', [(1, 'old-a'), (2, 'old-b')])\n+                conn.commit()\n+                with self.assertRaises(sqlite3.IntegrityError):\n+                    replace_catalog(conn, \"INSERT INTO tags VALUES (3,'new-a'); INSERT INTO tags VALUES (3,'new-b');\")\n+            with sqlite3.connect(path) as check:\n+                self.assertEqual(\n+                    check.execute('SELECT * FROM tags ORDER BY id').fetchall(),\n+                    [(1, 'old-a'), (2, 'old-b')],\n+                )\n",
+          "parent_verified_test_exit_code": 0,
+          "parent_verified_diff_check_exit_code": 0,
+          "parent_replay_record": {
+            "source_sha256": "da4468c1d438ce69e5b663749d26db46a9c8e000d35574df97e73b453fea32c5",
+            "before": [
+              [
+                1,
+                "old-a"
+              ],
+              [
+                2,
+                "old-b"
+              ]
+            ],
+            "error": "IntegrityError: UNIQUE constraint failed: tags.id",
+            "after_reopen": [
+              [
+                1,
+                "old-a"
+              ],
+              [
+                2,
+                "old-b"
+              ]
+            ]
+          }
+        }
+      }
+    }
+  }
+}
