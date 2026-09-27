@@ -1,53 +1,18 @@
 ---
 name: writing-for-agents
-description: Write or refine documentation primarily intended for agents, including skills, agent instructions, and project-context references. Use when authoring these materials; human-facing tickets, PR descriptions, and commit messages retain Marián's human communication style.
+description: Create or revise agent-focused documentation, including skills, AGENTS.md, specs, and project context. Remove unnecessary explanation and restatements of code while preserving decision-relevant meaning. Human-facing communication retains the default clear prose.
 ---
 
-Optimize for reliably understood information per token.
+Optimize for useful information per token. Write for a technically competent agent: use precise, established terminology, compact statements, and explicit relationships. Omit conversational framing, general tutorials, repeated summaries, and explanations that add no project-specific understanding.
 
-Write for an agent that already understands general technical concepts.
-Use precise terminology, compact statements, and explicit relationships.
-Omit conversational framing, generic explanations, repeated summaries,
-and instructions that add nothing beyond applicable existing guidance.
+Before adding descriptive detail, ask what it contributes beyond readily inspecting code, configuration, or tooling. Omit obvious function walkthroughs, file inventories that add no navigation value, and copied implementation details. Preserve explicit contracts, consequential constraints, and non-obvious operational facts when they guide future work, even if code currently implements them. Reference the authoritative source for exact, changeable details.
 
-Preserve information that changes decisions: intent, constraints,
-ownership, rationale, exceptions, and non-obvious operational facts.
-Compression should remove redundancy, not distinctions or reasons
-needed to apply the guidance correctly.
+Preserve intent, rationale, ownership, exceptions, and meaningful distinctions. General technical knowledge does not supply project-specific context. Keep enough reasoning to guide future decisions; distinguish settled intent, assumptions, and open questions without inventing missing reasons. Compression must not change the meaning or remove necessary qualifications.
 
-Let the document's purpose govern its content. A writing style does not
-expand what belongs in a document: evergreen project context still
-captures durable understanding, while procedures and implementation
-references serve their own purposes.
+Let the document's purpose govern what belongs in it. Respect existing ownership and authoritative sources; a writing pass does not expand scope or turn task details into durable project context. Remove obsolete or conflicting guidance and consolidate duplication when revising.
 
-Structure for selective reading. Keep closely related rules and caveats
-together. Use headings, lists, tables, or compact examples when they
-make relationships easier to retrieve and apply.
+Structure for selective reading. Keep related rules and caveats together. Use paragraphs, lists, tables, or examples where they convey relationships efficiently; avoid exhaustive hypothetical catalogues. For instructions, retain the triggers, scope, authority boundaries, and completion conditions that affect execution. Prefer decision criteria over fixed sequences unless ordering matters.
 
-Keep essential guidance at the point of use. Move substantial conditional
-detail behind references that explain when to read them. Avoid splitting
-short, coherent material merely to create more files.
+Keep essential guidance at the point of use. Move substantial conditional detail behind references that say when to read it; verify those references. Avoid splitting short, coherent documents merely to create more files.
 
-Maintain one authoritative home for each fact or instruction. Reference
-existing sources rather than copying them. Prefer inspecting code,
-configuration, or tooling over documenting readily discoverable state;
-record what those sources cannot explain.
-
-For behavioral instructions, make the relevant trigger, scope, authority,
-and completion conditions clear where they affect execution. Prefer
-outcomes and decision criteria over a fixed sequence unless ordering
-or exact steps materially affect correctness.
-
-For descriptive context, distinguish settled intent, constraints, and
-rationale. Preserve the project's established terminology and resolve
-material ambiguity rather than disguising it with confident wording.
-
-Include examples when they clarify a subtle distinction or prevent a
-likely misreading. Avoid exhaustive catalogues of hypothetical cases.
-
-When revising, remove obsolete or conflicting guidance and consolidate
-duplication. Check references and preserve meaningful exceptions.
-A shorter document is useful only if it remains accurate and actionable.
-
-Apply this style to the agent-facing artifact. Explain the resulting
-changes to Marián in the usual clear, human-facing language.
+Apply this style according to the document's primary purpose, including agent-focused project context Marián also reads. Compact technical writing should remain understandable to him. Respect the requested audience and format; explain changes to Marián in the usual clear prose. A shorter document is useful only if it remains accurate and actionable.
