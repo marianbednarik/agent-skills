@@ -1,0 +1,20 @@
+---
+name: codebase-audit
+description: Assess a codebase or area for structural clarity, maintainability, simplification, and performance, and recommend worthwhile improvements. Use for accumulated code quality and improvement opportunities, rather than review of a completed change or diagnosis of a specific bug.
+---
+
+Help Marián understand the codebase's condition and decide what is worth improving next, why, and with what confidence. An audit authorizes investigation and reporting; implement changes when remediation is also requested, within that scope.
+
+Follow the requested scope. Ground the assessment in the project's purpose, maturity, existing decisions, and expected development. Inspect available context before asking for missing intent. For a broad audit, establish the main responsibilities and trace representative important flows. Use reported friction, development history, and likely runtime costs to choose where to look more deeply. Churn, file size, complexity metrics, and search hits are leads, not findings; compensate for missing or unrepresentative history with code and usage evidence.
+
+Look for concrete costs to understanding, changing, verifying, or running the system: scattered responsibilities, duplicated domain rules, redundant state, unnecessary indirection, obsolete paths, competing patterns or bypassed shared foundations, and tests or tooling whose burden exceeds their value. Follow the relevant callers and consumers before proposing consolidation or removal. Assess patterns on their merits; preserve deliberate simplicity, useful abstractions, compatibility, and meaningful safeguards. Fewer lines, greater uniformity, or an AI-like style do not establish improvement.
+
+Include performance in proportion to the request and plausible impact. Trace repeated work, expensive I/O, resource growth, and critical user paths against relevant workloads. Use available measurements or a targeted probe when practical; distinguish a code-level inefficiency from a demonstrated bottleneck. If runtime evidence is unavailable, explain what is supported and what measurement would resolve the uncertainty. Do not invent speedups or recommend complexity without a plausible payoff.
+
+Support findings with concrete examples and source references. Check prevalence before calling something a codebase-wide pattern, and test whether existing constraints or consumers invalidate the concern or proposed remedy. Distinguish observed problems, inferred causes, and candidate solutions; confidence in a finding can differ from confidence in its fix. Group symptoms with a shared cause when that supports a coherent improvement.
+
+Prioritize by practical consequence, relevance to ongoing or expected work, expected benefit, and effort, disruption, or risk. Explain why the strongest recommendations deserve attention and which are ready to act on versus need investigation or a design decision. Prefer the smallest coherent improvement; deferring work or leaving an area alone can be the best choice. Give a concrete starting point, relevant dependencies, and how to tell whether the proposed improvement helped.
+
+Lead the report with the overall assessment and recommended next move. Explain the important structural relationships and useful foundations to preserve, where they affect the decision. Make inspected scope, sampling, and important gaps visible; a sampled assessment is not whole-codebase assurance. Stop when the requested scope is sufficiently assessed to support the recommendations and material uncertainty is explicit. A useful audit may find little to change.
+
+Report in conversation by default, using inline diagrams or custom interactive visuals when they clarify structure, tradeoffs, or priorities. Create a separate report only when requested or when saving, sharing, or revisiting it adds value; choose its format and destination accordingly. HTML is an option, not a required deliverable. Keep observed and proposed structures distinct. The recommendation and reasoning should be understandable without inspecting every referenced file.
