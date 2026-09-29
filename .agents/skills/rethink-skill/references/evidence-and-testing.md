@@ -27,23 +27,13 @@ Fresh-context extraction agents need: the skill's purpose, the file list, the fo
 
 Both harnesses load the live global skills, which are symlinks to this repository. Run baseline and candidate sequentially: baseline runs first, then edit the canonical file and run the candidate. Keep fixtures under `/tmp`, identical except for the condition under test.
 
-**Claude Code**
-- New session: `claude -p "<prompt>" --session-id <uuid> --output-format stream-json --verbose --permission-mode bypassPermissions < /dev/null`, run from the fixture directory.
-- Later turns: `--resume <uuid>`.
-- Without `< /dev/null` a warning line precedes the JSON, so filter with `command grep '^{'`.
-- The reply is `.result` on the `type == "result"` line. Tool use appears in `type == "assistant"` lines.
+Use the scripts rather than hand-rolling runners; `--help` documents inputs.
+- `scripts/probe.py`: runs each scenario's fixed turns on both harnesses in parallel. Writes clean transcripts for judges, raw per-turn logs, and a summary of reply length and skills loaded per turn. Check that summary: a probe proves nothing if the skill never loaded.
+- `scripts/judge.py`: blind pairwise judging of two condition directories by judges from both families, with randomized A/B per pair and the key kept outside the prompt. Write the rubric from the agreed decisions; the script appends the verdict format.
 
-**Codex**
-- New session: `codex exec -m <model> -C <dir> -s workspace-write --skip-git-repo-check --json "<prompt>" < /dev/null`.
-- The first line carries `thread_id`.
-- Later turns: `codex exec resume <thread_id> -m <model> --skip-git-repo-check --json "<prompt>"`, run from the fixture directory.
-- The final reply is the last `item.completed` event whose `item.type` is `agent_message`.
-- Subagent calls and briefs appear only in the session file under `~/.codex/sessions`.
-
-**Blind judges**
-- Codex: `codex exec -m <model> -c model_reasoning_effort=high -s read-only ...`
-- Claude: `claude -p "<prompt>" --output-format json < /dev/null | jq -r .result`
-- Give each judge a rubric built from the agreed decisions. Randomize A/B per pair and keep the key outside the prompt.
+Harness facts the scripts depend on, for when a CLI changes:
+- Claude Code: `claude -p ... --session-id <uuid>` then `--resume <uuid>`, `--output-format stream-json --verbose`, stdin from `/dev/null` (otherwise a warning line precedes the JSON). The reply is `.result` on the `type == "result"` line; skill loads are `Skill` tool_use items.
+- Codex: `codex exec ... -C <dir> --json` (the first line carries `thread_id`), then `codex exec resume <thread_id> ...` from the same directory. `-C` resolves relative to the process cwd, so pass absolute paths. The reply is every `agent_message` item in the turn joined in order; Codex may split one reply into several items. Skill loads are `command_execution` items reading a `SKILL.md`. `-o <file>` writes the final message, which suits single-turn judges. Subagent briefs appear only in `~/.codex/sessions`.
 
 ## What synthetic tests miss
 
