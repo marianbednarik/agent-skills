@@ -77,9 +77,9 @@ Goal: one skill set and one global guidance file serving both GPT-6 Astra (Codex
 | --- | --- |
 | check-work | Done (`db8b513`). Refocused on an independent fresh-context review of large or risky changes. |
 | shaping | Done (`18c963d`). Rebuilt around settling-versus-spiraling and thinking with the user. |
-| project-context | Next |
-| writing-for-agents | Pending |
+| project-context | Done (uncommitted). Rebuilt around lasting vs perishable, strength, one home, and updating with the change; templates dropped, file naming convention kept; scope includes agent instructions. |
+| writing-for-agents | Next |
 | codebase-audit | Pending |
 | retro | Pending |
 
-Open observations to revisit: Astra expanded scope (unrequested thread locking) and tried to update issue #7 in check-work probes despite the global "not less, not more" line, so the global guidance may need a sharper scope rule. Watch real use of shaping for out-of-sight brainstorming, defaults hardening into decisions, and caving on questions.
+Open observations to revisit: Astra expanded scope (unrequested thread locking) and tried to update issue #7 in check-work probes despite the global "not less, not more" line, so the global guidance may need a sharper scope rule. Watch real use of shaping for out-of-sight brainstorming, defaults hardening into decisions, and caving on questions. From the project-context probes: Astra again changed behavior outside the request (existing CSV ordering) and ran check-work on a small JSON export; Opus rarely self-loads project-context for decisions made mid-task.

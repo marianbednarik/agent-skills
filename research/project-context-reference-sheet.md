@@ -169,3 +169,79 @@ Applied skill-creator, writing-for-agents, and check-work to the authorized revi
 The agreed revision is complete. Existing symlinking makes the canonical skill revision available without a separate installation. No commit, push, runtime configuration synchronization, or other-model changes were performed. No unresolved material review finding remains.
 
 Remaining uncertainty: automatic discovery was not tested; these small, orderly fixtures do not establish broad performance gains or behavior in a large/messy project. Both baseline and candidate produced largely equivalent useful outcomes. Incoming agents without the authoring skill successfully consumed the knowledge but left an implementation-status inconsistency. That gap is recorded for real-use observation rather than expanded into a mandatory maintenance process. The retained revision is justified by clearer agreed ownership and portability, supported by independent text assessment, without claiming measured superiority.
+
+## Real-use evidence and model-neutral rewrite (2026-09-29)
+
+Part of the cross-model pass (see [stack sheet](skill-stack-reference-sheet.md)). Marián felt the September revision still left room for improvement without naming a specific failure. This pass replaced textual hypotheses with evidence from real sessions and from the docs the skill produced.
+
+### Evidence from real sessions
+
+Fresh-context extraction (Opus 5.5) over every non-authoring session that loaded the skill: 9 Codex sessions (content-foundry, hogwarts-battle-redux, byt, a scratch directory) and 2 Claude Code sessions (hogwarts). None ran the September text; all predate `397ea14`/`bb685ea`, so this is evidence about the job, not the current wording.
+
+- **The job in practice is "make the repo remember this."** Most hogwarts uses wrote agent workflow rules (PR and merge flow, running `gh` outside the sandbox, review etiquette) into README and AGENTS.md, often triggered by the user's dissatisfaction with agent behavior. The skill's stated scope (intent, rationale, language, design) did not cover this.
+- **Agent-written rules overshot the user's intent and cost real work later.** A "Verify meaningful visual changes in the rendered app" rule in DESIGN.md drove expensive browser QA in later sessions; the user then said "I honestly don't need visual verification of changes at all". A written squash-merge rule contradicted what the user expected.
+- **Ideals written as current fact.** A reviewer found ENGINEERING.md "overstates projection ownership and privacy"; the fix wrote implementation limits into the doc. Late additions in content-foundry drifted into slice status ("in this slice", "not part of this milestone").
+- **Ceremony.** Agents proposed exact wording and waited; one ran a full PR cycle for a 3-line AGENTS.md note. User: "You can apply edits directly, we will review the diff after."
+- **Placement flip-flop.** A Claude-only variant put design context in `.claude/rules/`; a Codex session removed it three days later as hidden from other agents. Resolved since by the shared skill set.
+- Reactions to explicit uses were mostly approval (`LGTM`, `Agreed. Let's plan that out.`); complaints concerned delivery time and process, not doc content.
+
+### Evidence from the docs themselves
+
+Fresh-context audit (Opus 5.5 with four helpers) of seven repositories, about 90 claims checked against code: hogwarts-battle-redux (4/5 usefulness), b-hub (3), iphone-checker (3), power-automate-extended (3), smartfox (3, no code), iphone-viewer (2), helm (1, no code).
+
+- **Intent survives; current-state claims rot.** No PROJECT.md was found wrong. Stale items are status, counts, and "what exists": "It is not installed yet" (it is), "bumped the schema to version 9" (code at 11), README and AGENTS.md disagreeing about what is built.
+- **Plans written as built.** An ADR describes an unimplemented health check; LANGUAGE.md defines terms from a doc titled "(Proposed)"; DESIGN.md forbids ambient blobs that every page renders.
+- **Copied values wrong from day one.** iphone-viewer DESIGN.md token frontmatter (radii, light-theme colors).
+- **Restatement.** "Deleted = sold" six times across PROJECT, ENGINEERING, LANGUAGE in one repo; one b-hub rule about eight times across five ADRs. Safe only where restatements point to an owner (hogwarts). Splitting by lens (product/engineering/language) invites restating one rule in each.
+- **Bulk passes go stale; docs shipped with the code stay current.** power-automate-extended and the iPhone repos were written in one pass and not touched again; hogwarts glossary edits ship with type changes and stay accurate.
+- **Layout churn.** Four generations of doc layout across the repos, each a bulk migration; declared structure rules ("glossary and nothing else") were not kept.
+- **Gaps.** Decisions made in PRs and closed issues never reached docs (hogwarts #126). Couplings and recurring changes were missing: adding an iPhone model (three times) touches two repos and a database select, recorded only in a code comment. The area under active work is least covered.
+- **Leaks.** `ssh root@<ip>`, "cannot be fully inspected in Codex", a model name in AGENTS.md.
+
+### Decisions
+
+Agreed with Marián on 2026-09-29:
+
+1. Rebuild the body around four two-sided tensions: lasting versus perishable, strength as agreed (over- and under-stating), one reachable home (scattered versus orphaned), and updating with the change (bulk passes versus missed decisions from PRs and issues).
+2. Scope explicitly includes standing instructions for contributors and their agents, since that is how the skill is used; the strength rule matters most there.
+3. Drop the four templates, but keep the file naming convention (`README.md`, `AGENTS.md`, `PROJECT.md`, `ENGINEERING.md`, `LANGUAGE.md`, `DESIGN.md`) as the default where a project has no layout, each file created only when it has content. Marián wants every project to share one shape so he can verify it at a glance, and named homes prevent single catch-all files. Duplication comes from files restating a rule for their own reader (iphone-checker), not from the names (hogwarts uses them and points instead), so the skill gives each file one kind of statement and has the others link.
+4. No `docs/adr/` in the convention; it came from Matt Pocock's skills. Its core moves into the owning docs: a consequential decision carries its reason and, where someone would plausibly propose it again, the rejected alternative and why. A changed decision is rewritten where it lives, with version control as history, rather than appended as amendments chained across records (the b-hub failure) or left stale (the hogwarts failure). Projects that already keep decision records mark superseded ones and link replacements.
+5. Do not adopt Matt Pocock's skills or conventions. Staying layout-neutral ("follow the existing layout") is enough to work in repos that use them, such as b-hub.
+6. When touching an area, check nearby claims against the code; fix plain drift, flag unexplained divergence. Area only, not a repo-wide audit.
+7. Make small edits directly and report them; keep personal, machine, and tool/model details out of shared docs.
+
+Baseline: repository `490adf5`; SKILL.md SHA-256 `2daddc9e1525e88face0d77e31a187e4b3ec9a88852b6e84ba0c155e841eebb3` plus the four templates (removed in this revision).
+
+### Tests
+
+Fixtures (six small git repositories, under `/tmp/pc-probe`, not preserved) were built from the evidence above: a decision stated in passing during a code task that makes a glossary entry wrong (`motto-boundary`); a recurring change across three places (`model-coupling`); a complaint about agent behavior that conflicts with an existing DESIGN.md rule, then a refinement (`browser-check-rule`); a planned feature to implement, with a planted doc/code sort-order mismatch in the same area (`json-export`); a typo fix where the skill should not fire (`typo-fix`); and a new project described over three turns with a hedge, an "I don't know", and a late hard constraint (`new-project`). The first `motto-boundary` fixture used real licensed quotes as "our own" mottos, and Opus correctly refused; the fixture was replaced with original lines and the baseline rerun.
+
+Each scenario ran through normal discovery on Opus 5.5 (`claude -p`) and GPT-6 Astra at medium effort (`codex exec`), baseline first, then the candidate. Judged transcripts included each repository's diff from the initial commit. Opus 5.5 and GPT-6 Astra at high effort judged every pair blind with randomized labels and a rubric built from the decisions.
+
+Skill loading: Codex loaded project-context in 4 of 6 scenarios on the baseline and 5 of 6 on the candidate (`browser-check-rule` added); neither loaded it for `typo-fix`. Opus loaded it only for `new-project` in both conditions and handled the in-task cases competently without it, so its other pairs compare run-to-run variance, not the skill.
+
+Verdicts over 24 judgments: candidate 9, baseline 8, tie 7. The judges agreed on direction in 9 of 12 pairs.
+
+| Scenario | Opus runs | Astra runs | Note |
+| --- | --- | --- | --- |
+| new-project | candidate (both judges) | candidate (both judges) | Baseline Opus created PROJECT, AGENTS, and CLAUDE.md with repetition and a status line; baseline Astra wrote the owner's name, "there is no app implementation yet", and "not verified yet". Candidates used README plus a thin AGENTS.md. |
+| browser-check-rule | baseline (both) | candidate (both) | All four runs edited the existing rule in place at the stated scope. Differences were small added clauses judged as over- or under-stating. The skill loaded only in the Astra candidate. |
+| model-coupling | candidate (both) | baseline (both) | All four recorded the three-place coupling in ENGINEERING.md without dated history and declined a separate doc. The Astra baseline also added a pointer comment beside the model list. |
+| motto-boundary | baseline (both) | baseline / tie | All runs fixed the glossary entry that caused the flip-flop. Differences were placement of one sentence. |
+| json-export | split | tie | All runs turned "planned" into current intent. Opus flagged the sort mismatch in both conditions; Astra changed existing CSV ordering to match the doc in both. |
+| typo-fix | tie | tie | No doc changes. |
+
+Reading: the baseline was already competent on small fixtures, as in September. The clear gain is on new-project, where the template list and missing perishable/personal guidance showed; that is the scenario closest to how docs bloat in real repositories. The losses are small wording differences on pairs where the skill loaded in only one condition or in neither.
+
+Two fixes followed and were rerun on Astra (`json-export`, `new-project`). "Your own standing instructions" was added to the leak list after a candidate Astra run copied a personal-guidance line ("Track requested implementation work in GitHub Issues") into README; the rerun did not. The divergence line changed from "rather than rewriting intent to match the code" to "rather than changing either side to match the other"; the rerun still changed CSV ordering to match the doc, disclosed in its report. This matches the scope expansion Astra showed in check-work probes and is left to global guidance rather than chased here.
+
+Final SKILL.md: 485 words (baseline 525 plus four templates), SHA-256 `e347d12b905b74179c31c202d92a5b54803065cf806d7fb77a3a26882f1cb669`.
+
+What these tests cannot show: whether agents notice lasting decisions over a long session, capture decisions made in PRs and issues, or keep docs current across many changes; whether the strength rule prevents overreaching workflow rules in practice; and whether dropping templates changes layouts in real new projects. Opus rarely self-loads the skill for in-task decisions in these fixtures; watch whether that holds in real use and whether missing decisions follow.
+
+Follow-up after review: the first candidate named no files, and Marián asked to keep the naming convention. The one-line role list became the named default above. Rerun of `new-project` on both harnesses: both produced a short README linking onward, a routing AGENTS.md, and PROJECT.md owning intent and open questions, with no empty ENGINEERING, LANGUAGE, or DESIGN files. The Opus run noted that ENGINEERING.md would be created when the first technical choice is settled. Remaining restatement was a one-line summary of the defining requirement in AGENTS.md. The Astra PROJECT.md carried verification steps and a "not a verified result" note, which is mildly perishable. Not re-judged blind.
+
+Second follow-up: `docs/adr/` dropped from the convention and its core distilled into the skill (decision 4). Rerun of `motto-boundary` on both harnesses: both moved the mottos, corrected the glossary entry that caused the original move, and recorded the reason ("our own jokes, not licensed game content"), which also works as the rejected-alternative note. Astra loaded the skill and put the rule in ENGINEERING.md beside the glossary fix. Opus did not load it and spread one idea across the glossary, ENGINEERING.md, and a code comment. Not re-judged blind.
+
+Final SKILL.md: 563 words, SHA-256 `bb60c083cb342569f0a3c23bb241fd0c589def98f487d32720c09e2d36b059f9`.
+
