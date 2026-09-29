@@ -77,7 +77,7 @@ Goal: one skill set and one global guidance file serving both GPT-6 Astra (Codex
 | --- | --- |
 | check-work | Done (`db8b513`). Refocused on an independent fresh-context review of large or risky changes. |
 | shaping | Done (`18c963d`). Rebuilt around settling-versus-spiraling and thinking with the user. |
-| project-context | Done (uncommitted). Rebuilt around lasting vs perishable, strength, one home, and updating with the change; templates dropped, file naming convention kept; scope includes agent instructions. |
+| project-context | Done (`9bf4f16`). Rebuilt around lasting vs perishable, strength, one home, and updating with the change; templates dropped, file naming convention kept; scope includes agent instructions. |
 | writing-for-agents | Next |
 | codebase-audit | Pending |
 | retro | Pending |
