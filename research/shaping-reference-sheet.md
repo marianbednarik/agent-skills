@@ -368,3 +368,20 @@ Each scenario ran on Opus 5.5 (`claude -p`) and GPT-6 Astra (`codex exec`) again
 | Revision | Added "fewer questions when the user is unsure", "recommended answer where you have one", "recommended answers are proposals… do not fill a gap with an assumption the user never confirmed", and "new evidence moves the direction only as far as it reaches". Rerun of onboarding and personal on both models: the judges split on three pairs and both preferred the candidate for Codex/personal. That is 5 of 8 votes for the candidate. |
 
 Interpretation: the baseline was already competent, so differences on these scripts are modest. The candidate's clearest gains are opening shape, a recommendation first, and holding a position. Its main risks are question load and defaults hardening into decisions; the revision targets both, but the rerun did not show a clear effect. Scripted users never answer questions, which penalizes question-asking styles, and the most important targeted failures cannot appear in three fixed turns: out-of-sight brainstorming, early recording, and long-exploration drift. Real use is the remaining test.
+
+## Addition: restate the goal in the agent's own terms (2026-09-29)
+
+Marián's reason: uncovering the meaning behind a loosely worded or dictated request is the core of shaping, and an explicit reading of his goal lets him correct a misread before anything builds on it. This restores the old "make consequential interpretations inspectable" idea, which the rewrite had dropped. It also targets the "real problem surfaced on turn 4" pattern in the real-use evidence. Per Clark and Brennan, the value lies in inference beyond the user's words, not in the recap itself.
+
+Decisions: state the goal, the reason behind it, and what would count as success. Do this early and when the framing shifts, not every turn. Mark inferences so the user can correct them. Name both failures: echoing the request, and replacing it with the agent's preference. Continue in the same turn rather than adding a confirmation round.
+
+Baseline: `134f44e`. Brief test with the same method as above and one run per cell. Scenarios: **Voice dump**, a rambling dictated request about a team meetup ("the meetup is kind of what I'm asking about", then "not sure what I want out of it"); and **Personal**, the freelancing scenario rerun.
+
+| Pair | Opus judge | Astra judge |
+| --- | --- | --- |
+| Voice dump, Claude | Baseline | Baseline |
+| Voice dump, Codex | Baseline | Baseline |
+| Personal, Claude | Candidate | Candidate |
+| Personal, Codex | Candidate | Candidate |
+
+All 8 verdicts gave the candidate the goal-understanding criterion. Every candidate opened with a tentative reading of the goal and of success, and none stalled for confirmation. The voice-dump losses came from other criteria: a 6-row table and a 5-option menu on Claude, and missing defaults and a looser reply to "not sure" on Codex. With one run per cell these may be noise. Claude transcripts grew 20–30%; Codex length did not change. In both conditions, both models still reframed away from the meetup on turn 1. Fixed turns cannot show whether an explicit reading makes that easier to correct. Watch in real use: added length on Claude, and whether readings of the goal catch misunderstandings early.
