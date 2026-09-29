@@ -318,3 +318,53 @@ in the transition-to-action paragraph; it was removed to preserve prior agreemen
 The skill validator and whitespace checks pass. The two final wording corrections
 received focused text review, not another behavioral run. Real conversational fit
 remains to be assessed through use with Marián.
+
+## Real-use evidence and model-neutral rewrite (2026-09-29)
+
+Marián calls this style of planning conversation the most important part of how he works with agents. Shaping descends from `implementation-planner` and was influenced by Matt Pocock's grilling skills. He wants something between grilling and the September shaping text, working on both GPT-6 Astra and Opus 5.5 and shareable with colleagues.
+
+### Evidence from real conversations
+
+Sources: 12 Codex conversations where the main agent read shaping (September 13–29; 9 in this repository, 3 personal), and 18 conversations using `grill-with-docs`/`grill-me` (August–September; 14 in b-hub, mostly "anything to discuss on B-xx before we implement?"). Claude Code never loaded shaping before 2026-09-29. Fresh-context Opus 5.5 agents extracted each conversation; findings below are theirs, checked for consistency.
+
+| Pattern | Evidence |
+| --- | --- |
+| Premature convergence takes a specific shape | "Let's brainstorm" leads to exploration by subagents in a research file, one polished synthesis, "sounds good", then edits. writing-for-agents was edited before its boundary was settled, and the real problem surfaced on turn 4. plan-work's lean flipped after "I am a bit lost"; later "so in summary what did we land on?" |
+| Over-depth is the opposite failure | Grilling: "Are we not overcomplicating it again?", "do we really need it?", "bro just forgo the 5GB test". By 09-12 he pre-empted it: "be suspicious of work that is unnecessary or too deep". |
+| What worked | Finding facts before asking; own recommendation with reasons and the strongest alternative; open revision ("My earlier draft overstated…"); plain-language explanations ("A bucket is an online folder…" unlocked a real decision); numbered questions with recommended answers that allow "Q1 – agreed"; rounds of 1–3 questions. |
+| Questions too few and too narrow | Almost all structured questions were single multiple-choice. He answered outside the options at least 3 times. "No issues" was taken literally instead of probed with a concrete scenario. |
+| Caving on a query | "Why a capital T?" withdrew a correct rule, then reversed again. `implementation-planner` had said "take pushback seriously instead of immediately adopting the last position". |
+| Length | Personal conversations were short and effective. Skill-design answers ran 600–1,200 words with 7–16-row tables. |
+| Early recording | A b-hub answer was written into Linear and the glossary, then reversed while he was thinking aloud; the edits were discarded. |
+| Other | Trigger fired on a passing opinion (the agent itself called shaping "unnecessary here"). Open questions vanished when the topic moved on. Ritual confirmation rounds and quoting skill text at him were mild noise. |
+
+Marián rated this Claude session, run without the skill, as "pretty good": evidence first, a recommendation, alternatives, grouped numbered questions with defaults, plain language, occasional tables.
+
+### Decisions
+
+- Name both failures, settling too early and spiraling beyond the stakes, and aim between them. "Do we need this at all?" is a real option.
+- Think with the user, not for them: delegate fact-finding, but explore in the conversation. Research sheets from rethink-skill remain fine; deciding happens in conversation.
+- Recommendation first, with the strongest alternative, the assumption that would change the recommendation, and a simpler route.
+- Few numbered questions per turn, each with a recommended answer; premises first; plain language; room outside the options; concrete scenarios when the user says nothing is wrong or cannot answer.
+- Change position on reasons, not on questions or mild doubt.
+- Short, readable turns; surface settled/changed/open in long explorations.
+- No recording while the user is thinking aloud; the user's intent governs action; no confirmation rituals.
+- Scope includes personal decisions; excludes quick opinions and questions with clear answers.
+
+Baseline before this pass: commit `db8b513`, `skills/shaping/SKILL.md` as revised in `06d0b97`.
+
+### Candidate tests (2026-09-29)
+
+These were scripted three-turn conversations in which the user's turns are fixed and do not respond to the assistant.
+- **Exporter:** a plugin-system proposal for an 18-line single-user tool, then "Why not just do it properly now?", then "what did we land on?"
+- **Onboarding:** "no real issues", while a metrics file shows 79→41 at the rules step. Then "it seems fine to me?", then a hint of feedback.
+- **Personal:** quitting to freelance, then "why are you asking?", then "I don't know what I value".
+
+Each scenario ran on Opus 5.5 (`claude -p`) and GPT-6 Astra (`codex exec`) against the baseline (06d0b97) and the candidate. All runs loaded the skill through normal discovery. GPT-6 Astra at high effort and Opus 5.5 each judged every baseline/candidate pair blind, with randomized A/B labels and a rubric built from the decisions above.
+
+| Round | Result |
+| --- | --- |
+| First candidate | The candidate won 4 of 6 pairs, and the judges agreed on every pair. Wins: exporter and personal on both models, for a tighter opening, a recommendation first, easy-to-accept defaults, and holding a view under "why?". Losses: onboarding on both models. Claude declared a direction settled from two remarks and assumed "no legal requirement" because nobody had mentioned one. Codex added question pressure and a second decision branch, with forced defaults on factual questions. |
+| Revision | Added "fewer questions when the user is unsure", "recommended answer where you have one", "recommended answers are proposals… do not fill a gap with an assumption the user never confirmed", and "new evidence moves the direction only as far as it reaches". Rerun of onboarding and personal on both models: the judges split on three pairs and both preferred the candidate for Codex/personal. That is 5 of 8 votes for the candidate. |
+
+Interpretation: the baseline was already competent, so differences on these scripts are modest. The candidate's clearest gains are opening shape, a recommendation first, and holding a position. Its main risks are question load and defaults hardening into decisions; the revision targets both, but the rerun did not show a clear effect. Scripted users never answer questions, which penalizes question-asking styles, and the most important targeted failures cannot appear in three fixed turns: out-of-sight brainstorming, early recording, and long-exploration drift. Real use is the remaining test.
