@@ -68,3 +68,18 @@ The narrowest candidate for future revision is the external HTML default in `rep
 Open questions are practical rather than textual: how often do natural requests activate the intended skill, does overlapping activation cause meaningful extra work, does a durable decision remain discoverable in a later task, and which report or review actions Marián actually finds worth their latency? Real session traces and a few representative tasks are better evidence than more hypothetical wording. No stack-level behavioral run was executed for this review; the assessment combines source inspection, historical small probes, current primary research, and independent read-only reviews.
 
 Independent checks used fresh contexts and no edits: Luna/high inventoried the canonical skills, Sol/medium assessed workflow handoffs, a second Sol/medium researched current practice and empirical counterweights, and Astra/high assessed the stack without the parent's conclusions. They converged on distinct ownership and an unmeasured cumulative-activation cost. Astra highlighted the HTML mandate and the local rethink procedure as the clearest potential sources of ceremony. These are text and source assessments, not observed selection traces or a behavioral A/B test. Because no candidate skill was written, the rethink procedure's anonymous original-versus-candidate review was inapplicable.
+
+## Cross-model pass (started 2026-09-29)
+
+Goal: one skill set and one global guidance file serving both GPT-6 Astra (Codex) and Opus 5.5 (Claude Code), shareable with colleagues. Wiring and writing rules are in the root `AGENTS.md`. Shared global guidance is `context/AGENTS.md`, rewritten model-neutral (782 → 429 words). Each skill is rethought one at a time with `rethink-skill`: real-use evidence from session logs first, then conversation, a model-neutral rewrite, and tests on both harnesses with blind judges from both model families.
+
+| Skill | Status |
+| --- | --- |
+| check-work | Done (`db8b513`). Refocused on an independent fresh-context review of large or risky changes. |
+| shaping | Done (`18c963d`). Rebuilt around settling-versus-spiraling and thinking with the user. |
+| project-context | Next |
+| writing-for-agents | Pending |
+| codebase-audit | Pending |
+| retro | Pending |
+
+Open observations to revisit: Astra expanded scope (unrequested thread locking) and tried to update issue #7 in check-work probes despite the global "not less, not more" line, so the global guidance may need a sharper scope rule. Watch real use of shaping for out-of-sight brainstorming, defaults hardening into decisions, and caving on questions.
