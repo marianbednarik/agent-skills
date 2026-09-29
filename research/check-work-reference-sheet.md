@@ -163,3 +163,51 @@ Local session identifiers, retained for evidence lookup:
 The skill-creator structural validator passed using cached PyYAML through offline `uv run`; the system and bundled Python environments lacked PyYAML. No dependency download or project dependency change was necessary. Canonical-source equality against the preserved baseline was checked immediately before writing, and only the skill and this research sheet were changed. The global symlink exposes the revision immediately; no separate install, Claude synchronization, commit, or push was performed.
 
 The evidence supports a shorter expression of the agreed workflow with no material regression in these probes. It does not establish more reliable defect detection or optimal review effort. Further synthetic polishing is not justified by the current results. Watch real use for premature stopping, unnecessary reviewer duplication, biased briefs, and loss of useful design/test judgment; change the skill only if concrete evidence warrants it.
+
+## Real-use evidence and model-neutral rewrite (2026-09-29)
+
+Marián questioned whether check-work is noise, since models already verify their own work, and asked for one skill set that works on both GPT-6 Astra and Opus 5.5 and can be shared with colleagues. This pass replaced synthetic probes with real session logs.
+
+### Evidence from real use
+
+Method: searched Codex logs (`~/.codex/sessions`) for tool calls that read `check-work/SKILL.md`, and Claude Code logs for Skill invocations. The catalog listed the skill in about 250 Codex sessions; 74 read it, 35 of them while editing the skill in this repository. That leaves 39 real Codex uses (2026-07-12 to 09-24, skill versions 277061f through 637be57) and 3 Claude uses of the retired Claude variant (ef0e59b). No real use of the 09-27 text exists. Three fresh-context Opus 5.5 agents (two with helpers) analyzed each run: trigger, review actions, findings, counterfactual, cost, and the user's next message. Subagent briefs are encrypted in Codex logs, so reviewer scoping is inferred from the parent's narration.
+
+| Pattern | Observation |
+| --- | --- |
+| Independent reviewer on substantial code | Real findings in roughly 15 of 16 runs, about 35 defects in total, after tests had passed: hotseat deadlock, retained host authority after reconnect, wrong-card purchase, deck-card identity leak, retry to a nonexistent step, slug collisions, lost unsaved edits, and a deploy health check accepting a failure status. Follow-up rounds caught regressions introduced by earlier fixes at least four times. |
+| Self-review by the implementer | About 25 of 40 passes found nothing, some in under 20 seconds; most re-ran suites that had just passed. Small real fixes occurred. The Claude variant never used reviewers: 4 small real defects and 6 simplifications across 3 sessions, 2–5 minutes each. |
+| Document and admin work | Almost no value. Reviewers returned "no material findings"; one run injected review notes into an Excel deliverable, which the user asked to remove. Reviews of technical documentation against code did find real inaccuracies. |
+| Rendered UI | In nearly every UI session the user's next message reported a visual defect the review missed. Some reports claimed correctness from code reading ("rendering path proven intact") while the bug persisted. |
+| Independence | Every Codex reviewer was forked with the full parent history, including the implementer's verification claims; none was blind. Remote Codex PR review still found 1–4 further issues after local review in several sessions. |
+| Process failures | The skill was re-read at the start of many turns (up to 16 times in one session) with a "review" after each small fix. Findings were mis-triaged (an animation deleted to resolve "exit can't animate", which the user reported minutes later) or silently dropped. Final reports often omitted what review had fixed ("Final Codex review found no issues" after four local fixes). Reviews widened scope, e.g. four rounds hardening an unrequested deploy script. |
+| User reaction | No message commented on a review directly. Frustration concerned overall pace and fix–deploy–refix loops. |
+
+Conclusion: the independent reviewer on substantial or risky code is the skill's real value; routine self-review adds little beyond ordinary verification. The previous description ("review completed work automatically, including useful checkpoints during development") invited the low-value mode, and omitted findings in reports hid the value from the user.
+
+### Decisions
+
+- Refocus on an independent review before handing back substantial or risky code, plus explicit PR/branch/commit/diff review on request.
+- Reviewers start in fresh context, not forked, with requirements, diff, guidance, and suspected risk, but without the implementer's conclusions or verification claims.
+- Exclude small fixes, bug-fix loops, and document and admin work.
+- UI: check the running result when practical at reasonable cost, but do not require it; state what could not be observed. Marián's "I will do visual inspection" in hogwarts-battle-redux was a project-specific response to cost and tooling limits, not a standing rule.
+- Each finding ends as fixed at its cause, reported, or rejected with a reason. Reports list findings, changes, declined items, and unverified areas.
+- Remote or project-specific PR review stays in project guidance.
+- Model-neutral wording: no model names, no personal name, no reference to personal global guidance, spec-only frontmatter.
+
+Baseline before this pass: commit `6ae9adc`, SHA-256 `95b094b6342a9311a9643fef6e7fbec3355eb2fdc42d5191851f5c7bd83986f0`.
+
+### Candidate tests (2026-09-29)
+
+Fixture: a Python stdlib reservation service with an uncommitted change (release and 15-minute expiry) whose tests passed but which allowed cross-workspace release, double stock return, and confirmation after expiry. A second copy carried only a wrong README test command. Runs used each harness's real global setup and skill discovery: `claude -p` with Opus 5.5 at medium effort, `codex exec` with GPT-6 Astra at medium effort. Prompts: "Finish the reservation expiry and release change and hand it back." and "The test command in the README is wrong. Fix it."
+
+| Run | Skill text | Result |
+| --- | --- | --- |
+| README fix, both models | first candidate | No skill use or reviewer; one-line fix and test run. |
+| Change, Astra | first candidate | Read the skill, spawned a reviewer with `fork_turns: none`, and ran a second round after fixes. Found the three planted defects. Also added thread locking (unrequested) and tried to update issue #7. Short report. |
+| Change, Opus | first candidate | Did not use the skill. It judged the change "small" from the description's "substantial". Fixed the three planted defects itself and reported honestly that no independent review ran. Negative quantities still drove stock below zero. |
+| Change, Opus | revised | Used the skill. Its fresh reviewer's brief gave requirements, rules, the base commit, the checks already run, and suspected risk areas, with no verdict. The reviewer found negative-quantity and lazy-expiry defects; a second round found NaN quantities. The report covered findings, fixes, one decision for the user, declined pre-existing gaps, and what was unverified. About 2 minutes, $0.73 against $0.23 without review. |
+| Change, Astra | revised | Same pattern as the first Astra run: fresh reviewer, "no actionable defects", thread locking added again, brief report without a declined or unverified section beyond runtime expiry. |
+
+A blind GPT-6 Astra (high effort) comparison of the baseline (A) and first candidate (B), given owner requirements but not the log evidence, preferred A. It cited evidence reuse, completion criteria, separating actionable from speculative findings, and a delegation fallback. Its criticisms of B: the size exemption conflicted with requested reviews of small diffs and with risky one-line changes; "another round" conflicted with "do not re-review every fix"; the reviewer role was ambiguous; there was no fallback without subagents. The revision addresses each: a risk-based trigger in the description, an exclusion limited to automatic use, a re-review scoped to fixes that change behavior, "you are the reviewer" for others' changes, a fallback with disclosure, sharing of checks already run, and concrete-consequence and pre-existing-problem criteria. The revision received parent review and the two behavioral reruns above, not a second blind review.
+
+Remaining uncertainty: one fixture, with one run per condition. The fixture is small enough that both models find the planted defects unaided. Astra's reports stay terse and it expands scope under "finish" prompts; that is an implementation-scope issue for global guidance rather than this skill. Watch real use for how often the risk trigger fires on routine UI work.
