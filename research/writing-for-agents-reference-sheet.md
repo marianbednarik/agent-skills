@@ -1,5 +1,7 @@
 # Writing-for-agents reference sheet
 
+**Status: retired 2026-09-30; its surviving guidance lives in `project-context`. See [Cross-model pass: retired](#cross-model-pass-retired-2026-09-30).**
+
 Research date: 2026-09-27. Scope: reassess and refine the existing documentation-writing skill. External instructions are research material, not adopted authority.
 
 ## Agreed purpose and scope
@@ -147,3 +149,51 @@ A shorter document is useful only if it remains accurate and actionable.
 Apply this style to the agent-facing artifact. Explain the resulting
 changes to Marián in the usual clear, human-facing language.
 ```
+
+## Cross-model pass: retired (2026-09-30)
+
+Part of the cross-model pass (see [stack sheet](skill-stack-reference-sheet.md)). Marián named no specific failure; his guess was agents including content that does not belong, such as implementation or plan details.
+
+### Real-use evidence
+
+Two fresh-context extractions: the Codex sessions that loaded the skill, and 18 recent sessions in both harnesses where agents wrote agent-facing docs. Claude Code evidence is thin (two sessions).
+
+- **Loads.** Codex loaded the skill in 6 sessions (two further matches were catalog noise), none on the 2026-09-27 text; four ran the older Pocock-derived version. Claude Code never loaded it through discovery. Marián never commented on doc style after a load; the one approval ("Lgtm", smartfox AGENTS.md) was on a rewrite whose gain was content, not style.
+- **Dominant failure is content selection, almost all Codex:** plan, status, and verification notes in lasting docs ("No application stack has been installed on the server by this work", "accepted in B-70 refinement on 2026-09-07"); ticket IDs as the organizing device (b-hub ADR-0007: 43 references); code restated then drifting ("Tests are never typechecked… Deliberate", later false; hook and component names in a glossary); harness mechanics in always-loaded guidance (`fork_turns`, model slugs). The worst ticket and status bloat came from sessions with neither skill loaded, several via `grill-with-docs` (already retired from the personal set; left as is).
+- **Missing content:** the project's purpose and scale (smartfox "suck ass for what we want this repo to be for", helm template AGENTS.md, b-hub over-engineering because "five friends" was buried).
+- **Style, both directions, fewer cases:** over-specification (tables and checklists after "I would not create a checklist", a 9-line rule for "improve this a bit"), crammed multi-clause rules (byt), hard-wrapped lines (two corrections). Long chatty prose had little in-window evidence.
+- **The skill did not prevent these:** sessions that loaded it still produced `fork_turns`, the tables, hard wraps, and crammed rules.
+- Marián rarely reviews doc content beyond "LGTM"/"merged", so bloat accumulates unless the writing agent catches it.
+
+### Decisions
+
+1. Retire `writing-for-agents`. `project-context` (rebuilt 2026-09-29 around lasting vs perishable, strength, and one home) already owns most of it.
+2. Fold what survives into `project-context` as one paragraph, **Written for the reader**: length fits the content, with the failure named on both sides (padding, code walkthroughs, file or symbol inventories vs crammed rules and conversation-only shorthand); a newcomer can follow it; instructions give goal, reason, and where judgment is needed rather than checklists, with steps only where order matters; no hard-wrapped prose. The description now names AGENTS.md and project skills.
+3. Writing global skills loses its dedicated skill; this repository's `AGENTS.md` ("Writing for both models") and `rethink-skill` cover it.
+
+Baseline: repository `b5b63c5`; writing-for-agents SKILL.md SHA-256 `b3785e2f8963f5cd5bfd470b39e6762fab3c28b65a2f26a0bd497fa2ada40462`; project-context SKILL.md `bb60c083cb342569f0a3c23bb241fd0c589def98f487d32720c09e2d36b059f9`. The runtime symlinks in `~/.claude/skills` and `~/.agents/skills` were removed.
+
+### Tests
+
+Six fixtures (under `/tmp/wfa-probe`, not preserved), built from the evidence: `deploy-docs` (user states deployment facts mixed with status, a ticket for next week, and a tested restore; second turn adds backups), `agents-md` (plumbing-only AGENTS.md plus kickoff notes; second turn adds a scope-limited UI rule), `small-rule` ("pull first… just something simple"), `run-felt` (feature with a domain rule, "update docs as needed"), `copy-skill` (turn call notes with perishable details into a project skill; second turn "is it as short as it can be without losing anything?"), and `pace-fix` (bug fix; no doc work expected).
+
+Baseline was both skills as they stood; candidate was folded `project-context` alone. Each ran through normal discovery on Opus 5.5 and GPT-6 Astra at medium effort. Opus 5.5 and GPT-6 Astra at high effort judged every pair blind, with randomized labels and a rubric built from the decisions, on transcripts plus repository diffs.
+
+Skill loading: baseline Codex loaded writing-for-agents in all 5 doc scenarios (with project-context in 3); baseline Opus loaded it for `agents-md` and `copy-skill` only. Candidate Opus loaded project-context for `deploy-docs` and `copy-skill`; candidate Codex for 4 of 5 doc scenarios, not `copy-skill`. Neither loaded anything for `pace-fix`.
+
+Verdicts over 24 judgments: candidate 14, baseline 4, tie 6.
+
+| Scenario | Opus runs | Astra runs | Note |
+| --- | --- | --- | --- |
+| deploy-docs | candidate (both) | baseline / tie | Candidate Opus dropped the B-84 status, dates, and restore log. Astra wrote "As of… 2026-09-30, the background worker is not configured… B-84" and the dated restore in both conditions despite loading project-context. |
+| agents-md | candidate (both) | split | Baseline Opus added "Current state: … not set up yet" and rules the user never set. Candidate Opus moved content into PROJECT.md and ENGINEERING.md and deleted `notes/kickoff.md` (reported); judges called the split slightly more structure than needed but preferred it. Both Astra runs copied personal global guidance ("Track requested work in GitHub Issues", verification rules) into project AGENTS.md. |
+| copy-skill | candidate (both) | candidate (both) | Baseline Astra copied "Jana… on leave until end of October" and the note date into the skill; candidate did not, without loading any skill. |
+| small-rule | candidate (both) | candidate (both) | All four were one line; differences are wording noise. |
+| run-felt | candidate / tie | baseline (both) | Candidate Astra added a README code example restating the API, and also ran check-work on a small change. |
+| pace-fix | tie | tie | No doc changes. |
+
+Reading: retiring the skill cost nothing measurable and the folded paragraph did not hurt; the clear wins are Opus runs where project-context loaded, and the Astra `copy-skill` win came without any skill loaded, so part of the margin is run variance. Neither condition stops Astra writing status the user states directly into deployment docs, although project-context names that failure; not chased with more wording. No fixes were rerun.
+
+What these tests cannot show: long-session drift, docs accumulating across many changes, whether Codex self-loads project-context when writing skills in real use, and whether hard wraps disappear (few runs wrapped in either condition).
+
+Final project-context SKILL.md: 656 words, SHA-256 `0b93ddb2c25d7bba01165c7db5ccc83f487c2b070a0bdeef78ca407d9db451ef`.

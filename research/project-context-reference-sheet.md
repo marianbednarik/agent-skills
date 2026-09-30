@@ -245,3 +245,5 @@ Second follow-up: `docs/adr/` dropped from the convention and its core distilled
 
 Final SKILL.md: 563 words, SHA-256 `bb60c083cb342569f0a3c23bb241fd0c589def98f487d32720c09e2d36b059f9`.
 
+
+Follow-up 2026-09-30: `writing-for-agents` was retired and its surviving guidance folded in as the "Written for the reader" paragraph; the description now names AGENTS.md and project skills. Evidence and tests are in the [writing-for-agents sheet](writing-for-agents-reference-sheet.md#cross-model-pass-retired-2026-09-30).

@@ -78,8 +78,10 @@ Goal: one skill set and one global guidance file serving both GPT-6 Astra (Codex
 | check-work | Done (`db8b513`). Refocused on an independent fresh-context review of large or risky changes. |
 | shaping | Done (`18c963d`). Rebuilt around settling-versus-spiraling and thinking with the user. |
 | project-context | Done (`9bf4f16`). Rebuilt around lasting vs perishable, strength, one home, and updating with the change; templates dropped, file naming convention kept; scope includes agent instructions. |
-| writing-for-agents | Next |
-| codebase-audit | Pending |
+| writing-for-agents | Retired. Real use showed the failures are content selection, which project-context owns; its surviving guidance became project-context's "Written for the reader" paragraph. See [its sheet](writing-for-agents-reference-sheet.md#cross-model-pass-retired-2026-09-30). |
+| codebase-audit | Next |
 | retro | Pending |
 
 Open observations to revisit: Astra expanded scope (unrequested thread locking) and tried to update issue #7 in check-work probes despite the global "not less, not more" line, so the global guidance may need a sharper scope rule. Watch real use of shaping for out-of-sight brainstorming, defaults hardening into decisions, and caving on questions. From the project-context probes: Astra again changed behavior outside the request (existing CSV ordering) and ran check-work on a small JSON export; Opus rarely self-loads project-context for decisions made mid-task.
+
+From the writing-for-agents probes: Astra writes user-stated status ("not configured yet, tracked in B-84") into deployment docs even with project-context loaded, and copies personal global guidance into project AGENTS.md; Opus moved kickoff notes into PROJECT.md and ENGINEERING.md and deleted the source file.
