@@ -102,3 +102,47 @@ The baseline was 399 whitespace-separated words including frontmatter; the final
 The skill validator passed with `uv run --no-project --with PyYAML python /Users/marian/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/codebase-audit`, and `git diff --check` passed. System and bundled Python lacked PyYAML; an isolated uv dependency environment resolved the validator dependency without changing the project environment. Source/name consistency, runtime symlink resolution, and references were checked. The unrelated pre-existing `research/skill-stack-reference-sheet.md` was preserved.
 
 Remaining uncertainty: automatic discovery under the new name, larger or messy repositories with incomplete context, useful prioritization when many plausible issues compete, remediation continuation, and whether richer inline reports improve Marián's actual understanding. Observe those in real use before adding more rules or evaluation machinery. The current evidence supports a better fit to clarified intent while preserving competent baseline behavior, not a proven reliability gain.
+
+## Cross-model pass: rebuilt around cleanup that gets done (2026-09-30)
+
+Part of the cross-model pass (see [stack sheet](skill-stack-reference-sheet.md)). Treated as a new skill: the current text had never run for real. Marián's purpose in his words: "cleanup the codebase in general, then cleanup certain aspects like performance, dead code, god components… see what is there to improve." His ranking of candidate jobs: de-slop, then "is it in decent shape", then understand, then prepare before a change.
+
+### Real-use evidence
+
+Two fresh-context extractions over both harnesses: runs of audit-type skills, and natural requests without a skill (21 occurrences, mostly hogwarts; Claude Code history for August is largely missing).
+
+- **Acted on:** hogwarts 2026-08-17, an audit apparently run as more than one pass ("Two passes disagreed"), became issues #65–#89, all implemented within five days, plus a second batch (#115–#126, 11 of 12 done). hogwarts 07-26 "limbo" audit: "I agree with everything… work until all of the things you found/recommended are done", then 8 commits. b-hub 09-05 docs audit: "agree with everything", then Linear issues, the first merged the same day. Test-speed rework measured first (one file 92% of app test time; 11.3s to 3.9s).
+- **Ignored:** both `improve-codebase-architecture` runs (hogwarts 09-12, byt 08-31) ended in an HTML report in seam/deepening vocabulary and "Which of these would you like to explore?"; no reply either time.
+- **Pushed back:** findings against deliberate product choices ("Cards being visible for all players is a design choice"), judgments from code or screenshots without checking behavior, performance work without a measurement (deferred).
+- Performance came up in about 7 of 21 occurrences. He wants assessment first, then approves or trims, then execution, usually via tickets; he rejected cleanup-by-default. Every real run had a trigger or narrowed scope. Docs-and-guidance drift was as common a target as code; project-context owns fixing it.
+
+### Research added
+
+Fresh-context research (Opus 5.5) on 2026 practice; sources in that run's report, summarized here. No major whole-repo audit tool exists; current simplify/deslop tools (Anthropic code-simplifier and `/simplify`, Cursor deslop, addyosmani code-simplification) work on the recent diff and edit directly. Evidence on agent-written code: complexity and warnings rise and persist (He et al., MSR'26, causal design); smells dominate introduced issues and persist (Liu et al., arXiv 2603.28592); semantic redundancy and missed reuse are the best-supported agent-specific problem and survive review (arXiv 2601.21276); over-engineering is the top revert cause (MSR'26 challenge); agents' own refactoring is mostly renames (arXiv 2511.04824). Multi-pass: independent runs mainly raise recall (SWR-Bench); a per-finding check against the code carries precision; debate and voting add little (Smit et al., ICML'24). Acted-on findings: in-workflow delivery vs batch lists (Infer ~70% vs ~0%), "effective false positive" = no action taken (Google), agents defer to tickets instead of proposing fixes (Every). Performance from static reading is weak (SANER'26, SWE-fficiency); code-visible waste is a finding, impact is a hypothesis. Not imported: numeric confidence scores, finding quotas, persona fleets or debate, P0–P3 gates, health grades, mechanical smell thresholds, autonomous whole-repo edits.
+
+### Decisions
+
+1. Keep the name `codebase-audit`; put the user's words (cleanup, duplication, dead code, oversized components, performance) in the description.
+2. The job: find weight that serves no present purpose, most costly first (duplication and missed reuse, unused layers, failure-hiding error handling, split state, oversized components, competing patterns, dead paths, test smells, hot-path waste, docs contradicting code); prefer structural changes over renames. Serious bugs found along the way go first, but it is not a bug hunt; a user wanting bugs or performance says so in the scope.
+3. Name both failures: over-flagging (churn, uniformity, rigor beyond the project, theoretical risks, undoing deliberate choices) and under-flagging ("mostly fine" after a skim, cosmetic nits). Keep only what the user would plausibly act on; finding little is fine.
+4. For a broad sweep, independent fresh-context passes split by area; verify each finding against the code before reporting without refuting it for mere uncertainty; read recorded decisions first.
+5. Report: verdict and first move; findings ready to become issues (what/where, cost today, evidence, change, how to confirm, effort and risk); propose the fix rather than defer; small landable changes; what is solid; what was and was not inspected; the project's own terms. Chat by default, a file only to keep or share.
+6. Investigate and report; end with a concrete proposal, not a menu; after approval, file issues in the project's tracker or implement.
+
+Baseline: repository `4f0a658`; SKILL.md SHA-256 `69c86b87f10de1216c9111cda710485ce03ad5315fc59d5e52d262d98fd21126` (last changed `5958b2f`).
+
+### Tests
+
+One real fixture instead of synthetic ones: a clone of hogwarts-battle-redux at `bde9c5e` (282 files, about 56k lines), remote removed. Prompt: "Run a codebase audit on the whole repo. What is worth cleaning up or improving?" Two replicate runs per condition on Opus 5.5 (`claude -p`) and GPT-6 Astra at high effort (`codex exec`); every run loaded the skill. Both models split the sweep across parallel subagents in both conditions.
+
+Blind pairwise judging by Opus 5.5 and GPT-6 Astra (high), run inside a clean copy of the repository and instructed to spot-check claims against the code, with a rubric built from the decisions. Candidate won 7 of 8 judgments (the loss: the Astra judge on the second Astra pair). Marián read one blinded pair per model and preferred the candidate in both.
+
+What the judges credited: candidate runs surfaced the structural cleanup (app restating engine rules and already drifting, replay implemented three times, a forked save-validation path, always-true saved-state fields, tests that pass while checking nothing, a caller-checked dead-code sweep), sized each finding with a confirmation step, and ended with a concrete filing plan. The baseline Astra report was mostly reliability and security bugs and advised leaving large modules alone; baseline runs ended in a menu or no next step.
+
+What the candidate gave up: fewer runtime bugs (baseline runs caught reconnect and relay failures the candidate runs missed); one Opus candidate run overreached on a self-stun rules claim (flagged as a rule call but not supported by the cited cards); "risk: none" overused. Marián's view: a focus on bugs or performance can be requested in the scope, so no change.
+
+Harness fix during testing: Opus used background agents, so one turn emitted several `result` events and `probe.py` kept the first ("Still running…"). It now keeps the last and counts only top-level skill loads.
+
+What these tests cannot show: the approve-then-file step, audits on other repositories and stacks, whether findings get implemented, and recall against a known list of problems.
+
+Final SKILL.md: 759 words, SHA-256 `da450530d44205b2d8c9672b6953c59d5445a1cb3c215e53a5840508273d9072`.

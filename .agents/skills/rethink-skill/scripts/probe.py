@@ -48,8 +48,10 @@ def claude_turn(state, prompt, cwd, log, args):
     if args.claude_model:
         cmd += ["--model", args.claude_model]
     events = run(cmd, cwd, log)
-    reply = next((e.get("result", "") for e in events if e.get("type") == "result"), "")
+    # Background agents make one turn emit several result events; the last is the final reply.
+    reply = next((e.get("result", "") for e in reversed(events) if e.get("type") == "result"), "")
     skills = [c["input"].get("skill") for e in events if e.get("type") == "assistant"
+              and not e.get("parent_tool_use_id")
               for c in e.get("message", {}).get("content", [])
               if c.get("type") == "tool_use" and c.get("name") == "Skill"]
     return reply, skills
