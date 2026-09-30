@@ -29,7 +29,8 @@ def ask(judge, prompt, answer_file, args):
             text = res.stdout + res.stderr
         answer_file.write_text(text)
     else:
-        cmd = ["codex", "exec", "-m", args.codex_model, "-c", f"model_reasoning_effort={args.codex_effort}",
+        cmd = ["codex", "exec", *(["-m", args.codex_model] if args.codex_model else []),
+               "-c", f"model_reasoning_effort={args.codex_effort}",
                "-s", "read-only", "--skip-git-repo-check", "-o", str(answer_file), prompt]
         subprocess.run(cmd, stdin=subprocess.DEVNULL, capture_output=True)
     text = answer_file.read_text() if answer_file.exists() else ""
@@ -44,14 +45,12 @@ def main():
     p.add_argument("--rubric", required=True, help="file with context and criteria built from the agreed decisions")
     p.add_argument("--out", required=True)
     p.add_argument("--judges", default="claude,codex")
-    p.add_argument("--codex-model", help="required when codex judges")
+    p.add_argument("--codex-model", help="defaults to the model in the Codex config")
     p.add_argument("--codex-effort", default="high")
     p.add_argument("--claude-model", help="defaults to the harness default")
     args = p.parse_args()
 
     judges = args.judges.split(",")
-    if "codex" in judges and not args.codex_model:
-        sys.exit("--codex-model is required for codex judges")
     conds = {Path(args.first).name: Path(args.first), Path(args.second).name: Path(args.second)}
     if len(conds) != 2:
         sys.exit("condition directories need different names")

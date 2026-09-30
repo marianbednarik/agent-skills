@@ -58,7 +58,9 @@ def claude_turn(state, prompt, cwd, log, args):
 
 
 def codex_turn(state, prompt, cwd, log, args):
-    opts = ["-m", args.codex_model, "--skip-git-repo-check", "--json"]
+    opts = ["--skip-git-repo-check", "--json"]
+    if args.codex_model:
+        opts += ["-m", args.codex_model]
     if args.codex_effort:
         opts += ["-c", f"model_reasoning_effort={args.codex_effort}"]
     if "id" not in state:
@@ -106,14 +108,12 @@ def main():
     p.add_argument("--out", required=True, help="results root; transcripts go to <out>/<label>/")
     p.add_argument("--fixtures", help="directory with one fixture subdirectory per scenario")
     p.add_argument("--harness", default="claude,codex")
-    p.add_argument("--codex-model", help="required when running codex")
-    p.add_argument("--codex-effort")
+    p.add_argument("--codex-model", help="defaults to the model in the Codex config")
+    p.add_argument("--codex-effort", help="defaults to the effort in the Codex config")
     p.add_argument("--claude-model", help="defaults to the harness default")
     args = p.parse_args()
 
     harnesses = args.harness.split(",")
-    if "codex" in harnesses and not args.codex_model:
-        sys.exit("--codex-model is required for codex")
     out = Path(args.out).resolve() / args.label
     (out / "logs").mkdir(parents=True, exist_ok=True)
     jobs = [(n, t, h) for n, t in read_scenarios(args.scenarios) for h in harnesses]
