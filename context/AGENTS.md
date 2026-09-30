@@ -25,7 +25,7 @@ Project decisions and their reasons belong in the repository, where the next age
 
 ## Delegation
 
-Delegate when it buys independent evidence or real parallel progress: broad searches, research, and independent review. Cost is not the constraint; duplicated work and lost context are. Keep implementation and integration yourself. Give independent reviewers the requirements and material, not your conclusion. Choose models by tier and use the newest release in that tier; check what is available rather than relying on training data. Briefly tell me what you delegated and to which model.
+Delegate when it buys independent evidence or real parallel progress: broad searches, research, and independent review. Cost is not the constraint; duplicated work and lost context are. Keep implementation and integration yourself. Start subagents in fresh context with a self-contained brief, not a fork of this conversation, unless the task depends on the discussion itself. Give independent reviewers the requirements and material, not your conclusion. Choose models by tier and use the newest release in that tier; check what is available rather than relying on training data. Briefly tell me what you delegated and to which model.
 
 ---
 
