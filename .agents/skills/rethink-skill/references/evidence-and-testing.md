@@ -28,7 +28,7 @@ Fresh-context extraction agents need: the skill's purpose, the file list, the fo
 Both harnesses load the live global skills, which are symlinks to this repository. Run baseline and candidate sequentially: baseline runs first, then edit the canonical file and run the candidate. Keep fixtures under `/tmp`, identical except for the condition under test.
 
 Use the scripts rather than hand-rolling runners; `--help` documents inputs.
-- `scripts/probe.py`: runs each scenario's fixed turns on both harnesses in parallel. Writes clean transcripts for judges, raw per-turn logs, and a summary of reply length and skills loaded per turn. Check that summary: a probe proves nothing if the skill never loaded.
+- `scripts/probe.py`: for explicit-only skills, put the invocation in the turn (`/name` for Claude Code, `$name` for Codex) and run each harness separately with `--harness`; a slash-invoked skill is expanded without a `Skill` tool call, so the summary shows no load, and its session transcript under `~/.claude/projects/` confirms it. Runs each scenario's fixed turns on both harnesses in parallel. Writes clean transcripts for judges, raw per-turn logs, and a summary of reply length and skills loaded per turn. Check that summary: a probe proves nothing if the skill never loaded.
 - `scripts/judge.py`: runs judges in the process's working directory; launch it from a clean fixture copy when judges should check claims against the code. Blind pairwise judging of two condition directories by judges from both families, with randomized A/B per pair and the key kept outside the prompt. Write the rubric from the agreed decisions; the script appends the verdict format.
 
 Harness facts the scripts depend on, for when a CLI changes:

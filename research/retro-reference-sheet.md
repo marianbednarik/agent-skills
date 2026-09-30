@@ -128,3 +128,38 @@ Three concrete text changes followed its assessment: remove a repeated request-o
 The skill-creator validator passed using `uv run --with pyyaml` after the default Python lacked PyYAML; no repository dependency was added. YAML policy and frontmatter were parsed, references and the canonical symlink were checked, and whitespace validation passed. Review reused the scenario results and independent comparison rather than adding another general review round.
 
 The evidence supports a coherent clarification, not a proven general improvement. Real retros must establish the comfortable detail level, whether local skills are proposed when they genuinely help discovery, and whether significant external limitations remain visible without noisy or speculative recommendations. No commits, pushes, separate installation, global guidance changes, or other model-variant synchronization were performed.
+
+## Cross-model pass: rebuilt around hidden friction (2026-09-30)
+
+Part of the cross-model pass (see [stack sheet](skill-stack-reference-sheet.md)). The user's purpose, restated: models get "unstuck" so well that friction goes unnoticed, especially in background tasks; a retro should make the agent reflect on those issues and propose fixes so they are not repeated. He added inefficiency: repeated tasks an agent struggles through (for example hand-built probe setups) even when everything works in the end.
+
+### Real-use evidence
+
+Two fresh-context extractions (Opus 5.5).
+
+- **Retros:** three real invocations. Only one paid off (Claude Code, agent-skills, 2026-09-29): the user pointed at friction ("I saw that you had issues with the test runs"), the agent checked logs and `/tmp` artifacts, found the testing notes were wrong and truncating evidence, fixed them, and built `probe.py`/`judge.py`, reused since. The other two (Codex, 09-14 byt and 09-15 agent-skills) answered from memory with one and zero tool calls, never opened subagent logs, concluded "my judgment, no rule needed", and nothing was applied. No reflective question was ever asked without the skill.
+- **Hidden friction (22 sessions):** friction reached the user only when it blocked the agent or the user asked. Routed-around friction was omitted or understated in every case checked, including workarounds that changed what was verified or shipped: B-49's own new tests skipped for missing Docker behind "23 skipped"; a filename-collision workaround shipped in B-66's diff; production verified by logging in with the local `.env` password; "real browser upload verified" after a 178 MB Playwright install and a timeout. Subagent friction rarely propagated (B-49 reviewers could not run `just check`; an approval subagent auto-approved escalations). Workarounds were rediscovered repeatedly (PyYAML for the skill validator in about 8 sessions, PDF tools in 14 byt sessions, the eza `ls` alias in about 12 Claude transcripts). A per-project note (sandboxed `gh` "token invalid") did not carry over to the next project. Much of the costliest friction came from the Codex sandbox before the switch to full access on 2026-09-05; agents took its misleading errors at face value.
+
+### Decisions
+
+1. Read the record, not memory: the session transcript and subagent or background logs; failed calls, retries, fallbacks, changes of approach; start from what the user points at.
+2. What counts, most consequential first: workarounds that changed what was verified or shipped and what could not run; misdiagnosed errors; wrong, stale, or missing guidance and misfired skills; inefficiency (long or repeatedly hand-done work that may deserve a script, check, or skill); discoveries worth keeping. Leave out routine noise.
+3. Pattern or one-off: targeted search of earlier sessions for the specific error or procedure. Name both failures: rules from one-off slips, and "my mistake, no rule needed" for a recurring problem.
+4. Fix at the right level: prefer changing the environment; project facts to the project; the user's working preferences to their global guidance; one machine's or harness's quirks to that machine's setup or harness config, because the user's global guidance is personal and synced across several machines.
+5. Report in conversation ordered by payoff (evidence, cost, recurrence, fix and home); apply what is agreed. Request-only stays (`agents/openai.yaml`, `skillOverrides`).
+6. Stop the omission at the source too: the global guidance line on verification now also asks for "any workaround that changed what was verified or shipped".
+
+Baseline: repository `63317e1`; SKILL.md SHA-256 `c64767a578c968245472f9973bdb1f174cc1eed1d9365704f74ec59bc0104ec2`.
+
+### Tests
+
+Real sessions with known friction instead of synthetic fixtures: B-49 (2026-08-31), B-66 (2026-09-05), and the 2026-09-24 shaping rethink (PyYAML). One turn per run, invoking the skill explicitly (`/retro` in Claude Code, `$retro` in Codex) on the session log path with "Report only for now; do not change anything." Opus 5.5 and GPT-6 Astra at high effort, baseline then candidate. Opus 5.5 and GPT-6 Astra (high) judged each pair blind with a rubric carrying the survey's known-friction list, and could read the session logs to check claims.
+
+Candidate won 11 of 12 judgments (the loss: the Astra judge on Astra's B-66 pair, which preferred the baseline's recurrence and inefficiency coverage). What the judges credited: candidate runs read subagent logs and searched earlier sessions, so they found that the PyYAML workaround had already been solved on 09-13 and rediscovered, that the hard-wrap correction had been made twice, that the `gh` misread recurred and blocked delivery, and they placed fixes in machine setup rather than project prose; baseline runs treated these as one-offs or proposed a duplicate wrapping rule. Baseline Opus was already strong on B-49 (it caught the understated skipped tests).
+
+Weaknesses: the candidate Opus B-49 run conflated a colleague's later commit with the session's untested code and declared problems "already eliminated" too categorically; several runs caught fewer small items (a guessed `npm run typecheck`, the missing issue-tracker doc); no run flagged the auto-approving approval subagent as a problem. Not chased.
+
+What these tests cannot show: retros on the current conversation after compaction, whether proposed fixes get applied, and the effect of the new global reporting line.
+
+Final SKILL.md: 575 words, SHA-256 `bb3ee1b3c72cb0d3b2be581bce5ea4e9fcd2a66c1c5e16aa0c462bff2b44005d`.
+

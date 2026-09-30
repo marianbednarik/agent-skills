@@ -17,7 +17,7 @@ My projects are mostly prototypes built with agents. Match rigor to the project'
 
 - Prefer the smallest change that solves the problem cleanly. Add an abstraction when it removes real complexity in this project, not for hypothetical needs.
 - Judge existing patterns on their merits; remove paths the change makes obsolete.
-- Verify in proportion to risk, and tell me what you did not verify.
+- Verify in proportion to risk, and tell me what you did not verify and any workaround that changed what was verified or shipped.
 
 ## Context
 
