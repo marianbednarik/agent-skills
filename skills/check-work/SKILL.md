@@ -1,6 +1,6 @@
 ---
 name: check-work
-description: Before handing back a code change that is large or risky (authorization, shared state, concurrency, persistence, deployment, public contracts), get an independent review and act on the findings. Also use when asked to review a PR, branch, commit, or diff. Not for automatic use on small low-risk fixes or on document and admin work.
+description: Use before handing back or opening a PR for a code change that is large or risky (authorization, shared state, concurrency, persistence, deployment, public contracts), including when you already plan to brief a reviewer yourself, and when asked to review a PR, branch, commit, or diff. Not for automatic use on small low-risk fixes or on document and admin work.
 ---
 
 Your own tests show the change does what you intended. This review exists to find what you did not think of: paths the tests never exercise, interactions across boundaries, and fixes that break something else. Re-reading your own work rarely finds these; a reviewer who approaches the change fresh often does.

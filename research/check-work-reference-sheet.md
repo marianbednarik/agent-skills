@@ -211,3 +211,23 @@ Fixture: a Python stdlib reservation service with an uncommitted change (release
 A blind GPT-6 Astra (high effort) comparison of the baseline (A) and first candidate (B), given owner requirements but not the log evidence, preferred A. It cited evidence reuse, completion criteria, separating actionable from speculative findings, and a delegation fallback. Its criticisms of B: the size exemption conflicted with requested reviews of small diffs and with risky one-line changes; "another round" conflicted with "do not re-review every fix"; the reviewer role was ambiguous; there was no fallback without subagents. The revision addresses each: a risk-based trigger in the description, an exclusion limited to automatic use, a re-review scoped to fixes that change behavior, "you are the reviewer" for others' changes, a fallback with disclosure, sharing of checks already run, and concrete-consequence and pre-existing-problem criteria. The revision received parent review and the two behavioral reruns above, not a second blind review.
 
 Remaining uncertainty: one fixture, with one run per condition. The fixture is small enough that both models find the planted defects unaided. Astra's reports stay terse and it expands scope under "finish" prompts; that is an implementation-scope issue for global guidance rather than this skill. Watch real use for how often the risk trigger fires on routine UI work.
+
+## Trigger-only description (2026-10-01)
+
+Real use: in the first real session after the 09-29 rewrite (hogwarts-battle-redux, Opus 5.5, four issues merged), the agent never loaded the skill. It briefed two reviewers itself, then skipped re-review of behavior-changing fixes, dropped two findings silently, and did not tell reviewers which checks had run. Its own account: the description already stated the action ("get an independent review and act on the findings"), so loading seemed redundant. Across 131 Claude Code sessions, 4 loaded the skill and 2 briefed a reviewer without it.
+
+Changes: `f4d8f31` added the separate-checkout sentence (a reviewer sharing the working tree led to a worktree, 22 uncommitted files, and a destructive checkout). The description now states only when to use the skill, names the "already plan to brief a reviewer yourself" case, and no longer summarizes the action. Trigger criteria and exclusions are unchanged.
+
+Probe: a stdlib reservation service with a half-done uncommitted change (release without workspace or status checks, expiry stubbed), one run per cell on each harness's configured model. "risky" = "Finish the reservation expiry and release change and hand it back."; "reviewer" adds "Have a subagent review it independently before you hand it back."; "small" = fix the README test command on a clean tree.
+
+| Scenario | Claude Code, old | Claude Code, new | Codex, old | Codex, new |
+| --- | --- | --- | --- | --- |
+| risky ×2 | 1 of 2 loaded | 1 of 2 loaded | 2 of 2 | 2 of 2 |
+| reviewer ×2 | 1 of 2 loaded | 2 of 2 loaded | 2 of 2 | 2 of 2 |
+| small | not loaded | not loaded | not loaded | not loaded |
+
+The old description reproduced the bypass once (reviewer briefed without the skill); the new one did not. No over-triggering appeared on either harness. Two runs per cell cannot separate this from noise.
+
+Not fixed by the description:
+- On Claude Code, one "risky" run per condition skipped review entirely, judging the change small ("about 40 lines") despite persistence and workspace isolation. This is the same size-over-risk reading seen on 09-29.
+- Every Claude Code run that loaded the skill used a single reviewer round and reported that its behavior-changing fixes were "not re-reviewed". Loading the skill produced the disclosure, not the second round. Codex ran follow-up reviewer calls in most runs. If real use shows fixes regressing unreviewed, the body's re-review sentence is the place to look.

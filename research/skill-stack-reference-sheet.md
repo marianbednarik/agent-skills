@@ -75,7 +75,7 @@ Goal: one skill set and one global guidance file serving both GPT-6 Astra (Codex
 
 | Skill | Status |
 | --- | --- |
-| check-work | Done (`db8b513`). Refocused on an independent fresh-context review of large or risky changes. |
+| check-work | Done (`db8b513`). Refocused on an independent fresh-context review of large or risky changes. After its first real use (2026-10-01): reviewer gets its own checkout (`f4d8f31`) and the description became trigger-only, because an agent that already planned a review treated the skill as redundant. See [its sheet](check-work-reference-sheet.md#trigger-only-description-2026-10-01). |
 | shaping | Done (`18c963d`). Rebuilt around settling-versus-spiraling and thinking with the user. |
 | project-context | Done (`9bf4f16`). Rebuilt around lasting vs perishable, strength, one home, and updating with the change; templates dropped, file naming convention kept; scope includes agent instructions. |
 | writing-for-agents | Retired (`01c751b`). Real use showed the failures are content selection, which project-context owns; its surviving guidance became project-context's "Written for the reader" paragraph. See [its sheet](writing-for-agents-reference-sheet.md#cross-model-pass-retired-2026-09-30). |
