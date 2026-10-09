@@ -1,6 +1,7 @@
 ---
 name: retro
 description: Look back over a work session, including its background and subagent work, for friction the agent worked around, work that took far longer than it should or keeps being redone, and wrong or missing guidance, then propose fixes so future sessions do not repeat them. Use only when the user asks for a retro or asks what issues came up.
+disable-model-invocation: true
 ---
 
 Surface what made the work harder or slower than it needed to be, especially what the user never saw, and propose fixes so it does not happen again. Capable agents route around obstacles so smoothly that the friction disappears from their final report, and background work has no one watching at all. That hidden friction is what a retro is for.

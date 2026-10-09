@@ -6,14 +6,14 @@ Reusable assets in `skills/` and `context/` are authored content, not automatica
 
 ## Runtime wiring
 
-Edits to canonical files are live immediately in both harnesses. Edit repository copies, not runtime paths.
+On macOS, runtime paths link to the repository, so edits are live immediately. Edit repository copies, not runtime paths. On Windows, where links need admin rights, `install.ps1` copies the same assets (plus `~/.claude/CLAUDE.md` and `~/.copilot/copilot-instructions.md`) and must be re-run after changes; GitHub Copilot reads skills from `~/.agents/skills/`.
 
 | Asset | Codex | Claude Code |
 | --- | --- | --- |
 | `skills/*` | symlinked into `~/.agents/skills/` | symlinked into `~/.claude/skills/` |
 | `context/AGENTS.md` | `~/.codex/AGENTS.md` symlinks to it | `~/.claude/CLAUDE.md` imports it |
 | `.agents/skills/*` (project-local) | discovered directly | `.claude/skills/*` symlinks to it |
-| Explicit-only invocation | `agents/openai.yaml` in the skill | `skillOverrides` in `~/.claude/settings.json` |
+| Explicit-only invocation | `agents/openai.yaml` in the skill | `disable-model-invocation: true` in frontmatter (Copilot reads it too) |
 
 Do not export project-local skills to the global set unless requested.
 
@@ -24,7 +24,7 @@ Skills and guidance must work on both current model families and be shareable wi
 - No model names in skills; per-harness settings belong in harness config.
 - Name the failure to avoid and the target, rather than pushing in one direction; the models drift in opposite ways.
 - Shared skills refer to "the user", not Marian, and must not depend on his personal global guidance.
-- Keep `SKILL.md` frontmatter to Agent Skills spec fields so skills stay portable.
+- Keep `SKILL.md` frontmatter to Agent Skills spec fields so skills stay portable. The exception is `disable-model-invocation`, which Codex ignores. Quote any value that contains `: `.
 
 ## Working style
 
