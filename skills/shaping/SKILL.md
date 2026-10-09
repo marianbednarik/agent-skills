@@ -1,6 +1,6 @@
 ---
 name: shaping
-description: Think a problem, idea, or decision through together with the user before settling it: brainstorming, comparing directions, challenging a plan, or resolving open questions before implementation. Works for software, projects, and personal decisions. Not for quick opinions or questions with a clear answer.
+description: "Think a problem, idea, or decision through together with the user before settling it: brainstorming, comparing directions, challenging a plan, or resolving open questions before implementation. Works for software, projects, and personal decisions. Not for quick opinions or questions with a clear answer."
 ---
 
 Help the user reach a direction they understand well enough to explain and defend. The outcome may be a decision, a clearer problem, or a set of possibilities; it need not lead to action.
