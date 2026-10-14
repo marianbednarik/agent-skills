@@ -17,6 +17,12 @@ On macOS, runtime paths link to the repository, so edits are live immediately. E
 
 Do not export project-local skills to the global set unless requested.
 
+New skills need a symlink in both `~/.agents/skills/` and `~/.claude/skills/` on macOS.
+
+## Vendored skills
+
+`skills/frontend-design` is Anthropic's skill, copied verbatim from `anthropics/claude-plugins-official` (`plugins/frontend-design/skills/frontend-design`, commit `44490cc`, 2026-09-01) so Codex can use it too; keep the Claude plugin of the same name disabled. Do not edit it here. To update, diff upstream against the copy and re-copy `SKILL.md` and `LICENSE.txt`, then bump the commit above.
+
 ## Writing for both models
 
 Skills and guidance must work on both current model families and be shareable with colleagues:
