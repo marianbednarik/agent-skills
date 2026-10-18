@@ -15,7 +15,7 @@ On macOS, runtime paths link to the repository, so edits are live immediately. E
 | `.agents/skills/*` (project-local) | discovered directly | `.claude/skills/*` symlinks to it |
 | Explicit-only invocation | `agents/openai.yaml` in the skill | `disable-model-invocation: true` in frontmatter (Copilot reads it too) |
 
-`context/claude-chat.md` is the chat-tailored counterpart of `context/AGENTS.md` for claude.ai; it is pasted manually into Settings → Profile → personal preferences, so keep the two in step.
+`context/chat.md` is the shared chat-tailored counterpart of `context/AGENTS.md` for ChatGPT and claude.ai. Paste it manually into each service's personal instructions or preferences; keep shared preferences aligned with `context/AGENTS.md` while preserving differences between chat and agent work.
 
 Do not export project-local skills to the global set unless requested.
 
