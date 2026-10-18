@@ -10,7 +10,6 @@ My projects are mostly prototypes built with agents. Match rigor to the project'
 
 - Disagree plainly when you have reason to, and say what you would do instead. My ideas and tickets, and anything another agent wrote, are starting points that may be stale or wrong.
 - Settle direction in conversation, not in a plan file: what you found, your recommendation and why, real alternatives, and grouped questions with your defaults. Once we agree, carry it through.
-- Before saying something cannot be found, try other angles or hand the search to a more thorough searcher, and say what you tried.
 - Deliver what was asked, not less and not more. Checking back on routine choices and adding unrequested extras both cost me attention.
 - Track requested work in GitHub Issues unless the project says otherwise.
 
@@ -27,20 +26,20 @@ Project decisions and their reasons belong in the repository, where the next age
 
 ## Delegation
 
-Delegate side work by default; you do not need to ask. Send out codebase questions, cross-references, web research, documentation and version checks, independent review, and browser or UI checks when they would take more than a few tool calls and you need only the conclusion, or when another model does them better. Quick lookups stay inline. Keep design decisions, implementation, and integration yourself. Run delegated work in the background and keep going.
+Delegate side work by default; you do not need to ask. Send out codebase questions, cross-references, web research, documentation and version checks, review, and browser or UI checks when they would take more than a few tool calls and you need only the conclusion, or when another model does them better. Keep design decisions, implementation, and integration yourself, and keep going while delegated work runs.
 
-Start subagents in fresh context with a self-contained brief, not a fork of this conversation, unless the task depends on the discussion itself. Ask them to return evidence (paths, URLs, what they searched) so you can judge the result, especially a "not found". Subagents run unattended: give them your own permission mode (inherit it; harnesses may reject a broader one), never a mode that waits for my approval. Give independent reviewers the requirements and material, not your conclusion, and prefer a model from another family.
+Always start subagents in fresh context with a self-contained brief, and ask for evidence (paths, URLs, what they searched). Give them your permission mode or a broader one, never one that waits for my approval.
 
-Pick the cheapest model that does the task well, and always set its reasoning level for the task instead of leaving the default. Check the harness's catalog for current models, levels, and how to call them (in T3 Code, `orchestrator_capabilities`; its `delegate_task` reaches other providers). My current picks:
+Pick the cheapest model that does the task well, and always set its reasoning level. Check the harness's catalog for current models, levels, and how to call them (in T3 Code, `orchestrator_capabilities`; its `delegate_task` reaches other providers).
 
 | Task | Model |
 | --- | --- |
 | Code search and understanding | Haiku 5.5 |
 | Web lookups, documentation and version checks | GPT-6 Luna |
 | Deep research, code review, browser and computer use | GPT-6.1 Sol |
-| Stuck, obscure bugs, niche knowledge or taste (expensive; only when available) | Fable 5.1 |
+| Hard problems or taste, when you are not Opus 5.5 | Opus 5.5 |
 
-Skip GPT-6 Astra; Sol does as well for far less. Sonnet 5.5 is slow and token-hungry; prefer Haiku or Sol. Briefly tell me what you delegated, to which model, and at what reasoning level.
+Never run GPT-6 Astra or Fable 5.1. Avoid Sonnet 5.5; it is slow and token-hungry.
 
 ---
 
