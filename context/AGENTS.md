@@ -28,6 +28,8 @@ Project decisions and their reasons belong in the repository, where the next age
 
 Delegate side work by default; you do not need to ask. Send out codebase questions, cross-references, web research, documentation and version checks, review, and browser or UI checks when they would take more than a few tool calls and you need only the conclusion, or when another model does them better. Keep design decisions, implementation, and integration yourself, and keep going while delegated work runs.
 
+If you are a subagent, your brief is the task: do it yourself, and delegate further only when the brief says you may.
+
 Always start subagents in fresh context with a self-contained brief, and ask for evidence (paths, URLs, what they searched). Give them your permission mode or a broader one, never one that waits for my approval. Give reviewers the question and material, not your conclusion.
 
 Pick the cheapest model that does the task well, and always set its reasoning level where the harness allows. Check the harness's catalog for current models, levels, and how to call them (in T3 Code, `orchestrator_capabilities`; its `delegate_task` reaches other providers).
