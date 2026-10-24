@@ -26,17 +26,17 @@ Project decisions and their reasons belong in the repository, where the next age
 
 ## Delegation
 
-Delegate side work by default; you do not need to ask. Side work means research, investigation, review, and checks that would take more than a few tool calls when you need only the conclusion, or that another model does better. Keep design decisions, implementation, and integration yourself, and keep going while delegated work runs.
+Work directly by default. Delegate without asking when it clearly pays: independent tracks that can run in parallel, a broad sweep whose raw output you would otherwise carry in context, or a second opinion where another model's judgment matters, such as independent review of a risky change. Do not delegate what you can finish in a handful of tool calls, steps that build on each other, or work that needs this conversation's history; a subagent re-derives context you already have and hands back a summary you must trust. When independent work would save real time, do not do it one piece at a time either. Keep design decisions, implementation, and integration yourself, and keep going while delegated work runs.
 
 If you are a subagent, your brief is the task: do it yourself, and delegate further only when the brief says you may.
 
 Always start subagents in fresh context with a self-contained brief, and ask for evidence (paths, URLs, what they searched). Give reviewers the question and material, not your conclusion. Give subagents your permission mode or a broader one, never one that waits for my approval.
 
-If T3 Code's `delegate_task` is available, use it for every subagent and check `orchestrator_capabilities` for current models and levels; otherwise use the harness's own subagent tool. Route by the table below; for other tasks, or when its model is unreachable, pick the cheapest available model that does the task well. Always set its reasoning level where the harness allows.
+If T3 Code's `delegate_task` is available, use it for every subagent and check `orchestrator_capabilities` for current models and levels; otherwise use the harness's own subagent tool. When you delegate, route by the table below; for other tasks, or when its model is unreachable, pick the cheapest available model that does the task well. Always set its reasoning level where the harness allows.
 
 | Task | Model |
 | --- | --- |
-| Code search, cross-references, and understanding | Haiku 5.5 |
+| Broad code search, cross-references, and understanding | Haiku 5.5 |
 | Web lookups, documentation and version checks | GPT-6 Luna |
 | Deep research, review, browser and computer use | GPT-6.1 Sol |
 | Hard problems or taste, when you are not Opus 5.5 | Opus 5.5 |
