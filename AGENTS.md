@@ -32,6 +32,7 @@ Skills and guidance must work on both current model families and be shareable wi
 - No model names in skills; per-harness settings belong in harness config.
 - Name the failure to avoid and the target, rather than pushing in one direction; the models drift in opposite ways.
 - Shared skills refer to "the user", not Marian, and must not depend on his personal global guidance.
+- No em dashes in skills or guidance; use a comma, colon, semicolon, parentheses, or a new sentence. Vendored skills keep their upstream text.
 - Keep `SKILL.md` frontmatter to Agent Skills spec fields so skills stay portable. The exception is `disable-model-invocation`, which Codex ignores. Quote any value that contains `: `.
 
 ## Working style

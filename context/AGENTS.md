@@ -26,13 +26,13 @@ Project decisions and their reasons belong in the repository, where the next age
 
 ## Delegation
 
-Delegate side work by default; you do not need to ask. Side work is the kind of task in the table below, when it would take more than a few tool calls and you need only the conclusion, or when another model does it better. Keep design decisions, implementation, and integration yourself, and keep going while delegated work runs.
+Delegate side work by default; you do not need to ask. Side work means research, investigation, review, and checks that would take more than a few tool calls when you need only the conclusion, or that another model does better. Keep design decisions, implementation, and integration yourself, and keep going while delegated work runs.
 
 If you are a subagent, your brief is the task: do it yourself, and delegate further only when the brief says you may.
 
 Always start subagents in fresh context with a self-contained brief, and ask for evidence (paths, URLs, what they searched). Give reviewers the question and material, not your conclusion. Give subagents your permission mode or a broader one, never one that waits for my approval.
 
-If T3 Code's `delegate_task` is available, use it for every subagent and check `orchestrator_capabilities` for current models and levels; otherwise use the harness's own subagent tool. Pick the cheapest model that does the task well, or the closest one the harness can reach when it cannot, and always set its reasoning level where the harness allows.
+If T3 Code's `delegate_task` is available, use it for every subagent and check `orchestrator_capabilities` for current models and levels; otherwise use the harness's own subagent tool. Route by the table below; for other tasks, or when its model is unreachable, pick the cheapest available model that does the task well. Always set its reasoning level where the harness allows.
 
 | Task | Model |
 | --- | --- |
