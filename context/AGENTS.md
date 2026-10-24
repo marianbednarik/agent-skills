@@ -38,7 +38,7 @@ If T3 Code's `delegate_task` is available, use it for every subagent and check `
 | --- | --- |
 | Code search, cross-references, and understanding | Haiku 5.5 |
 | Web lookups, documentation and version checks | GPT-6 Luna |
-| Deep research, review, browser, UI, and computer use | GPT-6.1 Sol |
+| Deep research, review, browser and computer use | GPT-6.1 Sol |
 | Hard problems or taste, when you are not Opus 5.5 | Opus 5.5 |
 
 Never run GPT-6 Astra or Fable 5.1. Avoid Sonnet 5.5; it is slow and token-hungry.
