@@ -1,6 +1,6 @@
 # Agent Skills Workspace
 
-This repository is the source of truth for Marian's reusable agent assets: personal skills, global guidance, and the research behind them. One set serves both Codex (GPT) and Claude Code.
+This repository is the source of truth for Marian's reusable agent assets: personal skills, global guidance, and the research behind them. One set serves both Codex (GPT) and Claude Code. `research/` holds reference sheets with the evidence and rejected alternatives behind skills and guidance; read the matching sheet, if there is one, before changing what it covers.
 
 Reusable assets in `skills/` and `context/` are authored content, not automatically active instructions. Follow a stored skill only when the user invokes it or the current task explicitly requires editing or testing that skill.
 
