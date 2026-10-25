@@ -59,3 +59,22 @@ $guidance = Join-Path $repo 'context\AGENTS.md'
 foreach ($target in '.codex\AGENTS.md', '.claude\CLAUDE.md', '.copilot\copilot-instructions.md') {
     Sync-File $guidance (Join-Path $HOME $target)
 }
+
+# Claude Code also writes settings.json itself, so merge the shared keys in;
+# the repository owns those top-level keys, the rest stay.
+Write-Host 'Claude settings'
+$settingsPath = Join-Path $HOME '.claude\settings.json'
+$shared = Get-Content (Join-Path $repo 'context\claude-settings.json') -Raw | ConvertFrom-Json
+$current = if (Test-Path $settingsPath) { Get-Content $settingsPath -Raw | ConvertFrom-Json } else { [pscustomobject]@{} }
+$before = $current | ConvertTo-Json -Depth 20
+foreach ($prop in $shared.PSObject.Properties) {
+    $current | Add-Member -NotePropertyName $prop.Name -NotePropertyValue $prop.Value -Force
+}
+$after = $current | ConvertTo-Json -Depth 20
+if ($after -eq $before) {
+    Write-Host "  unchanged  $settingsPath"
+} else {
+    New-Item -ItemType Directory -Path (Split-Path $settingsPath) -Force | Out-Null
+    [IO.File]::WriteAllText($settingsPath, $after + "`n")  # no BOM; Claude Code rejects it
+    Write-Host "  updated    $settingsPath"
+}

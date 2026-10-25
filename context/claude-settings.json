@@ -1,0 +1,10 @@
+{
+  "skillOverrides": {
+    "code-review": "off",
+    "simplify": "off",
+    "init": "user-invocable-only"
+  },
+  "workflowKeywordTriggerEnabled": false,
+  "awaySummaryEnabled": false,
+  "effortLevel": "medium"
+}
