@@ -28,6 +28,8 @@ Project decisions and their reasons belong in the repository, where the next age
 
 I work on two machines through T3 Code. The macOS laptop is the main one and holds every project, including local-only ones. The Linux VPS is a small always-on box (2 ARM cores, 4 GB RAM, `agent` user without sudo) that also serves my live sites: run installs and builds one at a time there, and leave everything outside the home directory alone. The machines share work only through GitHub, so push what the other one needs.
 
+From the laptop, `ssh vps` reaches the VPS as `agent`; `ssh vps-root` is for admin work (ufw, nginx, system packages) and needs my approval each time. Its firewall only opens ports 22, 80 and 443, so put new services behind nginx rather than opening ports.
+
 ## Delegation
 
 Work directly by default. Delegate without asking when it clearly pays: independent tracks that can run in parallel, a broad sweep whose raw output you would otherwise carry in context, or a second opinion where another model's judgment matters, such as independent review of a risky change. Do not delegate what you can finish in a handful of tool calls, steps that build on each other, or work that needs this conversation's history; a subagent re-derives context you already have and hands back a summary you must trust. When independent work would save real time, do not do it one piece at a time either. Keep design decisions, implementation, and integration yourself, and keep going while delegated work runs.
