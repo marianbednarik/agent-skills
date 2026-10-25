@@ -6,7 +6,7 @@ Reusable assets in `skills/` and `context/` are authored content, not automatica
 
 ## Runtime wiring
 
-On macOS, runtime paths link to the repository, so edits are live immediately. Edit repository copies, not runtime paths. On Windows, where links need admin rights, `install.ps1` copies the same assets (plus `~/.claude/CLAUDE.md` and `~/.copilot/copilot-instructions.md`) and must be re-run after changes; GitHub Copilot reads skills from `~/.agents/skills/`.
+On macOS and Linux, `install.sh` links runtime paths to the repository, so edits are live immediately; re-run it when skills are added or removed. Edit repository copies, not runtime paths. The Hetzner VPS (`agent` user, T3 Code over T3 Connect) runs it hourly from cron, which also pulls. On Windows, where links need admin rights, `install.ps1` copies the same assets (plus `~/.claude/CLAUDE.md` and `~/.copilot/copilot-instructions.md`) and must be re-run after changes; GitHub Copilot reads skills from `~/.agents/skills/`.
 
 | Asset | Codex | Claude Code |
 | --- | --- | --- |
@@ -18,8 +18,6 @@ On macOS, runtime paths link to the repository, so edits are live immediately. E
 `context/chat.md` is the shared chat-tailored counterpart of `context/AGENTS.md` for ChatGPT and claude.ai. Paste it manually into each service's personal instructions or preferences; keep shared preferences aligned with `context/AGENTS.md` while preserving differences between chat and agent work.
 
 Do not export project-local skills to the global set unless requested.
-
-New skills need a symlink in both `~/.agents/skills/` and `~/.claude/skills/` on macOS.
 
 ## Vendored skills
 
