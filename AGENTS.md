@@ -6,13 +6,13 @@ Reusable assets in `skills/` and `context/` are authored content, not automatica
 
 ## Runtime wiring
 
-On macOS and Linux, `install.sh` links runtime paths to the repository, so edits are live immediately; re-run it when skills are added or removed or `context/claude-settings.json` changes. Edit repository copies, not runtime paths. The Hetzner VPS (`agent` user, T3 Code over T3 Connect) runs it hourly from cron, which also pulls. On Windows, where links need admin rights, `install.ps1` copies the same assets (plus `~/.claude/CLAUDE.md` and `~/.copilot/copilot-instructions.md`) and must be re-run after changes; GitHub Copilot reads skills from `~/.agents/skills/`.
+On macOS and Linux, `install.sh` links runtime paths to the repository, so edits are live immediately; re-run it when skills are added or removed or the shared settings in `context/` change. Edit repository copies, not runtime paths. The Hetzner VPS (`agent` user, T3 Code over T3 Connect) runs it hourly from cron, which also pulls. On Windows, where links need admin rights, `install.ps1` copies the same assets (plus `~/.claude/CLAUDE.md` and `~/.copilot/copilot-instructions.md`) and must be re-run after changes; GitHub Copilot reads skills from `~/.agents/skills/`.
 
 | Asset | Codex | Claude Code |
 | --- | --- | --- |
 | `skills/*` | symlinked into `~/.agents/skills/` | symlinked into `~/.claude/skills/` |
 | `context/AGENTS.md` | `~/.codex/AGENTS.md` symlinks to it | `~/.claude/CLAUDE.md` imports it |
-| `context/claude-settings.json` | n/a | merged into `~/.claude/settings.json` (repo owns its top-level keys) |
+| `context/codex-config.toml`, `context/claude-settings.json` | merged into `~/.codex/config.toml` | merged into `~/.claude/settings.json` |
 | `.agents/skills/*` (project-local) | discovered directly | `.claude/skills/*` symlinks to it |
 | Explicit-only invocation | `agents/openai.yaml` in the skill | `disable-model-invocation: true` in frontmatter (Copilot reads it too) |
 

@@ -1,7 +1,7 @@
 #!/bin/sh
 # Links the shared skills and global guidance for Codex and Claude Code on
-# macOS and Linux, and merges the shared Claude Code settings. Links point into
-# this checkout, so later edits and pulls are live without re-running; re-run
+# macOS and Linux, and merges the shared harness settings (needs Python 3.11+).
+# Links point into this checkout, so later edits and pulls are live without re-running; re-run
 # when skills are added or removed, or the shared settings change.
 #
 #   ./install.sh
@@ -53,28 +53,8 @@ else
   echo "  wrote    $claude_md"
 fi
 
-# Claude Code also writes settings.json itself, so merge the shared keys in
-# rather than linking; the repository owns those top-level keys, the rest stay.
-echo "Claude settings"
-python3 - "$repo/context/claude-settings.json" "$HOME/.claude/settings.json" <<'PY'
-import json, os, sys
-shared_path, target = sys.argv[1:]
-with open(shared_path) as f:
-    shared = json.load(f)
-try:
-    with open(target) as f:
-        current = json.load(f)
-except FileNotFoundError:
-    current = {}
-except ValueError:
-    sys.exit(f"  skipped  {target} (not valid JSON)")
-merged = {**current, **shared}
-if merged == current:
-    print(f"  ok       {target}")
-else:
-    os.makedirs(os.path.dirname(target), exist_ok=True)
-    with open(target, "w") as f:
-        json.dump(merged, f, indent=2)
-        f.write("\n")
-    print(f"  merged   {target}")
-PY
+# Both harnesses write their config files themselves, so merge the shared keys
+# in rather than linking; keys the harness adds stay.
+echo "Harness settings"
+python3 "$repo/scripts/merge-config.py" "$repo/context/claude-settings.json" "$HOME/.claude/settings.json" || true
+python3 "$repo/scripts/merge-config.py" "$repo/context/codex-config.toml" "$HOME/.codex/config.toml" || true

@@ -60,21 +60,14 @@ foreach ($target in '.codex\AGENTS.md', '.claude\CLAUDE.md', '.copilot\copilot-i
     Sync-File $guidance (Join-Path $HOME $target)
 }
 
-# Claude Code also writes settings.json itself, so merge the shared keys in;
-# the repository owns those top-level keys, the rest stay.
-Write-Host 'Claude settings'
-$settingsPath = Join-Path $HOME '.claude\settings.json'
-$shared = Get-Content (Join-Path $repo 'context\claude-settings.json') -Raw | ConvertFrom-Json
-$current = if (Test-Path $settingsPath) { Get-Content $settingsPath -Raw | ConvertFrom-Json } else { [pscustomobject]@{} }
-$before = $current | ConvertTo-Json -Depth 20
-foreach ($prop in $shared.PSObject.Properties) {
-    $current | Add-Member -NotePropertyName $prop.Name -NotePropertyValue $prop.Value -Force
-}
-$after = $current | ConvertTo-Json -Depth 20
-if ($after -eq $before) {
-    Write-Host "  unchanged  $settingsPath"
+# Both harnesses write their config files themselves, so merge the shared keys
+# in rather than copying; keys the harness adds stay. Needs Python 3.11+.
+Write-Host 'Harness settings'
+$python = Get-Command python3, python -ErrorAction SilentlyContinue | Select-Object -First 1
+if (-not $python) {
+    Write-Warning 'Python not found; shared Claude Code and Codex settings were not merged.'
 } else {
-    New-Item -ItemType Directory -Path (Split-Path $settingsPath) -Force | Out-Null
-    [IO.File]::WriteAllText($settingsPath, $after + "`n")  # no BOM; Claude Code rejects it
-    Write-Host "  updated    $settingsPath"
+    $merge = Join-Path $repo 'scripts\merge-config.py'
+    & $python.Source $merge (Join-Path $repo 'context\claude-settings.json') (Join-Path $HOME '.claude\settings.json')
+    & $python.Source $merge (Join-Path $repo 'context\codex-config.toml') (Join-Path $HOME '.codex\config.toml')
 }
