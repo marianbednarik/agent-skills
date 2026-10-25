@@ -1,0 +1,18 @@
+model = "gpt-6.1-sol"
+model_reasoning_effort = "high"
+
+[agents]
+max_concurrent_threads_per_session = 8
+
+[features]
+js_repl = false
+memories = false
+chronicle = false
+
+[memories]
+generate_memories = false
+use_memories = false
+disable_on_external_context = true
+
+[mcp_servers.openaiDeveloperDocs]
+url = "https://developers.openai.com/mcp"
