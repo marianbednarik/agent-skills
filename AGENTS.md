@@ -24,11 +24,14 @@ Do not export project-local skills to the global set unless requested.
 
 `skills/frontend-design` is Anthropic's skill, copied verbatim from `anthropics/claude-plugins-official` (`plugins/frontend-design/skills/frontend-design`, commit `44490cc`, 2026-09-01) so Codex can use it too; keep the Claude plugin of the same name disabled. Do not edit it here. To update, diff upstream against the copy and re-copy `SKILL.md` and `LICENSE.txt`, then bump the commit above.
 
+`skills/leaving-pr-comments` is adapted, not vendored, from Theo Browne's MIT-licensed [tstack](https://github.com/t3dotgg/tstack) (commit `92e38e2`), so it keeps that `LICENSE.txt`; edit it freely. `skills/full-send` borrows tstack's ideas but is written here. What was taken and left is in `research/pr-workflow-reference-sheet.md`.
+
 ## Writing for both models
 
 Skills and guidance must work on both current model families and be shareable with colleagues:
 
-- No model names in skills; per-harness settings belong in harness config.
+- No model names in skills; per-harness settings belong in harness config. A harness's tool may be named as an example beside the generic instruction ("the harness's PR watch tool, such as T3 Code's `watch_pull_request`") when agents otherwise improvise around it.
+- A skill may hand a step to another skill by name, with a fallback for when it is not installed, so each skill still works when shared alone. Do not build mandatory chains.
 - Name the failure to avoid and the target, rather than pushing in one direction; the models drift in opposite ways.
 - Shared skills refer to "the user", not Marian, and must not depend on his personal global guidance.
 - No em dashes in skills or guidance; use a comma, colon, semicolon, parentheses, or a new sentence. Vendored skills keep their upstream text.
