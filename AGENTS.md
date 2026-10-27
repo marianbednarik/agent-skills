@@ -24,8 +24,6 @@ Do not export project-local skills to the global set unless requested.
 
 `skills/frontend-design` is Anthropic's skill, copied verbatim from `anthropics/claude-plugins-official` (`plugins/frontend-design/skills/frontend-design`, commit `44490cc`, 2026-09-01) so Codex can use it too; keep the Claude plugin of the same name disabled. Do not edit it here. To update, diff upstream against the copy and re-copy `SKILL.md` and `LICENSE.txt`, then bump the commit above.
 
-`skills/leaving-pr-comments` is adapted, not vendored, from Theo Browne's MIT-licensed [tstack](https://github.com/t3dotgg/tstack) (commit `92e38e2`), so it keeps that `LICENSE.txt`; edit it freely. `skills/full-send` borrows tstack's ideas but is written here. What was taken and left is in `research/pr-workflow-reference-sheet.md`.
-
 ## Writing for both models
 
 Skills and guidance must work on both current model families and be shareable with colleagues:
