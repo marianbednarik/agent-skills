@@ -1,6 +1,6 @@
 ---
 name: project-context
-description: Keep a project's lasting knowledge in its repository - decisions and their reasons, constraints, domain terms, design direction, parts that must change together, and standing instructions for contributors and their agents. Use when something decided or learned should outlast the conversation, including in the middle of other work, or when project docs, AGENTS.md, or project skills need writing, updating, or checking against the code.
+description: Use when something decided or learned should outlast the conversation (a decision and its reason, a constraint, a domain term, design direction, parts that must change together, a standing instruction), including in the middle of other work, and when project docs, AGENTS.md, or project skills need writing, updating, or checking against the code.
 ---
 
 Keep in the repository what a future contributor, or their coding agent, needs to make good decisions and cannot get from the code. They will not have this conversation, the user's personal setup, or your memory.

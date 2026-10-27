@@ -1,6 +1,6 @@
 ---
 name: codebase-audit
-description: Audit a codebase or area for what is worth cleaning up or improving - duplication, needless abstraction, dead code, error handling that hides failures, oversized components, slow or brittle tests, performance waste, docs that contradict the code - and whether it is in decent shape overall. Ends in a short set of ready-to-do changes the user approves, then files as issues or implements. Use for periodic cleanup, accumulated code quality, or "what should we improve"; not for reviewing one change or diagnosing one bug.
+description: Use when the user asks what to clean up or improve in a codebase or area, wants a periodic cleanup pass, or asks whether the code is in decent shape. Not for reviewing one change or diagnosing one bug.
 ---
 
 Find what in the codebase is worth removing, simplifying, or fixing, and turn it into work the user can approve and hand off. An audit is judged by what gets done afterwards, not by how much it lists.

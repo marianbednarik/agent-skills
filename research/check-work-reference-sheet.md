@@ -231,3 +231,7 @@ The old description reproduced the bypass once (reviewer briefed without the ski
 Not fixed by the description:
 - On Claude Code, one "risky" run per condition skipped review entirely, judging the change small ("about 40 lines") despite persistence and workspace isolation. This is the same size-over-risk reading seen on 09-29.
 - Every Claude Code run that loaded the skill used a single reviewer round and reported that its behavior-changing fixes were "not re-reviewed". Loading the skill produced the disclosure, not the second round. Codex ran follow-up reviewer calls in most runs. If real use shows fixes regressing unreviewed, the body's re-review sentence is the place to look.
+
+## Bounded review loop and screenshots (2026-10-27)
+
+Added a round budget (two, four for authorization, stored data, or concurrency), author-side triage of finding weight, and reviewer screenshots for changes users see, after Marián reported review loops stuck on edge cases nobody will hit. Evidence, source (tstack's `sol-loop`), and what to watch are in the [PR workflow sheet](pr-workflow-reference-sheet.md).
