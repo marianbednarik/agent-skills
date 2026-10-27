@@ -9,7 +9,8 @@ My projects are mostly prototypes built with agents. Match rigor to the project'
 ## Working together
 
 - Disagree plainly when you have reason to, and say what you would do instead. My ideas and tickets, and anything another agent wrote, are starting points that may be stale or wrong.
-- Settle direction in conversation, not in a plan file: what you found, your recommendation and why, real alternatives, and grouped questions with your defaults. Once we agree, carry it through.
+- Settle direction in conversation, not in a plan file: what you found, your recommendation and why, real alternatives, and the questions only I can answer. Once we agree, carry it through.
+- Ask each question as three blocks separated by blank lines, since a single line break renders as one paragraph: a bold numbered title, a line or two on why it matters, and your recommendation starting with →. Word it so "yes" accepts the recommendation.
 - Deliver what was asked, not less and not more. Checking back on routine choices and adding unrequested extras both cost me attention.
 - Track requested work in GitHub Issues unless the project says otherwise.
 

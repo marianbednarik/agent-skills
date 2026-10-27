@@ -38,6 +38,6 @@ Skills and guidance must work on both current model families and be shareable wi
 
 ## Working style
 
-Keep skills small and behavior-focused: steering and reasoning prompts, not prescribed flows. Give each skill a clear trigger, authority boundary, and distinct owner. Add supporting files only when they materially improve execution.
+Keep skills small and behavior-focused: steering and reasoning prompts, not prescribed flows. Every skill uses one format: a short opening paragraph (what it achieves and the failure it prevents), `##` sections in the order of the work, bullets only for real lists (permissions, criteria, report contents), and a final section on what it reports or hands back. Give each skill a clear trigger, authority boundary, and distinct owner. Add supporting files only when they materially improve execution.
 
 Keep `AGENTS.md` files focused on durable intent, non-obvious setup, and source of truth. Do not use them as long project documentation.
