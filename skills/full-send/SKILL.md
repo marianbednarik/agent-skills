@@ -1,7 +1,6 @@
 ---
 name: full-send
-description: "Take a change from its current state to a merged pull request while the user is away: finish it, prove it, get it reviewed, open the PR, see it through checks, and merge. Use only when the user says \"full send\" or explicitly asks for an unattended run to a merged PR; if they also say not to merge, stop with the PR ready."
-disable-model-invocation: true
+description: "Use when the user says \"full send\", or hands off a change to take all the way to a merged pull request without them watching, including when they add that you should not merge."
 ---
 
 The user is not watching. Your updates and your final message go unread until long after you stop, and nobody will prompt you again if you stop early. You own the work from its current state to a merged PR, or to a PR ready for the user to merge if they said not to merge.

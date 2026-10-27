@@ -1,6 +1,6 @@
 ---
 name: rethink-skill
-description: Reassess an existing skill with evidence from real use, rewrite it if warranted, and test the result on every model family it must serve. Use for a substantial rethink of a skill's purpose or behavior, not routine wording edits or new skills.
+description: "Use when the user wants an existing skill substantially rethought: its purpose, its behavior, or whether it should exist at all. Not for routine wording edits or new skills."
 ---
 
 Reach a direction for the target skill with the user, then revise it if warranted. Keeping it, shrinking it, removing it, and redesigning it are all valid outcomes. Treat the current text and the user's framing as hypotheses.

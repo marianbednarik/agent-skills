@@ -14,7 +14,7 @@ On macOS and Linux, `install.sh` links runtime paths to the repository, so edits
 | `context/AGENTS.md` | `~/.codex/AGENTS.md` symlinks to it | `~/.claude/CLAUDE.md` imports it |
 | `context/codex-config.toml`, `context/claude-settings.json` | merged into `~/.codex/config.toml` | merged into `~/.claude/settings.json` |
 | `.agents/skills/*` (project-local) | discovered directly | `.claude/skills/*` symlinks to it |
-| Explicit-only invocation | `agents/openai.yaml` in the skill | `disable-model-invocation: true` in frontmatter (Copilot reads it too) |
+| Explicit-only invocation (hides the description from the model, so only `$name` or `/name` triggers it) | `agents/openai.yaml` in the skill | `disable-model-invocation: true` in frontmatter (Copilot reads it too) |
 
 `context/chat.md` is the shared chat-tailored counterpart of `context/AGENTS.md` for ChatGPT and claude.ai. Paste it manually into each service's personal instructions or preferences; keep shared preferences aligned with `context/AGENTS.md` while preserving differences between chat and agent work.
 
@@ -29,6 +29,7 @@ Do not export project-local skills to the global set unless requested.
 Skills and guidance must work on both current model families and be shareable with colleagues:
 
 - No model names in skills; per-harness settings belong in harness config. A harness's tool may be named as an example beside the generic instruction ("the harness's PR watch tool, such as T3 Code's `watch_pull_request`") when agents otherwise improvise around it.
+- The description says when to load the skill, not what it does: the situations or phrases that call for it, and a boundary only where a neighboring request could misfire. An agent that reads a summary of the action thinks it already knows the skill and skips it ([check-work sheet](research/check-work-reference-sheet.md#trigger-only-description-2026-10-01)). For a skill triggered by a phrase, name the phrase and keep the skill model-invocable; explicit-only skills never see the phrase.
 - A skill may hand a step to another skill by name, with a fallback for when it is not installed, so each skill still works when shared alone. Do not build mandatory chains.
 - Name the failure to avoid and the target, rather than pushing in one direction; the models drift in opposite ways.
 - Shared skills refer to "the user", not Marian, and must not depend on his personal global guidance.

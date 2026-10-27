@@ -163,3 +163,7 @@ What these tests cannot show: retros on the current conversation after compactio
 
 Final SKILL.md: 575 words, SHA-256 `bb3ee1b3c72cb0d3b2be581bce5ea4e9fcd2a66c1c5e16aa0c462bff2b44005d`.
 
+
+## Model-invocable again (2026-10-27)
+
+Removed `agents/openai.yaml` and `disable-model-invocation`. Explicit-only hides the description from the model, so "let's do a retro" in an ordinary message did not load the skill; Marián asks for retros in prose. The description now names that phrasing and nothing else. Rule and evidence: root `AGENTS.md` writing rules and the [PR workflow sheet](pr-workflow-reference-sheet.md).

@@ -1,6 +1,6 @@
 ---
 name: leaving-pr-comments
-description: Use whenever you post a comment, review, or reply on a pull request or issue on the user's behalf, on GitHub or any other code host, including explanations left before resolving or dismissing feedback.
+description: Use before posting a comment, review, or reply on a pull request or issue on the user's behalf, on any code host, including a reason left before resolving or dismissing feedback.
 ---
 
 Readers of a comment should know an agent wrote it, not mistake it for the user's own words. Start every comment you post on the user's behalf with this note:
