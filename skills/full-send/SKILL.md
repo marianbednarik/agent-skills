@@ -39,7 +39,7 @@ Do not end your turn while checks or reviews are pending unless something will w
 On the latest commit:
 - your proof covers every change in the diff;
 - required checks pass;
-- each review finding is fixed or declined with a reason;
+- code changes had an independent review, and each finding is fixed or declined with a reason;
 - no human review still requests changes;
 - the branch is up to date with its base and mergeable.
 

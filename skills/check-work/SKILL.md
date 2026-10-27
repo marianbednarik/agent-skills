@@ -34,11 +34,11 @@ If another agent started you to review its change, do not start other agents, ed
 Decide each finding explicitly: fix it at its cause, report it, or decline it with a reason. Do not drop findings silently, remove the feature to make a finding disappear, or expand the change beyond what was agreed.
 
 Judge each finding's weight yourself, whatever severity the reviewer gave it. Thorough reviewers list every path they can imagine, and fixing everything listed grows the change one cheap-looking guard at a time. Fix what breaks the intended use or what users will realistically hit. Decline the rest in one line, as a follow-up if it is worth keeping:
-- races that need millisecond timing, and inputs nobody sends;
+- races no real client can trigger, and inputs nobody sends;
 - small performance costs and extra compatibility;
 - tests or guards the requirements do not need.
 
-Prefer the fix that deletes or narrows code; if review grew the diff, cut it back. The opposite failure is agreeing just to end the loop: keep a real finding open until it is fixed or you can show why it does not apply.
+Prefer the fix that deletes or narrows code; if review grew the diff beyond what the real findings need, cut it back. The opposite failure is agreeing just to end the loop: keep a real finding open until it is fixed or you can show why it does not apply.
 
 ## More rounds
 
