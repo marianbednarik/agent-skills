@@ -385,3 +385,21 @@ Baseline: `134f44e`. Brief test with the same method as above and one run per ce
 | Personal, Codex | Candidate | Candidate |
 
 All 8 verdicts gave the candidate the goal-understanding criterion. Every candidate opened with a tentative reading of the goal and of success, and none stalled for confirmation. The voice-dump losses came from other criteria: a 6-row table and a 5-option menu on Claude, and missing defaults and a looser reply to "not sure" on Codex. With one run per cell these may be noise. Claude transcripts grew 20–30%; Codex length did not change. In both conditions, both models still reframed away from the meetup on turn 1. Fixed turns cannot show whether an explicit reading makes that easier to correct. Watch in real use: added length on Claude, and whether readings of the goal catch misunderstandings early.
+
+## Rejected: "exercise abstract thinking" and a cheaper-route sentence (2026-10-29)
+
+Trigger: a viral X post (2026-10) claiming "exercise abstract thinking" appended to a prompt gave "unbelievable results for planning"; replies reported it working on everything, "use" scoring worse than "exercise", and less literal copywriting. Marián's underlying want: occasionally be challenged with out-of-the-box routes, e.g. a print stylesheet and the browser print dialog instead of a PDF pipeline, roughly 98% of the need for 10% of the effort.
+
+Candidate: in "Your view", treat the named mechanism as one route to the need and look for a materially different way to meet it, including a much cheaper route that preserves most of the benefit, with a guard against novelty for its own sake. An independent GPT review judged a narrower first draft ("much cheaper route") a subset of what the phrase does, which led to this broader wording.
+
+Screen: 3 conditions (A: baseline `main`; C: baseline plus "Exercise abstract thinking." appended to the user message; E: candidate) x 3 cases (PDF where printing suffices; 2,000 unattended nightly PDFs; 2-day team offsite on a tight budget) x Opus 5.5 and GPT-6.1 Sol, one run per cell, skill text injected into an isolated session. Two blind judges (Opus 5.5, GPT-6.1 Sol) ranked each triple. Isolation was partial: Codex still loaded a few bundled system skills; probes showed no personal guidance or repo skills.
+
+| Condition | Mean rank (1 best) | Surprise | Practical | Mean words |
+| --- | --- | --- | --- | --- |
+| A | 1.75 | 2.6 | 4.3 | 382 |
+| C | 2.25 | 3.8 | 3.9 | 458 |
+| E | 2.00 | 2.7 | 4.4 | 417 |
+
+All six printing-suffices answers already offered the print-stylesheet route, baseline included; GPT recommended it in every condition, Claude only under C (A and E recommended `@react-pdf/renderer` with printing as the leading alternative). No answer steered the unattended case to browser printing. The phrase made answers more conceptual ("data, presentation, medium") and more surprising, but less practical and longer; the candidate showed no measurable gain. One run per cell and frequent judge disagreement make this a screen, not a verdict.
+
+Decision: no change to the skill; the baseline already surfaces cheaper routes when shaping loads. The phrase is a real lever best typed in the moment when an abstract pass is wanted, not a standing instruction. Untested and kept: a line in `context/AGENTS.md` (Code) for implementation requests where shaping does not load: surface a much cheaper route and its main tradeoff before building. Watch in real use for second-guessing routine requests.
