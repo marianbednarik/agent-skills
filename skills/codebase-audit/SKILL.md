@@ -21,8 +21,8 @@ Weight that serves no present purpose. It piles up fastest when agents write the
 Structure that makes each change cost more than it should:
 - one change that has to touch many places, or parts that must change together with nothing in the code tying them;
 - dependencies that run against the project's layering, such as core logic importing UI or storage details;
-- types or data shapes that allow invalid states, so code checks for them everywhere;
-- validation and error handling spread through the core instead of at the edges where data enters and leaves.
+- types or data shapes that allow invalid states, causing scattered checks or inconsistent handling;
+- input validation, or conversion of errors from outside systems, scattered through the core instead of done once where data enters or leaves.
 
 Prefer structural changes (delete, merge, collapse a layer, move a rule or check to its owner) over renames and rewording. Serious correctness or security problems found along the way go first in the report, but the audit is not a bug hunt.
 

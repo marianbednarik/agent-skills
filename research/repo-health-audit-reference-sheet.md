@@ -146,3 +146,17 @@ Harness fix during testing: Opus used background agents, so one turn emitted sev
 What these tests cannot show: the approve-then-file step, audits on other repositories and stacks, whether findings get implemented, and recall against a known list of problems.
 
 Final SKILL.md: 759 words, SHA-256 `da450530d44205b2d8c9672b6953c59d5445a1cb3c215e53a5840508273d9072`.
+
+## Structural smells and restating comments (2026-10-29)
+
+Marián checked the skill against a list of smells: implicit coupling, layer-first folders, duplication, representable illegal states, god files, shotgun surgery, layering violations, pass-through wrappers, errors and validation not at the boundary, low-value comments. Duplication and god files were covered; the rest were partial or missing, because the list was framed only as weight with no present purpose.
+
+### Decisions
+
+1. Extend this skill rather than add a write-time design skill; revisit only if audits keep finding the same smells.
+2. Name pass-through wrappers in the "no second use" bullet, and comments that restate the code beside docs that contradict it.
+3. Add a second group, "structure that makes each change cost more than it should": shotgun surgery and implicit coupling in one bullet, layering violations, representable invalid states, and boundary validation. It sits after the weight list, which keeps "most costly first" and stays the primary job. Plain terms only: the architecture-vocabulary audits earlier in this sheet were ignored.
+4. Layer-first folders are not a finding. "Reorganizing a layout that works" joins the over-flagging list; folder structure surfaces only through the coupling cost it causes.
+5. Preferred fixes gain "move a rule or check to its owner".
+
+Independent text review (GPT-6.1 Sol, high) found no rule violations and tightened two bullets: boundary validation now names input validation and conversion of outside errors, so domain checks that belong in the core are not pushed out; invalid states now include inconsistent handling, not only checks everywhere. Not behavior-tested; the risk to watch in real audits is architecture findings the user does not act on.
