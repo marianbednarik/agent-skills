@@ -9,20 +9,26 @@ Find what in the codebase is worth removing, simplifying, or fixing, and turn it
 
 Weight that serves no present purpose. It piles up fastest when agents write the code, and survives review because each piece looks reasonable alone. Most costly first:
 - the same logic written again where a helper or rule already exists, or one rule implemented in several places;
-- layers, options, and abstractions with no second use;
+- layers, options, and abstractions with no second use, including wrappers that only pass calls through;
 - error handling that swallows or papers over failures, and guards for states that cannot occur;
 - state kept in two places;
 - components that own too many responsibilities, and competing patterns for one job;
 - dead paths;
 - tests that are slow, brittle, or check implementation rather than behavior;
 - repeated or blocking work on paths users hit;
-- docs and agent guidance that contradict the code.
+- comments that restate the code, and docs and agent guidance that contradict it.
 
-Prefer structural changes (delete, merge, collapse a layer, move a rule to its owner) over renames and rewording. Serious correctness or security problems found along the way go first in the report, but the audit is not a bug hunt.
+Structure that makes each change cost more than it should:
+- one change that has to touch many places, or parts that must change together with nothing in the code tying them;
+- dependencies that run against the project's layering, such as core logic importing UI or storage details;
+- types or data shapes that allow invalid states, so code checks for them everywhere;
+- validation and error handling spread through the core instead of at the edges where data enters and leaves.
+
+Prefer structural changes (delete, merge, collapse a layer, move a rule or check to its owner) over renames and rewording. Serious correctness or security problems found along the way go first in the report, but the audit is not a bug hunt.
 
 ## Two ways to get it wrong
 
-Over-flagging proposes churn: uniformity for its own sake, fewer lines as the goal, splitting what is cohesive, merging what only looks alike, rigor beyond what the rest of the project has, style a linter could catch, theoretical risks, undoing a deliberate choice. Under-flagging calls a skimmed codebase "mostly fine", or lists cosmetic nits while the structural cost goes unnamed. Keep a finding only if the user would plausibly act on it. An audit that finds little is a good result when it comes from a real look; say so plainly.
+Over-flagging proposes churn: uniformity for its own sake, fewer lines as the goal, splitting what is cohesive, merging what only looks alike, rigor beyond what the rest of the project has, style a linter could catch, theoretical risks, undoing a deliberate choice, reorganizing a layout that works. Under-flagging calls a skimmed codebase "mostly fine", or lists cosmetic nits while the structural cost goes unnamed. Keep a finding only if the user would plausibly act on it. An audit that finds little is a good result when it comes from a real look; say so plainly.
 
 ## Scope
 
