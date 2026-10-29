@@ -34,13 +34,13 @@ function Sync-Dir($source, $target) {
     Write-Host "  updated    $target"
 }
 
-function Sync-File($source, $target) {
-    if ((Test-Path $target) -and (Get-FileHash $source).Hash -eq (Get-FileHash $target).Hash) {
+function Sync-Text($text, $target) {
+    if ((Test-Path $target) -and [IO.File]::ReadAllText($target) -ceq $text) {
         Write-Host "  unchanged  $target"
         return
     }
     New-Item -ItemType Directory -Path (Split-Path $target) -Force | Out-Null
-    Copy-Item $source $target -Force
+    [IO.File]::WriteAllText($target, $text)
     Write-Host "  updated    $target"
 }
 
@@ -54,10 +54,12 @@ foreach ($skill in Get-ChildItem (Join-Path $repo 'skills') -Directory) {
 
 # One guidance file, copied to each harness's user-level instructions.
 # Overwrites ~/.claude/CLAUDE.md; keep machine-specific Claude notes elsewhere.
+# The Machines section describes the macOS laptop and the VPS, so Windows drops it.
 Write-Host 'Guidance'
-$guidance = Join-Path $repo 'context\AGENTS.md'
+$guidance = [IO.File]::ReadAllText((Join-Path $repo 'context\AGENTS.md'))
+$guidance = $guidance -replace '(?ms)^## Machines\r?\n.*?(?=^## |\z)', ''
 foreach ($target in '.codex\AGENTS.md', '.claude\CLAUDE.md', '.copilot\copilot-instructions.md') {
-    Sync-File $guidance (Join-Path $HOME $target)
+    Sync-Text $guidance (Join-Path $HOME $target)
 }
 
 # Both harnesses write their config files themselves, so merge the shared keys

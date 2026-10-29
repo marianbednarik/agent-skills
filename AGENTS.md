@@ -6,7 +6,7 @@ Reusable assets in `skills/` and `context/` are authored content, not automatica
 
 ## Runtime wiring
 
-On macOS and Linux, `install.sh` links runtime paths to the repository, so edits are live immediately; re-run it when skills are added or removed or the shared settings in `context/` change. Edit repository copies, not runtime paths. The Hetzner VPS (`agent` user, T3 Code over T3 Connect) runs it hourly from cron, which also pulls. On Windows, where links need admin rights, `install.ps1` copies the same assets (plus `~/.claude/CLAUDE.md` and `~/.copilot/copilot-instructions.md`) and must be re-run after changes; GitHub Copilot reads skills from `~/.agents/skills/`.
+On macOS and Linux, `install.sh` links runtime paths to the repository, so edits are live immediately; re-run it when skills are added or removed or the shared settings in `context/` change. Edit repository copies, not runtime paths. The Hetzner VPS (`agent` user, T3 Code over T3 Connect) runs it hourly from cron, which also pulls. On Windows, where links need admin rights, `install.ps1` copies the same assets (plus `~/.claude/CLAUDE.md` and `~/.copilot/copilot-instructions.md`, all without the guidance's Machines section, which only applies to the Mac and the VPS) and must be re-run after changes; GitHub Copilot reads skills from `~/.agents/skills/`.
 
 | Asset | Codex | Claude Code |
 | --- | --- | --- |
