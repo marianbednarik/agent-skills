@@ -179,7 +179,6 @@ Marián's emphasis: agents work around problems or write a one-off script withou
 1. "Where fixes go" gains the ladder for repeated agent mistakes: structure that removes the wrong way, then a type, test, or check whose error names the right way, prose only for judgment. Show the check catches the instance that happened. Guidance that existed and was ignored calls for enforcement, not rewording. Proportion to project maturity, so prototypes do not get lints for one slip; recurrence gating stays in "Pattern or one-off".
 2. The inefficiency bullet names throwaway inline scripts for steps the user repeats, and the fix becomes a committed script.
 3. "Pattern or one-off" tells the agent to ask when a workaround looks like a recurring step: the user knows about future repetitions that no session record shows.
+4. Global guidance: the verification-reporting line in `context/AGENTS.md` also asks agents to mention throwaway scripts written for steps Marián might repeat, so they surface at handback and not only when a retro runs. It stays out of shared skills as a personal preference.
 
 Rejected: a separate `/correct`-style skill (retro and codebase-audit already own finding repeated mistakes and structural fixes); a lint for this repository's own writing rules (no violations in the tree yet). Not behavior-tested; watch whether retros now propose checks where they used to propose guidance lines, and whether the ladder ever pushes structural fixes onto one-off slips.
-
-4. Global guidance: the verification-reporting line in `context/AGENTS.md` also asks agents to mention throwaway scripts written for steps Marián might repeat, so they surface at handback and not only when a retro runs. It stays out of shared skills as a personal preference.
