@@ -21,6 +21,7 @@ Weight that serves no present purpose. It piles up fastest when agents write the
 Structure that makes each change cost more than it should:
 - one change that has to touch many places, or parts that must change together with nothing in the code tying them;
 - dependencies that run against the project's layering, such as core logic importing UI or storage details;
+- mistakes the code invites: the nearest example to copy is the outdated way, or the project relies on a rule that nothing checks, so a change that looks right in one file breaks something elsewhere;
 - types or data shapes that allow invalid states, causing scattered checks or inconsistent handling;
 - input validation, or conversion of errors from outside systems, scattered through the core instead of done once where data enters or leaves.
 

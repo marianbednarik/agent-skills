@@ -160,3 +160,7 @@ Marián checked the skill against a list of smells: implicit coupling, layer-fir
 5. Preferred fixes gain "move a rule or check to its owner".
 
 Independent text review (GPT-6.1 Sol, high) found no rule violations and tightened two bullets: boundary validation now names input validation and conversion of outside errors, so domain checks that belong in the core are not pushed out; invalid states now include inconsistent handling, not only checks everywhere. Not behavior-tested; the risk to watch in real audits is architecture findings the user does not act on.
+
+## Mistakes the code invites (2026-11-08)
+
+Added to the structural group: the nearest example to copy is the outdated way, or the project relies on a rule nothing checks, so a change that looks right in one file breaks something elsewhere. Agents copy what is nearby and take the shortest path, so an audit should name where that path is wrong. "Competing patterns for one job" covered duplication but not which pattern an agent will copy, nor unchecked rules. Source and reasoning: [retro sheet](retro-reference-sheet.md#fix-ladder-and-throwaway-scripts-2026-11-08). Not behavior-tested.

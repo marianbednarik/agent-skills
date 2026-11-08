@@ -15,18 +15,20 @@ Most consequential first:
 - workarounds that changed what was verified or what shipped, and anything that could not be run;
 - misleading errors that led to a wrong diagnosis, such as a sandbox or permission failure read as broken auth or a missing tool;
 - guidance that was wrong, stale, or missing, and skills that misfired;
-- inefficiency: work that took far longer than it needed, or a task done by hand that keeps coming back (setup rebuilt each time, a procedure rediscovered), which may deserve a script, a check, or a skill;
+- inefficiency: work that took far longer than it needed, or a task that keeps coming back (setup rebuilt each time, a procedure rediscovered, a throwaway script written inline for a step the user does regularly), which may deserve a committed script, a check, or a skill;
 - useful discoveries worth keeping so no one has to rediscover them.
 
 Leave out routine noise: expected test failures, a search that found nothing, a quick retry that worked.
 
 ## Pattern or one-off
 
-Check whether the same obstacle or task came up before by searching earlier sessions for the specific error or procedure; do not read them all. A one-off slip does not justify a permanent rule, but "my mistake, no rule needed" is the wrong verdict when the same thing keeps happening. Before proposing guidance, check whether existing guidance already covers it and why it did not help.
+Check whether the same obstacle or task came up before by searching earlier sessions for the specific error or procedure; do not read them all. The user often knows a step will come back before any record shows it, so when a workaround or throwaway script looks like a step that will recur, ask. A one-off slip does not justify a permanent rule, but "my mistake, no rule needed" is the wrong verdict when the same thing keeps happening. Before proposing guidance, check whether existing guidance already covers it and why it did not help.
 
 ## Where fixes go
 
-Prefer changing the environment over adding instructions: install the missing tool, fix the script, correct the wrong line, write the helper the task keeps needing. Put each fix where the next agent who needs it will find it:
+Prefer changing the environment over adding instructions: install the missing tool, fix the script, correct the wrong line, write the helper the task keeps needing. For a mistake agents keep making, the strongest fix makes it impossible or loud: change the structure so the wrong way no longer exists (one owner for the state, the old path deleted so no one copies it), then a type, test, or check whose error names the right way, and prose only for what needs judgment. Show that the check catches the instance that happened. If guidance already covered the mistake and was ignored, rewording it rarely helps; enforce it instead. Match the fix to the project's maturity: a prototype may need only the corrected line.
+
+Put each fix where the next agent who needs it will find it:
 - the project's facts, workflows, and recurring procedures: its docs, tooling, or a project skill;
 - the user's own working preferences: their global guidance;
 - one machine's or harness's quirks (shell aliases, installed tools, sandbox behavior): that machine or harness's configuration, not guidance that other machines or people read.
