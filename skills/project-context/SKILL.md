@@ -15,6 +15,8 @@ A rule in the repository instructs every future agent, so overstating it has a s
 
 ## Where it lives
 
+When a test, type, or automated check can enforce a rule, put the rule there, or propose it when that is beyond the current change: nothing fails when an agent skips a doc. Prose then carries only the reason and what needs judgment.
+
 Keep each decision or rule in one place and point to it from elsewhere; restatements drift apart. When a decision or rule changes, rewrite it where it lives rather than appending an amendment or adding a contradicting rule elsewhere; version control keeps the history. Where a project keeps separate decision records, mark superseded ones and link their replacements. Entry points such as AGENTS.md and README should lead to what matters, saying when it matters.
 
 Follow the project's existing layout and do not restructure docs as a side effect. Where there is none, use these names so projects stay consistent, creating each only when it has content:

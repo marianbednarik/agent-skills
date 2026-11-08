@@ -167,3 +167,17 @@ Final SKILL.md: 575 words, SHA-256 `bb3ee1b3c72cb0d3b2be581bce5ea4e9fcd2a66c1c5e
 ## Model-invocable again (2026-10-27)
 
 Removed `agents/openai.yaml` and `disable-model-invocation`. Explicit-only hides the description from the model, so "let's do a retro" in an ordinary message did not load the skill; Marián asks for retros in prose. The description now names that phrasing and nothing else. Rule and evidence: root `AGENTS.md` writing rules and the [PR workflow sheet](pr-workflow-reference-sheet.md).
+
+## Fix ladder and throwaway scripts (2026-11-08)
+
+Prompted by a post from Lauren (@poteto) ranking ways to trust agents' work as an inverse pyramid: codebase structure first, then static checks (lint, tests, CI), then prose, then human review; and by her pstack plugin (`cursor/plugins`, `pstack/`), whose `/correct` skill fixes each repeated agent mistake at the highest level that works (architecture, types, a lint whose error names the fix, a test, prose last) and proves each new check fails on a real past mistake. Our "Where fixes go" already preferred environment over instructions, but sorted fixes by audience, not strength.
+
+Marián's emphasis: agents work around problems or write a one-off script without knowing he will repeat the step, so the pain stays hidden.
+
+### Decisions
+
+1. "Where fixes go" gains the ladder for repeated agent mistakes: structure that removes the wrong way, then a type, test, or check whose error names the right way, prose only for judgment. Show the check catches the instance that happened. Guidance that existed and was ignored calls for enforcement, not rewording. Proportion to project maturity, so prototypes do not get lints for one slip; recurrence gating stays in "Pattern or one-off".
+2. The inefficiency bullet names throwaway inline scripts for steps the user repeats, and the fix becomes a committed script.
+3. "Pattern or one-off" tells the agent to ask when a workaround looks like a recurring step: the user knows about future repetitions that no session record shows.
+
+Rejected: a separate `/correct`-style skill (retro and codebase-audit already own finding repeated mistakes and structural fixes); a lint for this repository's own writing rules (no violations in the tree yet). Not behavior-tested; watch whether retros now propose checks where they used to propose guidance lines, and whether the ladder ever pushes structural fixes onto one-off slips.
