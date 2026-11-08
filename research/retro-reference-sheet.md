@@ -181,3 +181,5 @@ Marián's emphasis: agents work around problems or write a one-off script withou
 3. "Pattern or one-off" tells the agent to ask when a workaround looks like a recurring step: the user knows about future repetitions that no session record shows.
 
 Rejected: a separate `/correct`-style skill (retro and codebase-audit already own finding repeated mistakes and structural fixes); a lint for this repository's own writing rules (no violations in the tree yet). Not behavior-tested; watch whether retros now propose checks where they used to propose guidance lines, and whether the ladder ever pushes structural fixes onto one-off slips.
+
+4. Global guidance: the verification-reporting line in `context/AGENTS.md` also asks agents to mention throwaway scripts written for steps Marián might repeat, so they surface at handback and not only when a retro runs. It stays out of shared skills as a personal preference.
