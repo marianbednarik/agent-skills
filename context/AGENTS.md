@@ -49,7 +49,7 @@ If T3 Code's `delegate_task` is available, use it for every subagent and check `
 | Deep research, review, browser and computer use | GPT-6.1 Sol |
 | Hard problems or taste, when you are not Opus 5.5 | Opus 5.5 |
 
-Never run GPT-6 Astra or Fable 5.1. Avoid Sonnet 5.5; it is slow and token-hungry.
+Never run GPT-6 Astra, and never start a subagent on Fable. Avoid Sonnet 5.5 for coding work.
 
 ---
 
