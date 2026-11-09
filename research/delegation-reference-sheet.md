@@ -20,6 +20,14 @@ Rejected: "delegate side work by default" (commits `487d7f4` through `95bec06`).
 
 Weak or missing evidence: cheap-model routing for code search, and cross-provider delegation in interactive coding, have no controlled comparison showing they beat direct work. The Haiku row is kept, limited to broad sweeps.
 
+## Model routing review (2026-11-09)
+
+Source: Anthropic, "Which Claude model should you build with?" (claude.dev blog, read 2026-11-09). Vendor guidance with its own benchmarks. It agrees with the Delegation section: Opus 5.5 at `medium` as the default, small models only for work where a mistake is cheap to spot, and edits and judgment kept on the main model.
+
+- Fable: the article recommends Fable 5.2 for the hardest work and long unattended runs, and says it can cost less per task than Opus 5.5 at `max`. It stays banned for subagents because Marián lacks the usage for it. He may still pick it as the main agent. The rule says "Fable" without a version so it covers later releases.
+- Sonnet 5.5: the article calls it fast (30% faster than Sonnet 5), which contradicts the old "slow and token-hungry" reason. It has no per-task token data. Its strongest uses (documents, chat, fan-out to many parallel workers) are rare here, so the line now just says to avoid it for coding work.
+- Not adopted: a user-level `Explore` agent pinned to Haiku. The built-in Explore runs on the session model unless a model is passed, so the Haiku row depends on agents passing one.
+
 ## Skill implications
 
 - `check-work`: unchanged. Gated to large or risky changes; independent fresh-context review is the best-supported use.
