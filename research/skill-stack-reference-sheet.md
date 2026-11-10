@@ -2,7 +2,7 @@
 
 Research date: 2026-09-27. Scope: the six canonical personal skills under `skills/`, the project-local `.agents/skills/rethink-skill`, and their relationship to `context/AGENTS.md` and repository `AGENTS.md`. Bundled product skills are complementary tools, not part of the authored set assessed for removal or revision. This is a stack review, not a revision of one runtime skill. Marián reports no specific failure; excessive ceremony and overlapping advice are concerns to assess, not observed incidents. No skill or global instruction was changed.
 
-This records the stack at the time of review. The subsequent [codebase audit redesign](repo-health-audit-reference-sheet.md) renamed `repo-health-audit` to `codebase-audit` and removed its mandatory HTML report.
+This records the stack at the time of review. The subsequent [codebase audit redesign](codebase-audit-reference-sheet.md) renamed `repo-health-audit` to `codebase-audit` and removed its mandatory HTML report.
 
 ## Baseline and verdict
 
@@ -79,7 +79,7 @@ Goal: one skill set and one global guidance file serving both GPT-6 Astra (Codex
 | shaping | Done (`18c963d`). Rebuilt around settling-versus-spiraling and thinking with the user. |
 | project-context | Done (`9bf4f16`). Rebuilt around lasting vs perishable, strength, one home, and updating with the change; templates dropped, file naming convention kept; scope includes agent instructions. |
 | writing-for-agents | Retired (`01c751b`). Real use showed the failures are content selection, which project-context owns; its surviving guidance became project-context's "Written for the reader" paragraph. See [its sheet](writing-for-agents-reference-sheet.md#cross-model-pass-retired-2026-09-30). |
-| codebase-audit | Done (`621cbb1`). Rebuilt around cleanup that gets done: most costly accumulated weight first, verified findings ready to become issues, a concrete proposal instead of a menu, filing after approval. See [its sheet](repo-health-audit-reference-sheet.md#cross-model-pass-rebuilt-around-cleanup-that-gets-done-2026-09-30). |
+| codebase-audit | Done (`621cbb1`). Rebuilt around cleanup that gets done: most costly accumulated weight first, verified findings ready to become issues, a concrete proposal instead of a menu, filing after approval. See [its sheet](codebase-audit-reference-sheet.md#cross-model-pass-rebuilt-around-cleanup-that-gets-done-2026-09-30). |
 | retro | Done (`05cc3ba`). Rebuilt around hidden friction: read the session record including subagent logs, check recurrence in earlier sessions, fix at the right level (machine quirks to machine setup). Global guidance now asks for workarounds that changed what was verified or shipped. See [its sheet](retro-reference-sheet.md#cross-model-pass-rebuilt-around-hidden-friction-2026-09-30). |
 
 Open observations to revisit: Astra expanded scope (unrequested thread locking) and tried to update issue #7 in check-work probes despite the global "not less, not more" line, so the global guidance may need a sharper scope rule. Watch real use of shaping for out-of-sight brainstorming, defaults hardening into decisions, and caving on questions. From the project-context probes: Astra again changed behavior outside the request (existing CSV ordering) and ran check-work on a small JSON export; Opus rarely self-loads project-context for decisions made mid-task. On 2026-10-27 Marián removed the line from `context/AGENTS.md` as an experiment, to see how agents behave without it; compare scope and check-back behavior against these observations before restoring or replacing it.

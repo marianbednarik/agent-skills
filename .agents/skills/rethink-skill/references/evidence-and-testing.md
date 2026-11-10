@@ -1,25 +1,31 @@
 # Evidence and testing reference
 
-Operational facts learned on 2026-09-29. Verify CLI flags against `--help` if a command fails; harness versions change.
+Operational facts learned on 2026-09-29; log formats rechecked on 2026-11-10. Verify CLI flags against `--help` if a command fails; harness versions change.
 
 ## Finding real use in session logs
 
+Start with `scripts/usage.py`: it counts the sessions that loaded each skill on both harnesses, and `--skill NAME` lists them with their log paths for extraction. If its counts look wrong (a skill in daily use showing zero), a log format has changed again: check the notes below against a recent log, fix the script, and update the notes.
+
 Shell note: `ls` and `grep` may be aliased (eza, ugrep). Use `/bin/ls` and `command grep`.
 
-**Codex**: `~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl`, one JSON object per line.
-- Line 1 is `session_meta`. `payload.cwd` gives the project; `payload.source` contains `subagent` for spawned agents. Many files are subagents or forks of one conversation, so group them by parent.
+**Codex**: `~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl`, one JSON object per line. Codex compresses older logs to `.jsonl.zst` and keeps them; read those with `zstd -dc`. Searching only `*.jsonl` finds a handful of recent sessions and looks like no use.
+- Line 1 is `session_meta`. `payload.cwd` gives the project; `payload.source` contains `subagent` for agents Codex spawned itself. Many files are subagents or forks of one conversation, so group them by parent.
 - `type: "response_item"` with `payload.type`:
   - `message`: `payload.role` is user or assistant; text is in `payload.content[].text`.
-  - `function_call`: `payload.name` plus `payload.arguments`. Often `exec_command`, or JavaScript calling `tools.exec_command(...)`.
-  - `function_call_output`
-- Implicit skill use is a tool call that reads `<skill>/SKILL.md`. Every session's catalog lists every skill path, so grepping for the path alone is noise; filter to `function_call` lines.
+  - tool calls: `custom_tool_call` named `exec`, with JavaScript calling `tools.exec_command(...)` in `payload.input`. Logs from before October 2026 use `function_call` with `payload.arguments`.
+  - their outputs: `custom_tool_call_output` or `function_call_output`.
+- Implicit skill use is a tool call that reads `<skill>/SKILL.md`. Every session's catalog lists every skill path, so grepping for the path alone is noise; filter to tool-call items.
 - Explicit invocation is a user message containing `<skill><name>NAME</name>`.
+- Tasks another harness delegated through T3 Code (`delegate_task`) are ordinary sessions here, not subagents: `payload.source` is `vscode`, the working directory is a T3 worktree, and the first user message is the brief, opening with "Act as the review sub-agent for this task." or another role. The reviewers a Claude Code author started are found this way, not under Claude Code's `subagents/`.
 - Subagent briefs (`spawn_agent` message) are encrypted. `fork_turns` shows whether a subagent inherited the conversation (`all`) or started fresh (`none`).
 - Files reach tens of MB. Extract with `jq` rather than reading whole files.
 
 **Claude Code**: `~/.claude/projects/<escaped-cwd>/<session-id>.jsonl`.
-- Skill use: an assistant `message.content[]` item with `type == "tool_use"`, `name == "Skill"`, and `input.skill`.
+- Skill use: an assistant `message.content[]` item with `type == "tool_use"`, `name == "Skill"`, and `input.skill`. A skill synced from claude.ai appears as `anthropic-skills:<name>`.
+- A skill invoked as `/name` is expanded without a `Skill` tool call. It appears as a user message containing `<command-name>/name</command-name>`; counting only tool calls misses every explicit use.
+- Some logs repeat lines; count a tool call once by its `id`.
 - Subagent transcripts live under `<session-id>/subagents/`.
+- Logs are deleted 30 days after their last change unless `cleanupPeriodDays` is raised in the settings, and the cleanup runs when the `claude` CLI starts, including the `claude -p` runs that probes make. Collect Claude Code evidence before running probes, and record the counts in the research sheet, since they cannot be reproduced later.
 
 Fresh-context extraction agents need: the skill's purpose, the file list, the format notes above, the questions to answer per session, and a request for a per-session table plus at most 10 aggregate bullets with quoted evidence. Do not include the expected conclusion.
 

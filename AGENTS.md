@@ -18,6 +18,8 @@ On macOS and Linux, `install.sh` links runtime paths to the repository, so edits
 
 `context/chat.md` is the shared chat-tailored counterpart of `context/AGENTS.md` for ChatGPT and claude.ai. Paste it manually into each service's personal instructions or preferences; keep shared preferences aligned with `context/AGENTS.md` while preserving differences between chat and agent work.
 
+`skills/shaping` is also uploaded to claude.ai as a personal skill, for chat. Upload it again after editing it; nothing syncs that copy. claude.ai syncs its skills into Claude Code as `anthropic-skills:<name>`, which would list shaping twice, so `context/claude-settings.json` switches the synced copy off. Use the prefixed name there: a bare `shaping` key switches off both copies.
+
 Do not export project-local skills to the global set unless requested.
 
 ## Vendored skills

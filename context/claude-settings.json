@@ -2,7 +2,8 @@
   "skillOverrides": {
     "code-review": "off",
     "simplify": "off",
-    "init": "user-invocable-only"
+    "init": "user-invocable-only",
+    "anthropic-skills:shaping": "off"
   },
   "workflowKeywordTriggerEnabled": false,
   "awaySummaryEnabled": false,
