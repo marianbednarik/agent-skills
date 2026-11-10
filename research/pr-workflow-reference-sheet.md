@@ -35,3 +35,7 @@ An external review of the stack flagged three wordings; all three were changed. 
 ## Not tested
 
 No probes: Marián judged that synthetic prompts cannot carry the context in which these skills matter, and that real use is the test. Watch in real use: whether `full-send` stops early or ends a turn while checks run; whether the two-round budget leaves real regressions unreviewed (earlier Claude Code runs used one round even when fixes changed behavior, see [check-work](check-work-reference-sheet.md)); whether agents actually use `watch_pull_request` after the global line; whether screenshots reach both the reviewer and the user.
+
+## Real-use check (2026-11-10)
+
+The [stack sheet](skill-stack-reference-sheet.md#real-use-check-2026-11-10) answers three of the points above: PR waits use `watch_pull_request`, the round budget has not left a loop running or a regression unreviewed in the sessions read, and screenshots reach reviewers. `full-send` has one real run, on a docs-only change, and `leaving-pr-comments` none on the laptop, so both remain untested by use.
