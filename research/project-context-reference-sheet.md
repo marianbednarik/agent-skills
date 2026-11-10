@@ -252,3 +252,7 @@ Follow-up 2026-09-30: `writing-for-agents` was retired and its surviving guidanc
 ## Enforceable rules go in checks (2026-11-08)
 
 "Where it lives" now opens by sending a rule that a test, type, or automated check can enforce to that check (or a proposal for it when out of scope), leaving prose for the reason and the judgment. This skill is where agents write lessons down, so without the line it defaults every lesson to prose that nothing enforces. Source and reasoning: [retro sheet](retro-reference-sheet.md#fix-ladder-and-throwaway-scripts-2026-11-08). Not behavior-tested.
+
+## Real-use check (2026-11-10)
+
+Claude Code still rarely loads the skill for decisions made during other work, and the doc edits made without it were sound. Detail in the [stack sheet](skill-stack-reference-sheet.md#real-use-check-2026-11-10). No change to the skill.

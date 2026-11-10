@@ -2,7 +2,7 @@
 
 Research date: 2026-09-27. Scope: the six canonical personal skills under `skills/`, the project-local `.agents/skills/rethink-skill`, and their relationship to `context/AGENTS.md` and repository `AGENTS.md`. Bundled product skills are complementary tools, not part of the authored set assessed for removal or revision. This is a stack review, not a revision of one runtime skill. Marián reports no specific failure; excessive ceremony and overlapping advice are concerns to assess, not observed incidents. No skill or global instruction was changed.
 
-This records the stack at the time of review. The subsequent [codebase audit redesign](repo-health-audit-reference-sheet.md) renamed `repo-health-audit` to `codebase-audit` and removed its mandatory HTML report.
+This records the stack at the time of review. The subsequent [codebase audit redesign](codebase-audit-reference-sheet.md) renamed `repo-health-audit` to `codebase-audit` and removed its mandatory HTML report.
 
 ## Baseline and verdict
 
@@ -79,7 +79,7 @@ Goal: one skill set and one global guidance file serving both GPT-6 Astra (Codex
 | shaping | Done (`18c963d`). Rebuilt around settling-versus-spiraling and thinking with the user. |
 | project-context | Done (`9bf4f16`). Rebuilt around lasting vs perishable, strength, one home, and updating with the change; templates dropped, file naming convention kept; scope includes agent instructions. |
 | writing-for-agents | Retired (`01c751b`). Real use showed the failures are content selection, which project-context owns; its surviving guidance became project-context's "Written for the reader" paragraph. See [its sheet](writing-for-agents-reference-sheet.md#cross-model-pass-retired-2026-09-30). |
-| codebase-audit | Done (`621cbb1`). Rebuilt around cleanup that gets done: most costly accumulated weight first, verified findings ready to become issues, a concrete proposal instead of a menu, filing after approval. See [its sheet](repo-health-audit-reference-sheet.md#cross-model-pass-rebuilt-around-cleanup-that-gets-done-2026-09-30). |
+| codebase-audit | Done (`621cbb1`). Rebuilt around cleanup that gets done: most costly accumulated weight first, verified findings ready to become issues, a concrete proposal instead of a menu, filing after approval. See [its sheet](codebase-audit-reference-sheet.md#cross-model-pass-rebuilt-around-cleanup-that-gets-done-2026-09-30). |
 | retro | Done (`05cc3ba`). Rebuilt around hidden friction: read the session record including subagent logs, check recurrence in earlier sessions, fix at the right level (machine quirks to machine setup). Global guidance now asks for workarounds that changed what was verified or shipped. See [its sheet](retro-reference-sheet.md#cross-model-pass-rebuilt-around-hidden-friction-2026-09-30). |
 
 Open observations to revisit: Astra expanded scope (unrequested thread locking) and tried to update issue #7 in check-work probes despite the global "not less, not more" line, so the global guidance may need a sharper scope rule. Watch real use of shaping for out-of-sight brainstorming, defaults hardening into decisions, and caving on questions. From the project-context probes: Astra again changed behavior outside the request (existing CSV ordering) and ran check-work on a small JSON export; Opus rarely self-loads project-context for decisions made mid-task. On 2026-10-27 Marián removed the line from `context/AGENTS.md` as an experiment, to see how agents behave without it; compare scope and check-back behavior against these observations before restoring or replacing it.
@@ -87,3 +87,30 @@ Open observations to revisit: Astra expanded scope (unrequested thread locking) 
 From the writing-for-agents probes: Astra writes user-stated status ("not configured yet, tracked in B-84") into deployment docs even with project-context loaded, and copies personal global guidance into project AGENTS.md; Opus moved kickoff notes into PROJECT.md and ENGINEERING.md and deleted the source file.
 
 Cross-model pass complete (2026-09-30). Concrete friction the retro survey found, for a first real retro: the eza `ls` alias breaking Claude Code shells, PyYAML missing for the skill validator, HTTPS pushes failing in some repos, and Playwright chosen over the built-in browser for one-off checks.
+
+## Real-use check (2026-11-10)
+
+A `codebase-audit` run over this repository, asked for without a specific complaint. It read the skills, the guidance, and the recent decisions in these sheets, then checked real use on the laptop since 2026-10-01. Verdict: the skills do what they were written to do, and no skill text was changed. The fixes went to the plumbing around them.
+
+Method: session counts from both harnesses (the scan became `rethink-skill/scripts/usage.py`), and a close read of about eight sessions. Claude Code deleted its logs from before 2026-10-12 during the check (30-day retention, triggered by a headless `claude -p` run), so the Claude Code counts below cannot be reproduced; Codex keeps its logs. The work machine, where `leaving-pr-comments` matters, and the VPS (two sessions) were not checked.
+
+| Skill | Sessions that loaded it since 10-01 | What they showed |
+| --- | --- | --- |
+| check-work, author | 23 Claude Code | Reviewers found real defects; one or two rounds; reports listed what was fixed, declined, and not re-reviewed. |
+| check-work, reviewer | 141 Codex reviewers delegated through T3 Code | A pattern search over their tool calls found none editing files, starting agents, or driving a browser. |
+| shaping | 13 Claude Code (3 by `/shaping`) | In the session read (PAX #254, 11-02): facts first, a marked reading of the goal, numbered questions answered "1. Yes 2. Yes 3. Yes", an HTML sketch of two layouts. |
+| codebase-audit | 2 Claude Code (10-17) | Both became issues that were implemented. |
+| retro | 2 Claude Code, both by `/retro` | The 10-23 run read the subagent record and traced re-delegation to a missing line in global guidance, fixed the same day. |
+| project-context | 2 Claude Code | Seven other sessions edited project docs without it; see below. |
+| full-send | 1 Claude Code, a docs-only change | Too little to judge. |
+| leaving-pr-comments | 0 | No PR or issue comment was posted from the laptop after it was added. |
+
+Answers to the open "watch in real use" notes:
+
+- **check-work loads less where project guidance restates it.** Of the Claude Code sessions that briefed a code reviewer, 21 of 25 loaded the skill before 10-25 and 2 of 8 since, one of those because Marián said "check-work it". PAX's `AGENTS.md` gained its own review rules on 10-25 (that repository's `c7493c8`), so the likely cause is the one behind the trigger-only description: an agent that already has the action skips the skill. This is inferred from timing, not tested. In the three skipped sessions read, the review still had its own worktree, a brief without the author's verdict, the reviewer's role, and a second round only after a fix changed behavior, so nothing was changed. A project without such lines would not have that cover; if the bypass costs something there, have the project line name the skill rather than restate it.
+- **Review rounds.** One or two per change. Second rounds found real problems (PAX #243, #246), and no session looped. Screenshots reached reviewers for UI changes (PAX #249, #255).
+- **PR waiting.** All four sessions that waited on a PR since 10-27 used `watch_pull_request`. `gh run watch` appeared only for release runs after a merge, which is the single blocking command `full-send` allows.
+- **project-context rarely self-loads in Claude Code**, as the probes predicted. The three doc edits read without it (PAX `ENGINEERING.md`, hogwarts `ENGINEERING.md`, byt `AGENTS.md`) were sound: a rule with its reason, in the owning doc, shipped with the change. One carried a date. Whether decisions went unrecorded in those sessions was not checked.
+- **Not checked:** the outcome of removing the scope line from `context/AGENTS.md` on 10-27.
+
+Fixed in the same change: the stale log notes in `rethink-skill` (Codex logs are now compressed and use a different tool-call type, so the old notes found no use of a skill loaded 141 times); the usage script; `rethink-skill` moved to the shared section format; the claude.ai upload of `shaping` recorded in the root `AGENTS.md` and its synced duplicate switched off in Claude Code (tested in a headless session: the prefixed key hides only the synced copy, a bare `shaping` key hides both); and the `codebase-audit` sheet renamed from `repo-health-audit-reference-sheet.md` to match its skill.

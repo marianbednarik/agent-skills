@@ -239,3 +239,7 @@ Added a round budget (two, four for authorization, stored data, or concurrency),
 ## Risk areas trigger at any size (2026-10-27)
 
 The description now says a change touching the risk areas qualifies "however few lines it changes", moved from the body, where it could not act before loading. Probes on 09-29 and 10-01 showed Claude Code skipping review of a persistence change judged "about 40 lines". Marián noted the cost (several rounds, possibly another provider's model) and accepted it. The body was reformatted into sections with no change in behavior; the paragraph restating when to use the skill and the line telling the author to show the user screenshots (now global guidance) were removed.
+
+## Real-use check (2026-11-10)
+
+Counts and findings are in the [stack sheet](skill-stack-reference-sheet.md#real-use-check-2026-11-10): the reviewer side loads the skill almost every time and stays in its role, reviews run one or two rounds, and authors load it less often where project guidance restates the review rule. No change to the skill.
