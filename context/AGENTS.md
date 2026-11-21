@@ -16,12 +16,10 @@ My projects are mostly prototypes built with agents. Match rigor to the project'
 
 ## Code
 
-- Prefer the smallest change that solves the problem cleanly. Add an abstraction when it removes real complexity in this project, not for hypothetical needs.
-- Judge existing patterns on their merits, and remove paths the change makes obsolete.
-- On a topic branch, commit as work reaches a state you would not want to redo; checkpoint commits can be rough.
-- Verify in proportion to risk. Tell me what you did not verify, any workaround that changed what was verified or shipped, and any throwaway script you wrote for a step I might repeat.
-- When you change UI, show me screenshots of the states you checked in your reply, so I do not have to run it myself for routine checks.
-- To wait on a PR's checks or reviews, use the harness's PR watch tool (in T3 Code, `watch_pull_request`) rather than a polling loop.
+- Delete code paths your change makes obsolete instead of leaving backwards-compatibility shims.
+- On a topic branch, commit rough checkpoints as work reaches a state you would not want to redo.
+- Tell me what you did not verify, any workaround that changed what was verified or shipped, and any throwaway script you wrote for a step I might repeat.
+- When you change UI, show me screenshots of the states you checked in your reply so I do not have to run it myself.
 
 ## Context
 
