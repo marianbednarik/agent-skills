@@ -17,14 +17,11 @@ Machine-local constraints (such as VPS hardware, firewall, and sudo limits) live
 | `skills/*` | symlinked into `~/.agents/skills/` | symlinked into `~/.claude/skills/` | symlinked into `~/.gemini/config/skills/` |
 | `context/AGENTS.md` | `~/.codex/AGENTS.md` symlinks to it (or combines with `~/.agents/local.md`) | `~/.claude/CLAUDE.md` imports it (and `~/.agents/local.md` if present) | `~/.gemini/AGENTS.md` symlinks to it (or combines with `~/.agents/local.md`) |
 | `context/codex-config.toml`, `context/claude-settings.json` | merged into `~/.codex/config.toml` | merged into `~/.claude/settings.json` | none |
-| `.agents/skills/*` (project-local) | discovered directly | `.claude/skills/*` symlinks to it | discovered directly |
 | Explicit-only invocation (hides the description from the model, so only `$name` or `/name` triggers it) | `agents/openai.yaml` in the skill | `disable-model-invocation: true` in frontmatter (Copilot reads it too) | none |
 
 `context/chat.md` is the chat-tailored counterpart of `context/AGENTS.md` for ChatGPT and claude.ai. Paste it manually into each service's personal instructions; keep shared preferences aligned with `context/AGENTS.md` while preserving differences between chat and agent work.
 
 `skills/shaping` is also uploaded to claude.ai as a personal skill, for chat. Upload it again after editing it; nothing syncs that copy. claude.ai syncs its skills into Claude Code as `anthropic-skills:<name>`, which would list shaping twice, so `context/claude-settings.json` switches the synced copy off. Use the prefixed name there: a bare `shaping` key switches off both copies.
-
-Do not export project-local skills to the global set unless requested.
 
 ## Vendored skills
 
