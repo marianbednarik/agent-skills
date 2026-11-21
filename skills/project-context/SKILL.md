@@ -1,38 +1,34 @@
 ---
 name: project-context
-description: Use when something decided or learned should outlast the conversation (a decision and its reason, a constraint, a domain term, design direction, parts that must change together, a standing instruction), including in the middle of other work, and when project docs, AGENTS.md, or project skills need writing, updating, or checking against the code.
+description: Use when writing, updating, or auditing project docs, AGENTS.md, or project skills, or mid-task when a lasting decision, constraint, domain rule, or coupling should be recorded in the repository.
 ---
 
-Keep in the repository what a future contributor, or their coding agent, needs to make good decisions and cannot get from the code. They will not have this conversation, the user's personal setup, or your memory. Often nothing needs recording.
+Record in the repository what a future contributor or agent needs to make good decisions and cannot read from the code. Often nothing needs recording.
 
-## What to keep
+## Keep what lasts
 
-Keep what lasts, not what perishes. One failure is missing the lasting thing: a decision made in passing, in a PR thread, or in a closed issue; its reason; a constraint; a coupling such as lists in two places that must change together. The other is recording what goes stale and then misleads: build status, what is done or next, dates, counts and versions, values the code already holds, notes about this one piece of work. Ask whether a sentence will still be true after the next few changes. Write direction as direction ("exports keep integer cents"), not progress ("JSON export is not built yet"); leave status to the tracker and the code.
+Record durable intent: settled decisions and their reasons, rejected alternatives that someone would plausibly re-propose, constraints, domain rules, and couplings (things that must change together).
 
-## How strongly
+Leave out anything that goes stale: progress, status ("not built yet"), dates, counts, versions, notes about one task, and values already visible in code. Write direction as direction ("exports keep integer cents"), not status.
 
-A rule in the repository instructs every future agent, so overstating it has a standing cost: a remark about one situation hardens into a blanket policy. Understating loses a real decision as a passing suggestion. Record what the user settled, in the scope they gave, with the reason when there is one. When someone would plausibly propose the alternative again, record what was rejected and why; that is what stops a decision from flip-flopping. Keep proposals, assumptions, and open questions visibly apart from decisions; do not invent reasons for existing choices.
+## Match the strength
 
-## Where it lives
+Every rule in a repo steers every future agent. Do not harden a one-off remark into a blanket policy, and do not soften a real decision into a vague hint. Record the exact scope the user settled, keep open questions and proposals visibly separate from decisions, and never invent reasons for existing code.
 
-When a test, type, or automated check can enforce a rule, put the rule there, or propose it when that is beyond the current change: nothing fails when an agent skips a doc. Prose then carries only the reason and what needs judgment.
+## Put it in one place
 
-Keep each decision or rule in one place and point to it from elsewhere; restatements drift apart. When a decision or rule changes, rewrite it where it lives rather than appending an amendment or adding a contradicting rule elsewhere; version control keeps the history. Where a project keeps separate decision records, mark superseded ones and link their replacements. Entry points such as AGENTS.md and README should lead to what matters, saying when it matters.
+When a type, test, or check can enforce a rule, prefer enforcing it there and keep prose for the reason and judgment.
 
-Follow the project's existing layout and do not restructure docs as a side effect. Where there is none, use these names so projects stay consistent, creating each only when it has content:
-- `README.md`: what it is, how to start;
-- `AGENTS.md`: agent instructions and routing;
-- `PROJECT.md`: purpose, users, priorities, deliberate exclusions;
-- `ENGINEERING.md`: technical choices, boundaries, constraints, and their reasons;
-- `LANGUAGE.md`: domain terms and rules;
-- `DESIGN.md`: visual and interaction direction.
+Keep each rule in one authoritative home and link to it elsewhere. When a decision changes, rewrite it in place instead of appending amendments (git keeps the history); in separate decision records, mark superseded ones and link their replacements. Entry points (`AGENTS.md`, `README.md`) should lead to what matters and say when it matters. Respect existing doc layouts; if none exist, create files only when they have real content:
+- `README.md`: what it is, how to run it
+- `AGENTS.md`: agent instructions and routing to other docs
+- `PROJECT.md`: purpose, users, priorities, deliberate exclusions
+- `ENGINEERING.md`: technical choices, boundaries, constraints, and why
+- `DESIGN.md`: visual and interaction direction
+- `LANGUAGE.md`: domain terms (only when the domain needs a glossary)
 
-Each file owns its kind of statement; the others link to it rather than restate it for their own reader.
+## Writing and updating
 
-## How to write it
+Write so a newcomer (human or agent) can follow it without this conversation. Cut padding, code walkthroughs, and file inventories; also avoid cramming several rules into one sentence. State goals, reasons, and judgment points rather than checklists (use steps only when order matters). Do not hard-wrap prose, and keep personal, machine-specific, or tool/model details out of shared repo docs.
 
-Give each point the length it needs. Padding, walkthroughs of what the code shows, and inventories of files or symbols bury the lines that matter; packing several rules into one sentence, or into shorthand only this conversation explains, loses the reader the other way. A newcomer to the project, person or agent, should be able to follow it. For instructions, state the goal, the reason, and where judgment is needed rather than a checklist; spell out steps only where order matters. Do not hard-wrap prose. Keep personal details, machine-specific setup, tool or model names, and your own standing instructions out of shared docs.
-
-## Updating with the change
-
-Update context in the same change that makes it true, not in a later pass. When you touch an area, check nearby claims against the code: fix what is plainly out of date; when code and documented intent disagree without explanation, flag it rather than changing either side to match the other. Make small context edits directly and mention them; ask only when the intent is unclear.
+Update docs in the same change that makes them true. When touching an area, fix plainly stale claims; if code and documented intent disagree without explanation, flag it instead of silently rewriting either side. Make small doc edits directly and mention them; ask only when intent is unclear.

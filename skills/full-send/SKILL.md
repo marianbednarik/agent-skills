@@ -1,61 +1,59 @@
 ---
 name: full-send
-description: "Use when the user says \"full send\", or hands off a change to take all the way to a merged pull request without them watching, including when they add that you should not merge."
+description: "Use when the user says \"full send\", or hands off a change to take all the way to a merged pull request without watching, including when they add not to merge."
 ---
 
-The user is not watching. Your updates and final message go unread until long after you stop, and nobody will prompt you again if you stop early. You own the work from its current state to a merged PR, or to a PR ready for the user to merge if they said not to merge.
+The user is not watching. Your updates go unread until after you stop, and nobody will prompt you again if you stop early. Own the work from its current state to a merged PR, or a ready-to-merge PR if asked not to merge.
 
-## What the request grants
+## Authority
 
-For this task only:
-- merging the PR once the merge gate passes;
-- rebasing this task's branch and pushing it with `--force-with-lease`;
-- the test methods proof needs (running the app or a dev server, browser automation, simulators, screenshots), even where project guidance says to ask first. Project rules about how to test still apply.
+Granted for this task only:
+- Merge the PR once the merge gate passes.
+- Rebase this task's branch and push with `--force-with-lease`.
+- Run the app, dev server, browser, or simulator needed to prove the change, even where project guidance says to ask first (project rules on how to test still apply).
 
-It does not grant deleting data, touching production, changing things outside the repository, closing PRs, pushing to any other branch, bypassing branch protection or using admin merges, or skipping a harness approval prompt. If the user said not to merge, also do not enable auto-merge or enter a merge queue, and switch off any that is already set.
+Not granted: deleting data, touching production, changing anything outside the repo, closing PRs, pushing to any other branch, bypassing branch protection or using admin merge, or skipping a harness approval prompt. If asked not to merge, also keep auto-merge and merge queues off.
 
 ## Proof
 
-Proof is evidence you observed yourself in this session. Use the most direct kind the change allows:
-- reproduce the original failure, fix it, and watch the same reproduction pass;
-- run the checks the repository's CI runs;
-- add one focused test that fails without the fix, when the repository has a test setup;
-- for anything users see, run it, look at each state you trigger, and keep screenshots for the reviewer and the report. Green mocked tests do not prove the experience works.
+Proof means evidence you observed yourself in this session:
+- Reproduce the failure, fix it, and watch the same reproduction pass.
+- Run the checks CI runs, and add a focused test that fails without the fix when the repo has tests.
+- For UI changes, run the app, inspect each state you changed, and keep screenshots for review and the final report. Green mocked tests do not prove UI works.
 
-If you cannot prove a change, you do not have the confidence to merge it.
+If you cannot prove the change, do not merge it.
 
 ## Review
 
-No person will read the diff before it merges, so every code change gets an independent review; documentation-only changes need none. Use the `check-work` skill if it is installed. Otherwise brief a reviewer in fresh context yourself, fix what users will realistically hit, and decline the rest with a written reason.
+No human will read the diff before merge, so run the `council` skill on every code change (docs-only changes need none). Do not leave disputed findings unresolved when merging; fix what users will realistically hit, decline unrealistic edge cases and style nits with a one-line reason, or ask through the question tool if a serious concern remains open.
 
-## Opening the PR and waiting
+## PR and waiting
 
-Start a branch if you are on the default branch. Rebase onto the latest default branch, write the description around the problem it solves, and add one line on how you proved it. Open a real PR, not a draft, so checks and review bots run. Post any comment through the `leaving-pr-comments` skill if it is installed.
+Branch off the default branch if needed, rebase onto its latest commit, and open a real PR (not a draft) whose description explains the problem, how you proved it, and includes the council review table when one ran. Use `leaving-pr-comments` for any PR comment.
 
-Do not end your turn while checks or reviews are pending unless something will wake you. Use the harness's PR watch tool when it has one (in T3 Code, `watch_pull_request`) instead of a polling loop or `sleep`; without one, use a single blocking command that ends on its own. Treat each wake as news and check the gate yourself. Stop watching before you hand back.
+Never end your turn while checks or reviews are pending unless a watch will wake you. Use `watch_pull_request` (or a single blocking command outside T3 Code), re-check the gate on each wake, and unwatch before handing back.
 
 ## Merge gate
 
 On the latest commit:
-- your proof covers every change in the diff;
-- required checks pass;
-- code changes had an independent review, and each finding is fixed or declined with a reason;
-- no human review still requests changes;
-- the branch is up to date with its base and mergeable.
+- Proof covers every change in the diff.
+- Required checks pass.
+- Code changes had an independent review, with every finding fixed or declined with a reason.
+- No human review requests changes.
+- Branch is up to date with its base and mergeable.
 
-Fetch and check once more right before merging. Merge with the method the repository uses; with a merge queue or auto-merge, stay until the host reports the PR merged.
+Fetch and check once more right before merging. Use the repo's merge method; with auto-merge or a merge queue, stay until the host reports the PR merged.
 
 ## When to ask
 
-A question in an ordinary message looks like a finished thread, so ask through the harness's question tool, with the context in the question: the PR link, what blocks you, and the options with your recommendation first. Ask only when:
-- you cannot prove the change;
-- the gate cannot pass and you cannot fix that;
-- the next step is outside the grant;
-- the goal is ambiguous in a way that changes the result;
-- another PR makes this one obsolete.
+A question in a normal reply looks like a finished thread. Use the harness's question tool with the PR link, blocker, and options (recommendation first), and ask only when:
+- You cannot prove the change, resolve a serious review concern, or pass the gate.
+- The next step is outside your authority grant.
+- The goal is ambiguous in a way that changes the result.
+- Another PR makes this one obsolete.
 
-Decide everything else yourself and list those decisions in the report. If no question tool exists or no answer comes, leave the PR open and unmerged and start your final message with the question.
+Decide everything else yourself and list those decisions in the report. If no question tool exists or no answer arrives, leave the PR open and start your final message with the question.
 
 ## Report
 
-Lead with the outcome: the PR link and merge commit, or the PR's ready or blocked state. Then the proof, with screenshots for anything users see; what review found, fixed, and declined; the decisions you made for the user; and what remains unverified.
+Lead with the outcome (PR link and merge commit, or ready/blocked state). Follow with proof and UI screenshots, what review found, fixed, and declined, decisions you made, and anything unverified.

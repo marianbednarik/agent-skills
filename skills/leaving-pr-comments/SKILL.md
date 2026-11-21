@@ -16,7 +16,7 @@ Start every comment you post on the user's behalf with this note:
 Actual comment starts here.
 ```
 
-Use the public name of the model that wrote the comment as the harness reports it, and the user's name or login. If the harness does not expose the model, name the harness instead; do not guess. Keep the attribution inside the note and the reply outside it, with no extra heading, rule, signature, or second attribution. On a host that does not render GitHub alerts, keep the same line as a plain quote.
+Use the short readable name of the model as the harness reports it (not a raw snapshot slug) and the user's name or login. If the harness does not expose the model, name the harness instead; do not guess. Keep the attribution inside the note and the reply outside it, with no extra heading, rule, signature, or second attribution. On a host that does not render GitHub alerts, keep the same line as a plain quote.
 
 ## Where it applies
 

@@ -3,38 +3,37 @@ name: retro
 description: Use when the user asks for a retro, or asks what got in the way, what was harder than it should have been, or what to improve after a work session.
 ---
 
-Surface what made the work harder or slower than it needed to be, especially what the user never saw, and propose fixes so it does not happen again. Capable agents route around obstacles so smoothly that the friction disappears from their final report, and background work has no one watching at all. That hidden friction is what a retro is for.
+Surface what made the work harder or slower than it needed to be, especially friction the user never saw, and propose fixes so it does not recur. Agents smooth over obstacles so well that hidden friction disappears from final reports.
 
-## Read the record, not your memory
+## Read the record
 
-Your recollection of a long session is compressed, and you never saw what subagents or background tasks struggled with. Go back through the session transcript and any subagent or background logs the harness keeps, and within them the failed tool calls, retries, fallbacks, and changes of approach. Start from anything the user points at. Use the current session unless another is named.
+Do not rely on memory; it is compressed and misses what subagents or background tasks hit. Inspect the session transcript and any subagent or background logs the harness keeps, looking for failed tool calls, retries, fallbacks, and abandoned approaches. Start from anything the user pointed at, using the current session unless another is named.
 
 ## What counts
 
-Most consequential first:
-- workarounds that changed what was verified or what shipped, and anything that could not be run;
-- misleading errors that led to a wrong diagnosis, such as a sandbox or permission failure read as broken auth or a missing tool;
-- guidance that was wrong, stale, or missing, and skills that misfired;
-- inefficiency: work that took far longer than it needed, or a task that keeps coming back (setup rebuilt each time, a procedure rediscovered, a throwaway script written inline for a step the user does regularly), which may deserve a committed script, a check, or a skill;
-- useful discoveries worth keeping so no one has to rediscover them.
+Focus on high-signal friction, most costly first:
+- Workarounds that changed what was verified or shipped, and anything that could not be run.
+- Misleading errors that caused a wrong diagnosis (such as sandbox or permission failures misread as broken auth).
+- Wrong, stale, or missing guidance, and skills that misfired.
+- Avoidable slowdowns or recurring manual steps (rebuilt setup, rediscovered procedures, throwaway scripts) that deserve a committed script, check, or skill.
+- Discoveries worth keeping so nobody rediscovers them.
 
-Leave out routine noise: expected test failures, a search that found nothing, a quick retry that worked.
+Skip routine noise: normal test failures, empty searches, or a quick retry that worked.
 
-## Pattern or one-off
+## Check recurrence
 
-Check whether the same obstacle or task came up before by searching earlier sessions for the specific error or procedure; do not read them all. The user often knows a step will come back before any record shows it, so when a workaround or throwaway script looks like a step that will recur, ask. A one-off slip does not justify a permanent rule, but "my mistake, no rule needed" is the wrong verdict when the same thing keeps happening. Before proposing guidance, check whether existing guidance already covers it and why it did not help.
+Do a quick targeted search of earlier sessions for the specific error or procedure (do not scan everything, and stop if logs are unavailable or slow to parse). When a workaround or throwaway script looks likely to recur, ask the user; they often know before the logs show it. One-off slips rarely need a rule; recurring mistakes do. Before proposing a new rule, check whether existing guidance already covers it and failed anyway.
 
 ## Where fixes go
 
-Prefer changing the environment over adding instructions: install the missing tool, fix the script, correct the wrong line, write the helper the task keeps needing. For a mistake agents keep making, the strongest fix makes it impossible or loud: change the structure so the wrong way no longer exists (one owner for the state, the old path deleted so no one copies it), then a type, test, or check whose error names the right way, and prose only for what needs judgment. Show that the check catches the instance that happened. If guidance already covered the mistake and was ignored, rewording it rarely helps; enforce it instead. Match the fix to the project's maturity: a prototype may need only the corrected line.
+Prefer fixing the environment over adding prose: install the tool, fix the script, delete the misleading old path, or add a type, test, or check that fails loudly (and show that it catches the instance that happened). If existing prose was ignored, rewording it rarely helps; enforce it mechanically instead. Match effort to project maturity.
 
-Put each fix where the next agent who needs it will find it:
-- the project's facts, workflows, and recurring procedures: its docs, tooling, or a project skill;
-- the user's own working preferences: their global guidance;
-- one machine's or harness's quirks (shell aliases, installed tools, sandbox behavior): that machine or harness's configuration, not guidance that other machines or people read.
-
-For a limitation outside local control, keep what failed separate from what you suspect caused it, and offer a local mitigation if one exists.
+Route each fix to the right level:
+- Project facts, scripts, or recurring workflows: repo docs, tooling, or a project skill.
+- Personal working preferences: global guidance.
+- Machine or harness quirks (aliases, installed tools, sandbox or VPS limits): machine-local config (`~/.agents/local.md` or harness settings).
+- External limitations: separate observed failure from suspected cause, and offer a local workaround if one exists.
 
 ## Report and act
 
-Present findings in conversation, ordered by payoff: what happened, with the evidence; what it cost; whether it recurs; and the fix and where it goes. Keep to what is worth acting on; finding nothing worth changing is a fine result. Apply what the user agrees to, carry agreed fixes through without asking again about routine details, and say what changed and what remains a proposal.
+Report in conversation, ordered by payoff: what happened (with evidence), what it cost, whether it recurs, and the proposed fix and home. Finding nothing worth changing is a good result. Once the user agrees, carry the fixes through without asking again about routine details, and state what changed vs. what remains proposed.

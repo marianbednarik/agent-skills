@@ -4,6 +4,9 @@
 #
 #   powershell -ExecutionPolicy Bypass -File .\install.ps1
 #
+# Optional machine-local guidance lives at ~/.agents/local.md outside this
+# repository and is appended when present.
+#
 # Pulls the repository first when run from a git clone. Skills removed from the
 # repository are not removed from the targets.
 
@@ -53,11 +56,17 @@ foreach ($skill in Get-ChildItem (Join-Path $repo 'skills') -Directory) {
 }
 
 # One guidance file, copied to each harness's user-level instructions.
-# Overwrites ~/.claude/CLAUDE.md; keep machine-specific Claude notes elsewhere.
-# The Machines section describes the macOS laptop and the VPS, so Windows drops it.
+# Overwrites ~/.claude/CLAUDE.md; put machine-local notes in ~/.agents/local.md.
 Write-Host 'Guidance'
-$guidance = [IO.File]::ReadAllText((Join-Path $repo 'context\AGENTS.md'))
-$guidance = $guidance -replace '(?ms)^## Machines\r?\n.*?(?=^## |\z)', ''
+$guidance = [IO.File]::ReadAllText((Join-Path $repo 'context\AGENTS.md')).TrimEnd()
+$localMd = Join-Path $HOME '.agents\local.md'
+if (Test-Path $localMd) {
+    $localText = [IO.File]::ReadAllText($localMd).Trim()
+    if ($localText) {
+        $guidance = $guidance + "`n`n" + $localText
+    }
+}
+$guidance = $guidance + "`n"
 foreach ($target in '.codex\AGENTS.md', '.claude\CLAUDE.md', '.copilot\copilot-instructions.md') {
     Sync-Text $guidance (Join-Path $HOME $target)
 }
