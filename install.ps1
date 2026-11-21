@@ -1,6 +1,7 @@
-# Installs the shared skills and global guidance for Codex, Claude Code, and
-# GitHub Copilot on Windows, where symlinks need admin rights or Developer Mode.
-# Copies instead of linking; re-run after changes. Unchanged targets are left alone.
+# Installs the shared skills and global guidance for Codex, Claude Code,
+# Antigravity, and GitHub Copilot on Windows, where symlinks need admin rights
+# or Developer Mode. Copies instead of linking; re-run after changes. Unchanged
+# targets are left alone.
 #
 #   powershell -ExecutionPolicy Bypass -File .\install.ps1
 #
@@ -47,10 +48,11 @@ function Sync-Text($text, $target) {
     Write-Host "  updated    $target"
 }
 
-# Codex and Copilot read ~/.agents/skills; Claude Code reads only ~/.claude/skills.
+# Codex and Copilot read ~/.agents/skills; Claude Code reads ~/.claude/skills;
+# Antigravity reads ~/.gemini/config/skills.
 Write-Host 'Skills'
 foreach ($skill in Get-ChildItem (Join-Path $repo 'skills') -Directory) {
-    foreach ($root in '.agents\skills', '.claude\skills') {
+    foreach ($root in '.agents\skills', '.claude\skills', '.gemini\config\skills') {
         Sync-Dir $skill.FullName (Join-Path $HOME (Join-Path $root $skill.Name))
     }
 }
@@ -67,7 +69,7 @@ if (Test-Path $localMd) {
     }
 }
 $guidance = $guidance + "`n"
-foreach ($target in '.codex\AGENTS.md', '.claude\CLAUDE.md', '.copilot\copilot-instructions.md') {
+foreach ($target in '.codex\AGENTS.md', '.claude\CLAUDE.md', '.copilot\copilot-instructions.md', '.gemini\AGENTS.md') {
     Sync-Text $guidance (Join-Path $HOME $target)
 }
 

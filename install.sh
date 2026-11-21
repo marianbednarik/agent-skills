@@ -1,16 +1,16 @@
 #!/bin/sh
-# Links the shared skills and global guidance for Codex and Claude Code on
-# macOS and Linux, and merges the shared harness settings (needs Python 3.11+).
-# Links point into this checkout, so later edits and pulls are live without
-# re-running; re-run when skills are added or removed, shared settings change,
-# or ~/.agents/local.md is added or edited.
+# Links the shared skills and global guidance for Codex, Claude Code, and
+# Antigravity on macOS and Linux, and merges the shared harness settings (needs
+# Python 3.11+). Links point into this checkout, so later edits and pulls are
+# live without re-running; re-run when skills are added or removed, shared
+# settings change, or ~/.agents/local.md is added or edited.
 #
 #   ./install.sh
 #
 # Optional machine-local guidance (for example VPS limits) lives at
 # ~/.agents/local.md outside this repository. When present, Claude Code imports
-# it alongside context/AGENTS.md, and Codex gets a generated ~/.codex/AGENTS.md
-# combining both files.
+# it alongside context/AGENTS.md, and Codex and Antigravity get a generated
+# AGENTS.md combining both files.
 #
 # Pulls the repository first. Existing links are replaced; real files and
 # directories in the way are left alone with a warning. Links to skills removed
@@ -33,9 +33,47 @@ link() { # link <source> <target>
   fi
 }
 
-# Codex reads ~/.agents/skills; Claude Code reads only ~/.claude/skills.
+install_guidance() { # install_guidance <target>
+  target="$1"
+  is_generated=0
+  if [ -f "$target" ] && [ ! -L "$target" ] && head -n 1 "$target" | grep -Fqx "$gen_marker"; then
+    is_generated=1
+  fi
+
+  if [ -f "$local_md" ]; then
+    if [ -L "$target" ] || [ ! -e "$target" ] || [ "$is_generated" -eq 1 ]; then
+      mkdir -p "$(dirname "$target")"
+      tmp="$target.tmp"
+      {
+        printf '%s\n\n' "$gen_marker"
+        cat "$repo/context/AGENTS.md"
+        printf '\n\n'
+        cat "$local_md"
+        printf '\n'
+      } > "$tmp"
+      if [ -L "$target" ] || [ ! -e "$target" ] || ! cmp -s "$tmp" "$target"; then
+        rm -f "$target"
+        mv "$tmp" "$target"
+        echo "  wrote    $target (with $local_md)"
+      else
+        rm -f "$tmp"
+        echo "  ok       $target"
+      fi
+    else
+      echo "  skipped  $target (exists and is not managed by install.sh)" >&2
+    fi
+  else
+    if [ "$is_generated" -eq 1 ]; then
+      rm -f "$target"
+    fi
+    link "$repo/context/AGENTS.md" "$target"
+  fi
+}
+
+# Codex reads ~/.agents/skills; Claude Code reads ~/.claude/skills;
+# Antigravity reads ~/.gemini/config/skills.
 echo "Skills"
-for root in "$HOME/.agents/skills" "$HOME/.claude/skills"; do
+for root in "$HOME/.agents/skills" "$HOME/.claude/skills" "$HOME/.gemini/config/skills"; do
   for skill in "$repo"/skills/*/; do
     link "${skill%/}" "$root/$(basename "$skill")"
   done
@@ -46,44 +84,12 @@ for root in "$HOME/.agents/skills" "$HOME/.claude/skills"; do
   done
 done
 
-# Codex links context/AGENTS.md directly unless ~/.agents/local.md exists, in
-# which case both are combined into a generated ~/.codex/AGENTS.md.
+# Codex and Antigravity link context/AGENTS.md directly unless ~/.agents/local.md
+# exists, in which case both files are combined into a generated AGENTS.md.
 # Claude Code imports context/AGENTS.md (and ~/.agents/local.md when present).
 echo "Guidance"
-codex_md="$HOME/.codex/AGENTS.md"
-is_generated=0
-if [ -f "$codex_md" ] && [ ! -L "$codex_md" ] && head -n 1 "$codex_md" | grep -Fqx "$gen_marker"; then
-  is_generated=1
-fi
-
-if [ -f "$local_md" ]; then
-  if [ -L "$codex_md" ] || [ ! -e "$codex_md" ] || [ "$is_generated" -eq 1 ]; then
-    mkdir -p "$(dirname "$codex_md")"
-    tmp="$codex_md.tmp"
-    {
-      printf '%s\n\n' "$gen_marker"
-      cat "$repo/context/AGENTS.md"
-      printf '\n\n'
-      cat "$local_md"
-      printf '\n'
-    } > "$tmp"
-    if [ -L "$codex_md" ] || [ ! -e "$codex_md" ] || ! cmp -s "$tmp" "$codex_md"; then
-      rm -f "$codex_md"
-      mv "$tmp" "$codex_md"
-      echo "  wrote    $codex_md (with $local_md)"
-    else
-      rm -f "$tmp"
-      echo "  ok       $codex_md"
-    fi
-  else
-    echo "  skipped  $codex_md (exists and is not managed by install.sh)" >&2
-  fi
-else
-  if [ "$is_generated" -eq 1 ]; then
-    rm -f "$codex_md"
-  fi
-  link "$repo/context/AGENTS.md" "$codex_md"
-fi
+install_guidance "$HOME/.codex/AGENTS.md"
+install_guidance "$HOME/.gemini/AGENTS.md"
 
 claude_md="$HOME/.claude/CLAUDE.md"
 import="@$repo/context/AGENTS.md"

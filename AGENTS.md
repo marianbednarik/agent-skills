@@ -1,24 +1,24 @@
 # Agent Skills Workspace
 
-This repository is the source of truth for Marian's personal agent assets: skills, global guidance, harness settings, and the research behind them. One set serves Codex, Claude Code, and GitHub Copilot across macOS, Linux, and Windows. `research/` holds reference sheets with the evidence and rejected alternatives behind skills and guidance; read the matching sheet, if there is one, before changing what it covers.
+This repository is the source of truth for Marian's personal agent assets: skills, global guidance, harness settings, and the research behind them. One set serves Codex, Claude Code, Antigravity, and GitHub Copilot across macOS, Linux, and Windows. `research/` holds reference sheets with the evidence and rejected alternatives behind skills and guidance; read the matching sheet, if there is one, before changing what it covers.
 
 Reusable assets in `skills/` and `context/` are authored content, not automatically active instructions. Follow a stored skill only when the user invokes it or the current task explicitly requires editing or testing that skill.
 
 ## Runtime wiring
 
-On macOS and Linux, `install.sh` links runtime paths to this repository, so edits are live immediately; re-run it when skills are added or removed, shared settings in `context/` change, or `~/.agents/local.md` changes (Codex also needs a re-run after `context/AGENTS.md` edits on machines that have `~/.agents/local.md`, since it gets a generated combined file). Edit repository copies, not runtime paths. The Hetzner VPS (`agent` user, T3 Code over T3 Connect) runs `install.sh` hourly from cron, which also pulls.
+On macOS and Linux, `install.sh` links runtime paths to this repository, so edits are live immediately; re-run it when skills are added or removed, shared settings in `context/` change, or `~/.agents/local.md` changes (Codex and Antigravity also need a re-run after `context/AGENTS.md` edits on machines that have `~/.agents/local.md`, since they get a generated combined file). Edit repository copies, not runtime paths. The Hetzner VPS (`agent` user, T3 Code over T3 Connect) runs `install.sh` hourly from cron, which also pulls.
 
-On Windows, where links need admin rights, `install.ps1` copies the same assets (including `~/.copilot/copilot-instructions.md`) and must be re-run after changes; GitHub Copilot reads skills from `~/.agents/skills/`.
+On Windows, where links need admin rights, `install.ps1` copies the same assets (including `~/.copilot/copilot-instructions.md` and `~/.gemini/`) and must be re-run after changes; GitHub Copilot reads skills from `~/.agents/skills/`.
 
-Machine-local constraints (such as VPS hardware, firewall, and sudo limits) live outside this repository in `~/.agents/local.md` on that machine only, so personal infrastructure never leaks onto the work laptop. When `~/.agents/local.md` exists, `install.sh` imports it in `~/.claude/CLAUDE.md` and writes a combined `~/.codex/AGENTS.md`, and `install.ps1` appends it to all three guidance files.
+Machine-local constraints (such as VPS hardware, firewall, and sudo limits) live outside this repository in `~/.agents/local.md` on that machine only, so personal infrastructure never leaks onto the work laptop. When `~/.agents/local.md` exists, `install.sh` imports it in `~/.claude/CLAUDE.md` and writes combined `~/.codex/AGENTS.md` and `~/.gemini/AGENTS.md` files, and `install.ps1` appends it to all four guidance files.
 
-| Asset | Codex | Claude Code |
-| --- | --- | --- |
-| `skills/*` | symlinked into `~/.agents/skills/` | symlinked into `~/.claude/skills/` |
-| `context/AGENTS.md` | `~/.codex/AGENTS.md` symlinks to it (or combines with `~/.agents/local.md`) | `~/.claude/CLAUDE.md` imports it (and `~/.agents/local.md` if present) |
-| `context/codex-config.toml`, `context/claude-settings.json` | merged into `~/.codex/config.toml` | merged into `~/.claude/settings.json` |
-| `.agents/skills/*` (project-local) | discovered directly | `.claude/skills/*` symlinks to it |
-| Explicit-only invocation (hides the description from the model, so only `$name` or `/name` triggers it) | `agents/openai.yaml` in the skill | `disable-model-invocation: true` in frontmatter (Copilot reads it too) |
+| Asset | Codex | Claude Code | Antigravity |
+| --- | --- | --- | --- |
+| `skills/*` | symlinked into `~/.agents/skills/` | symlinked into `~/.claude/skills/` | symlinked into `~/.gemini/config/skills/` |
+| `context/AGENTS.md` | `~/.codex/AGENTS.md` symlinks to it (or combines with `~/.agents/local.md`) | `~/.claude/CLAUDE.md` imports it (and `~/.agents/local.md` if present) | `~/.gemini/AGENTS.md` symlinks to it (or combines with `~/.agents/local.md`) |
+| `context/codex-config.toml`, `context/claude-settings.json` | merged into `~/.codex/config.toml` | merged into `~/.claude/settings.json` | none |
+| `.agents/skills/*` (project-local) | discovered directly | `.claude/skills/*` symlinks to it | discovered directly |
+| Explicit-only invocation (hides the description from the model, so only `$name` or `/name` triggers it) | `agents/openai.yaml` in the skill | `disable-model-invocation: true` in frontmatter (Copilot reads it too) | none |
 
 `context/chat.md` is the chat-tailored counterpart of `context/AGENTS.md` for ChatGPT and claude.ai. Paste it manually into each service's personal instructions; keep shared preferences aligned with `context/AGENTS.md` while preserving differences between chat and agent work.
 
