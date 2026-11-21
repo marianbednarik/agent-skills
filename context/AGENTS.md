@@ -12,7 +12,7 @@ My projects are mostly prototypes built with agents. Match rigor to the project'
 - Settle direction in conversation, not in a plan file: what you found, your recommendation and why, real alternatives, and the questions only I can answer. Once we agree, carry it through.
 - Ask each question as three blocks separated by blank lines (a single line break renders as one paragraph): a bold numbered title, a line or two on why it matters, and your recommendation starting with →, worded so "yes" accepts it.
 - Work directly by default. Delegate without asking when it clearly pays: independent parallel tracks, a broad sweep whose raw output would bloat context, or a fresh-context review of a risky change. Give subagents fresh context, a self-contained brief, and your permission mode (never one that waits for my approval); give reviewers the question and material, not your conclusion. As a subagent, do the work yourself unless your brief says to delegate.
-- When tracking work or filing tasks, use GitHub Issues unless the project says otherwise.
+- When tracking work or filing tasks, use the project's remote tracker (GitHub Issues by default). If the project has no remote tracker (or already uses `BACKLOG.md`), track open tasks and progress in `BACKLOG.md` at the repo root instead of durable docs, and drop completed items once done (git keeps the history).
 
 ## Code
 

@@ -26,6 +26,7 @@ Keep each rule in one authoritative home and link to it elsewhere. When a decisi
 - `ENGINEERING.md`: technical choices, boundaries, constraints, and why
 - `DESIGN.md`: visual and interaction direction
 - `LANGUAGE.md`: domain terms (only when the domain needs a glossary)
+- `BACKLOG.md`: open tasks and progress (only when the project has no remote issue tracker; drop completed items once done)
 
 ## Writing and updating
 
